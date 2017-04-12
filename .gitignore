@@ -1,29 +1,27 @@
-# Compiled Object files
-*.slo
-*.lo
+eos
+plots*
 *.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
+*.root
 *.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+*.pdf
+*.pyc
+rootdict.*
+condor/*
+*.condor
+*.swp
+python/lib/*
+tmp.txt
+*.*~
+output/*
+output2
+*.d
+dummy*
+test.*
+*.pcm
+*.csv
+.__*
+*.tex
+*.gif
+*.png
+bin/*
+Plots
