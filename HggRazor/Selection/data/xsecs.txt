@@ -1,0 +1,8 @@
+GluGluToHToGG_M-125_13TeV-powheg-pythia6                        43.92
+VBF_HToGG_M-125_13TeV-powheg-pythia6                            3.748
+WH_ZH_HToGG_M-125_13TeV_pythia6                                 2.2496
+TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola                0.5085
+GJets_HT-100to200_Tune4C_13TeV-madgraph-tauola                  1534.0
+GJets_HT-200to400_Tune4C_13TeV-madgraph-tauola                  489.9
+GJets_HT-400to600_Tune4C_13TeV-madgraph-tauola                  62.05
+GJets_HT-600toInf_Tune4C_13TeV-madgraph-tauola                  20.87

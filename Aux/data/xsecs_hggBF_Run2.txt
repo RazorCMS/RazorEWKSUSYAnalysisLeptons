@@ -1,0 +1,5 @@
+0.1001376	/Users/cmorgoth/Work/data/HggRazorRun2/MC/ggH_13TeV.root
+0.00854544	/Users/cmorgoth/Work/data/HggRazorRun2/MC/vbfH_13TeV.root
+0.005129088	/Users/cmorgoth/Work/data/HggRazorRun2/MC/vH_13TeV.root
+0.00115938	/Users/cmorgoth/Work/data/HggRazorRun2/MC/ttH_13TeV.root
+652.84		/Users/cmorgoth/Work/data/HggRazorRun2/MC/GJet_Pt40_DoubleEMEnriched_13TeV.root

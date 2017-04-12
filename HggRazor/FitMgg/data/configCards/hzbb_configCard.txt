@@ -1,0 +1,2 @@
+#cat		MR_l		MR_h		Rsq_l		Rsq_h		SMH			SMH_Err		        Signal		Bkg_f
+hzbb		150		10000		0		5		0.0860758		0.00182611		6.11156		singleExp

@@ -1,0 +1,4 @@
+0.0439356	/Users/cmorgoth/Work/data/HggRazorRun1/MC/ggH_8TeV.root
+0.00359784	/Users/cmorgoth/Work/data/HggRazorRun1/MC/vbfH_8TeV.root
+0.002553372	/Users/cmorgoth/Work/data/HggRazorRun1/MC/vH_8TeV.root
+0.000294804	/Users/cmorgoth/Work/data/HggRazorRun1/MC/ttH_8TeV.root

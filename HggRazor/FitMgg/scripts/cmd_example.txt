@@ -1,0 +1,35 @@
+
+source /afs/cern.ch/work/c/cpena/public/myRootHacked6/bin/thisroot.sh
+
+
+AIC test:
+./MakeFitRun2 --inputFile=/afs/cern.ch/work/c/cpena/public/CMSSW_7_5_3_patch1/src/RazorCommon/DoubleEG_Run2015D_TOTAL_NoCuts_GoodLumi_Jan27.root --treeName=HggRazor --LowMRcut=300 --HighMRcut=500 --LowRSQcut=0.05 --HighRSQcut=0.10 --dataMode=data --category=highpt --fitMode=AIC2 --outputFile=/afs/cern.ch/work/z/zhicaiz/private/RazorFramework/CMSSW_7_6_3/src/RazorFramework/HggRazor/FitMgg/AIC_output/highpt/highpt_300_0.05.root
+
+AIC test with 2015 data:
+./MakeFitRun2 --inputFile=/afs/cern.ch/work/c/cpena/public/CMSSW_7_6_3/src/RazorAnalyzer/submission/DoubleEG_Run2015_CMSSW_7_6_March15_GoodLumi.root --treeName=HggRazor --LowMRcut=1000 --HighMRcut=2000 --LowRSQcut=0.00 --HighRSQcut=1.00 --dataMode=data --category=highpt --fitMode=AIC2 --outputFile=AIC_output/highpt/highpt_1000_0.00.root
+
+./MakeFitRun2 --inputFile=/afs/cern.ch/work/c/cpena/public/CMSSW_7_6_3/src/RazorAnalyzer/submission/DoubleEG_Run2015_CMSSW_7_6_March15_GoodLumi.root --treeName=HggRazor --LowMRcut=150 --HighMRcut=2000 --LowRSQcut=0.00 --HighRSQcut=1.00 --dataMode=data --category=hzbb --fitMode=AIC2 --outputFile=AIC_output/hzbb/hzbb_150_0.00.root
+
+./MakeFitRun2 --inputFile=/afs/cern.ch/work/c/cpena/public/CMSSW_7_6_3/src/RazorAnalyzer/submission/DoubleEG_Run2015_CMSSW_7_6_March15_GoodLumi.root --treeName=HggRazor --LowMRcut=150 --HighMRcut=237.5 --LowRSQcut=0.053 --HighRSQcut=0.078 --dataMode=data --category=highres --fitMode=AIC2 --outputFile=/afs/cern.ch/work/z/zhicaiz/private/RazorFramework/CMSSW_7_6_3/src/RazorFramework_18Mar2016/HggRazor/FitMgg/AIC_output/highres/highres_150_0.root
+
+Bias test:
+./MakeFitRun2 --inputFile=/afs/cern.ch/work/c/cpena/public/CMSSW_7_5_3_patch1/src/RazorCommon/DoubleEG_Run2015D_TOTAL_NoCuts_GoodLumi_Jan27.root --treeName=HggRazor --LowMRcut=400 --HighMRcut=1200 --LowRSQcut=0.00 --HighRSQcut=0.05 --dataMode=data --category=lowres --fitMode=biasSignal --signalFraction=0.5 --f1=singlePow --f2=singlePow --outputFile=/afs/cern.ch/work/z/zhicaiz/private/RazorFramework/CMSSW_7_6_3/src/RazorFramework/HggRazor/FitMgg/BiasSignal_output/lowres/lowres_400_0.00_singlePow_singlePow.root
+
+
+run bias plot:
+./PlotAllBiasTest --inputFile=/afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result/trees/highpt_300_0.00/SoB_1.0/list.list --mode=plot --outputDir=/afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result/plots/highpt_300_0.00/SoB_1.0
+./PlotAllBiasTest --inputFile=/afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result/trees/highpt_300_0.00/SoB_3.0/list.list --mode=plot --outputDir=/afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result/plots/highpt_300_0.00/SoB_3.0
+./PlotAllBiasTest --inputFile=/afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result/trees/highpt_300_0.00/SoB_5.0/list.list --mode=plot --outputDir=/afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result/plots/highpt_300_0.00/SoB_5.0
+
+run bias table:
+./PlotAllBiasTest --inputFile=/afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result/trees/highpt_300_0.00/SoB_1.0/list.list --mode=table > /afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result/tables/highpt_300_0.00_SoB_1.0.tex
+./PlotAllBiasTest --inputFile=/afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result/trees/highpt_300_0.00/SoB_3.0/list.list --mode=table > /afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result/tables/highpt_300_0.00_SoB_3.0.tex
+./PlotAllBiasTest --inputFile=/afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result/trees/highpt_300_0.00/SoB_5.0/list.list --mode=table > /afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result/tables/highpt_300_0.00_SoB_5.0.tex
+
+
+run bias table2:
+./PlotAllBiasTest --inputFile=/afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result_newbin_cmscaf1nd_npoints/trees/highres_375_0.026/SoB_0.0/Tree/list.list --mode=table2 --outputDir=/afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result_newbin_cmscaf1nd_npoints/plots/highres_375_0.026/SoB_0.0 > /afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result_newbin_cmscaf1nd_npoints/tables/highres_375_0.026_SoB_0.0_table2.tex
+./PlotAllBiasTest --inputFile=/afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result_newbin_cmscaf1nd_npoints/trees/highres_375_0.026/SoB_1.0/Tree/list.list --mode=table2 --outputDir=/afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result_newbin_cmscaf1nd_npoints/plots/highres_375_0.026/SoB_1.0 > /afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result_newbin_cmscaf1nd_npoints/tables/highres_375_0.026_SoB_1.0_table2.tex
+./PlotAllBiasTest --inputFile=/afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result_newbin_cmscaf1nd_npoints/trees/highres_375_0.026/SoB_3.0/Tree/list.list --mode=table2 --outputDir=/afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result_newbin_cmscaf1nd_npoints/plots/highres_375_0.026/SoB_3.0 > /afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result_newbin_cmscaf1nd_npoints/tables/highres_375_0.026_SoB_3.0_table2.tex
+./PlotAllBiasTest --inputFile=/afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result_newbin_cmscaf1nd_npoints/trees/highres_375_0.026/SoB_5.0/Tree/list.list --mode=table2 --outputDir=/afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result_newbin_cmscaf1nd_npoints/plots/highres_375_0.026/SoB_5.0 > /afs/cern.ch/work/z/zhicaiz/public/BiasSignalTest_result_newbin_cmscaf1nd_npoints/tables/highres_375_0.026_SoB_5.0_table2.tex
+

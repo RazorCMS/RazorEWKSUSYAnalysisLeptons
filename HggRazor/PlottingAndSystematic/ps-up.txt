@@ -1,0 +1,8 @@
+GluGluH /afs/cern.ch/user/j/jlawhorn/eos/cms/store/group/phys_susy/razor/Run2Analysis/HggRazor/2016/V3p4_HiggsVar_July10/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_MiniAODv1_1pb_weighted.root
+VBFH /afs/cern.ch/user/j/jlawhorn/eos/cms/store/group/phys_susy/razor/Run2Analysis/HggRazor/2016/V3p4_HiggsVar_July10/VBFHToGG_M125_13TeV_amcatnlo_pythia8_MiniAODv1_1pb_weighted.root
+VH /afs/cern.ch/user/j/jlawhorn/eos/cms/store/group/phys_susy/razor/Run2Analysis/HggRazor/2016/V3p4_HiggsVar_July10/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_MiniAODv1_1pb_weighted.root
+ttH /afs/cern.ch/user/j/jlawhorn/eos/cms/store/group/phys_susy/razor/Run2Analysis/HggRazor/2016/V3p4_HiggsVar_July9/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_v2_MiniAODv1_1pb_weighted.root
+GluGluH_diff /afs/cern.ch/user/j/jlawhorn/eos/cms/store/group/phys_susy/razor/Run2Analysis/HggRazor/2016/V3p4_HiggsVar_July10/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_UpPS_MiniAODv1_1pb_weighted.root
+VBFH_diff    /afs/cern.ch/user/j/jlawhorn/eos/cms/store/group/phys_susy/razor/Run2Analysis/HggRazor/2016/V3p4_HiggsVar_July10/VBFHToGG_M125_13TeV_amcatnlo_pythia8_UpPS_MiniAODv1_1pb_weighted.root
+VH_diff      /afs/cern.ch/user/j/jlawhorn/eos/cms/store/group/phys_susy/razor/Run2Analysis/HggRazor/2016/V3p4_HiggsVar_July10/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS_MiniAODv1_1pb_weighted.root
+ttH_diff     /afs/cern.ch/user/j/jlawhorn/eos/cms/store/group/phys_susy/razor/Run2Analysis/HggRazor/2016/V3p4_HiggsVar_July10/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS_MiniAODv1_1pb_weighted.root

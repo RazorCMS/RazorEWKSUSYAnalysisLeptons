@@ -1,0 +1,7 @@
+NonRes	/Users/cmorgoth/Work/data/HggRazorRun2/MC/CMSSW_7_6_March15_Ntuples/NonResonant_CMSSW_7_6_March15_1pb_weighted.root
+ggH	/Users/cmorgoth/Work/data/HggRazorRun2/MC/CMSSW_7_6_March15_Ntuples/GluGluHToGG_M-125_13TeV_powheg_pythia8_CMSSW_7_6_March15_1pb_weighted.root
+vbfH	/Users/cmorgoth/Work/data/HggRazorRun2/MC/CMSSW_7_6_March15_Ntuples/VBFHToGG_M-125_13TeV_powheg_pythia8_CMSSW_7_6_March15_1pb_weighted.root
+vH	/Users/cmorgoth/Work/data/HggRazorRun2/MC/CMSSW_7_6_March15_Ntuples/VH_HToGG_ZToAll_M125_13TeV_powheg_pythia8_CMSSW_7_6_March15_1pb_weighted.root
+ttH	/Users/cmorgoth/Work/data/HggRazorRun2/MC/CMSSW_7_6_March15_Ntuples/ttHToGG_M125_13TeV_powheg_pythia8_v2_CMSSW_7_6_March15_1pb_weighted.root
+signal	/Users/cmorgoth/Work/data/HggRazorRun2/MC/CMSSW_7_6_March15_Ntuples/T2bH-Hgg-sbm300-sbw1-chi2m230-chi2w0p1-chi1m100_CMSSW_7_6_March15_1pb_weighted.root
+

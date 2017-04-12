@@ -1,0 +1,8 @@
+43.92	/Users/cmorgoth/Work/data/HggRazorRun2/MC/Run2GG_Selection.root
+3.748	/Users/cmorgoth/Work/data/HggRazorRun2/MC/Run2VBFH_Selection.root
+2.2496	/Users/cmorgoth/Work/data/HggRazorRun2/MC/Run2VH_Selection.root
+0.5085	/Users/cmorgoth/Work/data/HggRazorRun2/MC/Run2TTH_Selection.root
+1534.0	/Users/cmorgoth/Work/data/HggRazorRun2/MC/Run2GJetsHT100_200_Selection.root
+489.9	/Users/cmorgoth/Work/data/HggRazorRun2/MC/Run2GJetsHT200_400_Selection.root
+62.05	/Users/cmorgoth/Work/data/HggRazorRun2/MC/Run2GJetsHT400_600_Selection.root
+20.87	/Users/cmorgoth/Work/data/HggRazorRun2/MC/Run2GJetsHT600_inf_Selection.root
