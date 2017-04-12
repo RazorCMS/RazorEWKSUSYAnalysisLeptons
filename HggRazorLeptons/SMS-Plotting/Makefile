@@ -4,7 +4,7 @@ LD = $(shell root-config --ld)
 INC = $(shell pwd)
 Repo = $(shell git rev-parse --show-toplevel)
 Aux = $(Repo)/Aux
-HggRazor = $(Repo)/HggRazor
+HggRazor = $(Repo)/HggRazorLeptons
 CommonTools = $(HggRazor)/CommonTools
 
 CPPFLAGS := $(shell root-config --cflags) -I$(INC)/include -I$(CommonTools)/include -I$(Aux)/include
