@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Wed Apr 12 17:09:00 2017 by ROOT version 6.08/00
+// Fri Apr 14 08:28:57 2017 by ROOT version 6.08/00
 // from TTree HggTree/Info on selected razor inclusive events
-// found on file: HggTree_TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8_1pb_weighted.root
+// found on file: SMS-TChiHH_375.root
 //////////////////////////////////////////////////////////
 
 #ifndef HggTree_h
@@ -13,7 +13,7 @@
 #include <TFile.h>
 
 // Header file for the classes stored in the TTree if any.
-#include <vector>
+#include "vector"
 
 class HggTree {
 public :
@@ -34,6 +34,7 @@ public :
    Float_t         ISRSystWeightUp;
    Float_t         ISRSystWeightDown;
    Int_t           NISRJets;
+   Float_t         ptISR;
    Float_t         btagCorrFactor;
    Float_t         sf_btagUp;
    Float_t         sf_btagDown;
@@ -45,8 +46,8 @@ public :
    Float_t         sf_renScaleDown;
    Float_t         sf_facRenScaleUp;
    Float_t         sf_facRenScaleDown;
-  std::vector<float>   *pdfWeights;
-  std::vector<float>   *sf_pdf;
+   std::vector<float>   *pdfWeights;
+   std::vector<float>   *sf_pdf;
    Bool_t          Flag_HBHENoiseFilter;
    Bool_t          Flag_HBHEIsoNoiseFilter;
    Bool_t          Flag_badChargedCandidateFilter;
@@ -68,6 +69,7 @@ public :
    UInt_t          event;
    Bool_t          passedDiphotonTrigger;
    UInt_t          NPU;
+   UInt_t          nPV;
    Int_t           nLooseBTaggedJets;
    Int_t           nMediumBTaggedJets;
    Int_t           nLooseMuons;
@@ -84,6 +86,7 @@ public :
    Float_t         t1Rsq;
    Float_t         t1Rsq_JESUp;
    Float_t         t1Rsq_JESDown;
+   Float_t         genMetRsq;
    Float_t         MET;
    Float_t         MET_JESUp;
    Float_t         MET_JESDown;
@@ -110,6 +113,7 @@ public :
    Float_t         lep2Phi;
    Float_t         dileptonMass;
    Float_t         lep1MT;
+   Float_t         lep1GenMetMT;
    Float_t         pho1E;
    Float_t         pho1Pt;
    Float_t         pho1Eta;
@@ -151,25 +155,25 @@ public :
    Float_t         mbbZ_L;
    Float_t         mbbH_L;
    Int_t           n_Jets;
-   Float_t         jet_E[11];   //[n_Jets]
-   Float_t         jet_Pt[11];   //[n_Jets]
-   Float_t         jet_Eta[11];   //[n_Jets]
-   Float_t         jet_Phi[11];   //[n_Jets]
-   Bool_t          jetIsCSVL[11];   //[n_Jets]
-   Bool_t          jetIsCSVM[11];   //[n_Jets]
-   Bool_t          jetIsCSVT[11];   //[n_Jets]
+   Float_t         jet_E[50];   //[n_Jets]
+   Float_t         jet_Pt[50];   //[n_Jets]
+   Float_t         jet_Eta[50];   //[n_Jets]
+   Float_t         jet_Phi[50];   //[n_Jets]
+   Bool_t          jetIsCSVL[50];   //[n_Jets]
+   Bool_t          jetIsCSVM[50];   //[n_Jets]
+   Bool_t          jetIsCSVT[50];   //[n_Jets]
    Int_t           n_Jets_JESUp;
    Int_t           n_Jets_JESDown;
    Bool_t          HLTDecision[300];
    Int_t           nGenParticle;
-   Int_t           gParticleMotherId[50];   //[nGenParticle]
-   Int_t           gParticleMotherIndex[50];   //[nGenParticle]
-   Int_t           gParticleId[50];   //[nGenParticle]
-   Int_t           gParticleStatus[50];   //[nGenParticle]
-   Float_t         gParticleE[50];   //[nGenParticle]
-   Float_t         gParticlePt[50];   //[nGenParticle]
-   Float_t         gParticlePhi[50];   //[nGenParticle]
-   Float_t         gParticleEta[50];   //[nGenParticle]
+   Int_t           gParticleMotherId[500];   //[nGenParticle]
+   Int_t           gParticleMotherIndex[500];   //[nGenParticle]
+   Int_t           gParticleId[500];   //[nGenParticle]
+   Int_t           gParticleStatus[500];   //[nGenParticle]
+   Float_t         gParticleE[500];   //[nGenParticle]
+   Float_t         gParticlePt[500];   //[nGenParticle]
+   Float_t         gParticlePhi[500];   //[nGenParticle]
+   Float_t         gParticleEta[500];   //[nGenParticle]
    Int_t           mChi;
    Int_t           mLSP;
 
@@ -185,6 +189,7 @@ public :
    TBranch        *b_ISRSystWeightUp;   //!
    TBranch        *b_ISRSystWeightDown;   //!
    TBranch        *b_NISRJets;   //!
+   TBranch        *b_ptISR;   //!
    TBranch        *b_btagCorrFactor;   //!
    TBranch        *b_sf_btagUp;   //!
    TBranch        *b_sf_btagDown;   //!
@@ -219,6 +224,7 @@ public :
    TBranch        *b_event;   //!
    TBranch        *b_passedDiphotonTrigger;   //!
    TBranch        *b_npu;   //!
+   TBranch        *b_nPV;   //!
    TBranch        *b_nLooseBTaggedJets;   //!
    TBranch        *b_nMediumBTaggedJets;   //!
    TBranch        *b_nLooseMuons;   //!
@@ -235,6 +241,7 @@ public :
    TBranch        *b_t1Rsq;   //!
    TBranch        *b_t1Rsq_JESUp;   //!
    TBranch        *b_t1Rsq_JESDown;   //!
+   TBranch        *b_genMetRsq;   //!
    TBranch        *b_MET;   //!
    TBranch        *b_MET_JESUp;   //!
    TBranch        *b_MET_JESDown;   //!
@@ -261,6 +268,7 @@ public :
    TBranch        *b_lep2Phi;   //!
    TBranch        *b_dileptonMass;   //!
    TBranch        *b_lep1MT;   //!
+   TBranch        *b_lep1GenMetMT;   //!
    TBranch        *b_pho1E;   //!
    TBranch        *b_pho1Pt;   //!
    TBranch        *b_pho1Eta;   //!
@@ -343,9 +351,9 @@ HggTree::HggTree(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("HggRazorLeptons_TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8_1pb_weighted.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("SMS-TChiHH_375.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("HggRazorLeptons_TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8_1pb_weighted.root");
+         f = new TFile("SMS-TChiHH_375.root");
       }
       f->GetObject("HggRazorLeptons",tree);
 
@@ -408,6 +416,7 @@ void HggTree::Init(TTree *tree)
    fChain->SetBranchAddress("ISRSystWeightUp", &ISRSystWeightUp, &b_ISRSystWeightUp);
    fChain->SetBranchAddress("ISRSystWeightDown", &ISRSystWeightDown, &b_ISRSystWeightDown);
    fChain->SetBranchAddress("NISRJets", &NISRJets, &b_NISRJets);
+   fChain->SetBranchAddress("ptISR", &ptISR, &b_ptISR);
    fChain->SetBranchAddress("btagCorrFactor", &btagCorrFactor, &b_btagCorrFactor);
    fChain->SetBranchAddress("sf_btagUp", &sf_btagUp, &b_sf_btagUp);
    fChain->SetBranchAddress("sf_btagDown", &sf_btagDown, &b_sf_btagDown);
@@ -442,6 +451,7 @@ void HggTree::Init(TTree *tree)
    fChain->SetBranchAddress("event", &event, &b_event);
    fChain->SetBranchAddress("passedDiphotonTrigger", &passedDiphotonTrigger, &b_passedDiphotonTrigger);
    fChain->SetBranchAddress("NPU", &NPU, &b_npu);
+   fChain->SetBranchAddress("nPV", &nPV, &b_nPV);
    fChain->SetBranchAddress("nLooseBTaggedJets", &nLooseBTaggedJets, &b_nLooseBTaggedJets);
    fChain->SetBranchAddress("nMediumBTaggedJets", &nMediumBTaggedJets, &b_nMediumBTaggedJets);
    fChain->SetBranchAddress("nLooseMuons", &nLooseMuons, &b_nLooseMuons);
@@ -458,6 +468,7 @@ void HggTree::Init(TTree *tree)
    fChain->SetBranchAddress("t1Rsq", &t1Rsq, &b_t1Rsq);
    fChain->SetBranchAddress("t1Rsq_JESUp", &t1Rsq_JESUp, &b_t1Rsq_JESUp);
    fChain->SetBranchAddress("t1Rsq_JESDown", &t1Rsq_JESDown, &b_t1Rsq_JESDown);
+   fChain->SetBranchAddress("genMetRsq", &genMetRsq, &b_genMetRsq);
    fChain->SetBranchAddress("MET", &MET, &b_MET);
    fChain->SetBranchAddress("MET_JESUp", &MET_JESUp, &b_MET_JESUp);
    fChain->SetBranchAddress("MET_JESDown", &MET_JESDown, &b_MET_JESDown);
@@ -484,6 +495,7 @@ void HggTree::Init(TTree *tree)
    fChain->SetBranchAddress("lep2Phi", &lep2Phi, &b_lep2Phi);
    fChain->SetBranchAddress("dileptonMass", &dileptonMass, &b_dileptonMass);
    fChain->SetBranchAddress("lep1MT", &lep1MT, &b_lep1MT);
+   fChain->SetBranchAddress("lep1GenMetMT", &lep1GenMetMT, &b_lep1GenMetMT);
    fChain->SetBranchAddress("pho1E", &pho1E, &b_pho1E);
    fChain->SetBranchAddress("pho1Pt", &pho1Pt, &b_pho1Pt);
    fChain->SetBranchAddress("pho1Eta", &pho1Eta, &b_pho1Eta);

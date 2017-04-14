@@ -429,7 +429,7 @@ void HggRazorSystematics::Loop()
 	if (!_useISRPtCorrection) {
 	  ISRCorrValue = ISRCorrection[std::min(NISRJets,6)];
 	} else {
-	  //ISRCorrValue = PtISRCorrection[ISRPtHist->GetXaxis()->FindFixBin(ptISR)-1];
+	  ISRCorrValue = PtISRCorrection[ISRPtHist->GetXaxis()->FindFixBin(ptISR)-1];
 	}
       }
 
@@ -525,18 +525,18 @@ void HggRazorSystematics::Loop()
     
       //genmet
       if (_useISRPtCorrection && this->processName == "signal") {
-	//h2p_genMet->Fill( MR, fmin(genMetRsq,0.999), commonW );
+	h2p_genMet->Fill( MR, fmin(genMetRsq,0.999), commonW );
       }
 
       //pileup for fastsim signals
       if (_useISRPtCorrection && this->processName == "signal") {
-	//if (nPV < 20) {
+	if (nPV < 20) {
 	  h2p_pileupLowNPV->Fill( MR, fmin(myRsq,0.999), commonW );
 	  h2p_pileupLowNPVErrSqr->Fill( MR, fmin(myRsq,0.999), commonW*commonW );
-	  //} else {
+	} else {
 	  h2p_pileupHighNPV->Fill( MR, fmin(myRsq,0.999), commonW );
 	  h2p_pileupHighNPVErrSqr->Fill( MR, fmin(myRsq,0.999), commonW*commonW );
-	  //}
+	}
       }
       
     } //loop over events
