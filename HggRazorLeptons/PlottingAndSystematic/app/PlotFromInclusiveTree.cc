@@ -307,7 +307,7 @@ int main ( int argc, char* argv[] )
   TH1D* mc2 = new TH1D();
 
   int map_size = mapList.size();
-  const int nprocesses = 2;//mc+data
+  const int nprocesses = 13;//mc+data
   //check nprocesses and map_size consistency
   if( map_size != nprocesses )
     {
@@ -337,7 +337,7 @@ int main ( int argc, char* argv[] )
       std::string processName = GetProcessString( process );
       std::cout << "[INFO] PROCESS: " << processName << " ,process #: " << ctr << std::endl;
       //DY control region
-      if ( !(process == Process::data || process == Process::dy) ) continue;
+      //if ( !(process == Process::data || process == Process::dy) ) continue;
 
       //Diphoton
       
@@ -355,7 +355,7 @@ int main ( int argc, char* argv[] )
       //-----------------------------
       // R e t r i e v i n g  T r e e
       //-----------------------------
-      chain   = new TChain( "HggRazor" );
+      chain   = new TChain( "HggRazorLeptons" );
       std::cout << "DEBUG: " << mapList[processName] << std::endl;
       AddTChain( chain, mapList[processName] );
       //need to create temporary root file to store cutTree
