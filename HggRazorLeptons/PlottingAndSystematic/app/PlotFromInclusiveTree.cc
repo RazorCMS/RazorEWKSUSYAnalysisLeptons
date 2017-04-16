@@ -16,9 +16,9 @@
 // D e f i n e  B i n n i n g
 //---------------------------
 //H
-//int HggRazorClass::n_mgg   = 38;
-//float HggRazorClass::mgg_l = 103.;
-//float HggRazorClass::mgg_h = 160.;
+int HggRazorClass::n_mgg   = 38;
+float HggRazorClass::mgg_l = 103.;
+float HggRazorClass::mgg_h = 160.;
 
 //HighMass Diphotons
 //int HggRazorClass::n_mgg   = 50;
@@ -26,9 +26,9 @@
 //float HggRazorClass::mgg_h = 1230.;
 
 //Z
-int HggRazorClass::n_mgg = 60;
-float HggRazorClass::mgg_l = 60.;
-float HggRazorClass::mgg_h = 120.;
+//int HggRazorClass::n_mgg = 60;
+//float HggRazorClass::mgg_l = 60.;
+//float HggRazorClass::mgg_h = 120.;
 
 int HggRazorClass::n_ptgg   = 52;
 float HggRazorClass::ptgg_l = 0.;
@@ -149,6 +149,14 @@ int HggRazorClass::n_njets = 11;
 float HggRazorClass::njets_l = .0;
 float HggRazorClass::njets_h = 10;
 
+int HggRazorClass::n_met = 70;
+float HggRazorClass::met_l = .0;
+float HggRazorClass::met_h = 2100;
+
+int HggRazorClass::n_mt = 40;
+float HggRazorClass::mt_l = .0;
+float HggRazorClass::mt_h = 400;
+
 //C u s t o m MR_RSQ_BINNING
 //--------------------------
 //HighPt
@@ -176,21 +184,21 @@ float lres_k[2] = { 1.0, 1.0};
 
 //DATA
 //GammaGamma
-//TString cut = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma>103 && mGammaGamma<160 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 )";
+TString cut = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma>103 && mGammaGamma<160 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 )";
 
 //MC
 //GammaGamma
-//TString cut_mc = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma>103 && mGammaGamma<160 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1";
+TString cut_mc = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma>103 && mGammaGamma<160 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1";
 
 
 //---------------
 //Zee control region
 //---------------
 //Data
-TString cut = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 75 && mGammaGamma < 120 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 ) && MR > 150. && pTGammaGamma < 110 && abs(mbbH_L-125.)>=15 && abs(mbbZ_L-91.)>=15";
+//TString cut = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 75 && mGammaGamma < 120 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 ) && MR > 150. && pTGammaGamma < 110 && abs(mbbH_L-125.)>=15 && abs(mbbZ_L-91.)>=15";
 
 //MC
-TString cut_mc = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 75 && mGammaGamma < 120 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 && MR > 150. && pTGammaGamma < 110 && abs(mbbH_L-125.)>=15 && abs(mbbZ_L-91.)>=15";
+//TString cut_mc = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 75 && mGammaGamma < 120 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 && MR > 150. && pTGammaGamma < 110 && abs(mbbH_L-125.)>=15 && abs(mbbZ_L-91.)>=15";
 
 /*
 //Data
@@ -204,14 +212,14 @@ TString cut_mc = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( 
 //T r i g g e r   C u t 
 //---------------------
 
-//TString triggerCut_80X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";
-//TString triggerCut_76X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";
+TString triggerCut_80X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";
+TString triggerCut_76X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";
 
 //TString triggerCut_80X = "&& (  HLTDecision[27] || HLTDecision[44] || HLTDecision[45] || HLTDecision[217] )";
 //TString triggerCut_76X = "&& (  HLTDecision[27] || HLTDecision[44] || HLTDecision[45] || HLTDecision[217] )";
 
-TString triggerCut_80X = "&& (  HLTDecision[84] )";
-TString triggerCut_76X = "&& (  HLTDecision[84] )";
+//TString triggerCut_80X = "&& (  HLTDecision[84] )";
+//TString triggerCut_76X = "&& (  HLTDecision[84] )";
 
 //TString triggerCut_80X = "&& ( 1 )";
 //TString triggerCut_76X = "&& ( 1 )";
@@ -222,7 +230,7 @@ TString triggerCut_76X = "&& (  HLTDecision[84] )";
 //--------------------------------
 TString mggCut = "1";
 
-#define _debug 1
+#define _debug 0
 
 int main ( int argc, char* argv[] )
 {
@@ -307,7 +315,7 @@ int main ( int argc, char* argv[] )
   TH1D* mc2 = new TH1D();
 
   int map_size = mapList.size();
-  const int nprocesses = 13;//mc+data
+  const int nprocesses = 11;//mc+data
   //check nprocesses and map_size consistency
   if( map_size != nprocesses )
     {
@@ -318,7 +326,8 @@ int main ( int argc, char* argv[] )
   // double k_f = 1.78*1.05;//Difference in data/mc normalization
   //double k_f = 1.62*1.05;//Difference in data/mc normalization
   //double k_f = 1.3291653769;
-  double k_f = 2.0014889911;
+  //double k_f = 2.0014889911;//MORIOND HggRazor
+  double k_f = 2.65;
   double lumi = 0;
   
   if (analysisTag == "Razor2015_76X") lumi = 2300;
@@ -341,12 +350,12 @@ int main ( int argc, char* argv[] )
 
       //Diphoton
       
-      /*(if ( !(process == Process::data || process == Process::diphoton || process == Process::gammaJet 
-	     || process == Process::ggH  || process == Process::vbfH || process == Process::vH || process == Process::ttH)
+      if ( !(process == Process::data || process == Process::diphoton  
+	     || process == Process::ggH  || process == Process::vbfH || process == Process::vH || process == Process::ttH || process == Process::bbH
+	     || process == Process::tg || process == Process::ttg || process == Process::wgg || process == Process::zgg)
 	   ) continue;
-      */
+       
 
-      
       //Diphoton with Signal
       /*if ( !(process == Process::data || process == Process::signal || process == Process::diphoton || process == Process::gammaJet
 	|| process == Process::ggH  || process == Process::vbfH || process == Process::vH || process == Process::ttH) ) continue;
@@ -480,8 +489,10 @@ int main ( int argc, char* argv[] )
 	else if ( histos[i].process != Process::signal )
 	  {
 	    h_s->Scale( lumi );
-	    if ( _useKF && (histos[i].process == Process::gammaJet || histos[i].process == Process::qcd || histos[i].process == Process::diphoton) ) h_s->Scale( k_f );
-	    //if ( _useKF  ) h_s->Scale( k_f );
+	    if ( _useKF && (histos[i].process == Process::gammaJet || histos[i].process == Process::qcd || histos[i].process == Process::diphoton
+			    || histos[i].process == Process::tg || histos[i].process == Process::ttg || histos[i].process == Process::wgg
+			    || histos[i].process == Process::zgg) ) h_s->Scale( k_f );
+	    
 	    std::cout << "stacking " << GetProcessString( histos[i].process ) << std::endl;
 	    if ( mc == NULL || _isFirstMC )
 	      {

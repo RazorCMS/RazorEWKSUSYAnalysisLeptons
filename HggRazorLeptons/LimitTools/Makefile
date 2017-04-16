@@ -25,6 +25,7 @@ TARGET9 = PlotSignificanceHggRazor
 TARGET10 = GetSigmaMoverMeff
 TARGET11 = PlotLimitsTChi
 TARGET12 = DefineBinningHggRazorLeptons
+TARGET13 = DefineHggRazorLeptonsBinning_HggPt_vs_MET
 
 
 SRC  = app/CreateCE_CombinedCard.cc src/CountingExperiment.cc $(Aux)/src/CommandLineInput.cc $(CommonTools)/src/HggAux.cc
@@ -40,6 +41,7 @@ SRC9 = app/PlotSignificanceHggRazor.cc $(Aux)/src/CommandLineInput.cc
 SRC10 = app/GetSigmaMoverMeff.cc src/AssortedFunctions.cc $(Aux)/src/CommandLineInput.cc
 SRC11 = app/PlotLimitsTChi.cc $(Aux)/src/CommandLineInput.cc
 SRC12 = app/DefineHggRazorLeptonsBinning.cc src/AssortedFunctions.cc $(Aux)/src/CommandLineInput.cc
+SRC13 = app/DefineHggRazorLeptonsBinning_HggPt_vs_MET.cc src/AssortedFunctions.cc $(Aux)/src/CommandLineInput.cc
 
 OBJ  = $(SRC:.cc=.o)
 OBJ1 = $(SRC1:.cc=.o)
@@ -54,9 +56,10 @@ OBJ9 = $(SRC9:.cc=.o)
 OBJ10 = $(SRC10:.cc=.o)
 OBJ11 = $(SRC11:.cc=.o)
 OBJ12 = $(SRC12:.cc=.o)
+OBJ13 = $(SRC13:.cc=.o)
 
 
-all : $(TARGET) $(TARGET1) $(TARGET2) $(TARGET3) $(TARGET4) $(TARGET5) $(TARGET6) $(TARGET7) $(TARGET8) $(TARGET9) $(TARGET10) $(TARGET11) $(TARGET12)
+all : $(TARGET) $(TARGET1) $(TARGET2) $(TARGET3) $(TARGET4) $(TARGET5) $(TARGET6) $(TARGET7) $(TARGET8) $(TARGET9) $(TARGET10) $(TARGET11) $(TARGET12) $(TARGET13)
 
 $(TARGET) : $(OBJ)
 	$(LD) $(CPPFLAGS) -o $(TARGET) $(OBJ) $(LDFLAGS)
@@ -136,10 +139,15 @@ $(TARGET12) : $(OBJ12)
 	@echo $<
 	@echo $^
 
+$(TARGET13) : $(OBJ13)
+	$(LD) $(CPPFLAGS) -o $(TARGET13) $(OBJ13) $(LDFLAGS)
+	@echo $@
+	@echo $<
+	@echo $^
 
 %.o : %.cc
 	$(CXX) $(CPPFLAGS) -o $@ -c $<
 	@echo $@
 	@echo $<
 clean :
-	rm -f *.o app/*.o src/*.o $(CommonTools)/src/*.o $(Aux)/src/*.o $(TARGET) $(TARGET1) $(TARGET2) $(TARGET3) $(TARGET4) $(TARGET5) $(TARGET6) $(TARGET7) $(TARGTE8) $(TARGET9) $(TARGET10) $(TARGET11) $(TARGET12) *~
+	rm -f *.o app/*.o src/*.o $(CommonTools)/src/*.o $(Aux)/src/*.o $(TARGET) $(TARGET1) $(TARGET2) $(TARGET3) $(TARGET4) $(TARGET5) $(TARGET6) $(TARGET7) $(TARGTE8) $(TARGET9) $(TARGET10) $(TARGET11) $(TARGET12) $(TARGET13) *~

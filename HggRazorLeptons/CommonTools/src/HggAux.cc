@@ -60,6 +60,8 @@ bool Histos::AssignHisto( HistoTypes htype, TH1F h )
   if ( htype == HistoTypes::pho2sigmaEoverE ) pho2sigmaEoverE = h;
   
   if ( htype == HistoTypes::njets ) njets = h;
+  if ( htype == HistoTypes::met ) met = h;
+  if ( htype == HistoTypes::mt ) mt = h;
   if ( htype == HistoTypes::unrollHighPt ) unrollHighPt = h;
   if ( htype == HistoTypes::unrollHighRes ) unrollHighRes = h;
   return true;
@@ -97,6 +99,8 @@ TH1F Histos::GetHisto( HistoTypes htype )
   if ( htype == HistoTypes::pho2sigmaEoverE ) return pho2sigmaEoverE;
   
   if ( htype == HistoTypes::njets ) return njets;
+  if ( htype == HistoTypes::met ) return met;
+  if ( htype == HistoTypes::mt ) return mt;
   if ( htype == HistoTypes::unrollHighPt ) return unrollHighPt;
   if ( htype == HistoTypes::unrollHighRes ) return unrollHighRes;
   return h;
@@ -133,6 +137,8 @@ std::string GetHistoTypesString( HistoTypes htype )
   if ( htype == HistoTypes::pho2sigmaEoverE ) return "pho2sigmaEoverE";
   
   if ( htype == HistoTypes::njets ) return "njets";
+  if ( htype == HistoTypes::met ) return "met";
+  if ( htype == HistoTypes::mt ) return "mt";
   if ( htype == HistoTypes::unrollHighPt ) return "unrollHighPt";
   if ( htype == HistoTypes::unrollHighRes ) return "unrollHighRes";
   
@@ -175,6 +181,10 @@ std::string GetProcessString( Process process )
     {
       return "ttH";
     }
+   if ( process == Process::bbH )
+    {
+      return "bbH";
+    }
   else if ( process == Process::vH )
     {
       return "vH";
@@ -211,35 +221,55 @@ std::string GetProcessString( Process process )
     {
       return "dy";
     }
-   else if ( process == Process::dy )
+   else if ( process == Process::w )
     {
       return "w";
     }
-   else if ( process == Process::dy )
+   else if ( process == Process::wgg )
+     {
+       return "wgg";
+     }
+   else if ( process == Process::znunu )
     {
       return "znunu";
     }
-   else if ( process == Process::dy )
+   else if ( process == Process::zgg )
+     {
+       return "zgg";
+     }
+   else if ( process == Process::tt )
     {
       return "tt";
     }
-   else if ( process == Process::dy )
+   else if ( process == Process::tg )
+     {
+       return "tg";
+     }
+   else if ( process == Process::ttg )
+     {
+       return "ttg";
+     }
+   else if ( process == Process::ttgg )
+     {
+       return "ttgg";
+     }
+   else if ( process == Process::top )
     {
       return "top";
     }
-  else if ( process == Process::dy )
+  else if ( process == Process::vv )
     {
       return "vv";
     }
-   else if ( process == Process::dy )
+   else if ( process == Process::ww )
     {
       return "ww";
     }
-   else if ( process == Process::dy )
+   else if ( process == Process::zz )
     {
       return "zz";
     }
-   else if ( process == Process::dy )
+   else if ( process == Process::wz )
     {
       return "wz";
     }

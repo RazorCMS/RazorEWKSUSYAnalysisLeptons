@@ -141,6 +141,14 @@ int HggRazorClass::n_njets = 11;
 float HggRazorClass::njets_l = .0;
 float HggRazorClass::njets_h = 10;
 
+int HggRazorClass::n_met = 11;
+float HggRazorClass::met_l = .0;
+float HggRazorClass::met_h = 10;
+
+int HggRazorClass::n_mt = 11;
+float HggRazorClass::mt_l = .0;
+float HggRazorClass::mt_h = 10;
+
 //C u s t o m MR_RSQ_BINNING
 //--------------------------
 //HighPt

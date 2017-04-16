@@ -59,7 +59,7 @@ int main( int argc, char* argv[] )
       return -1;
     }
   
-  TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1Eta) <1.48 && abs(pho2Eta)<1.48 && (pho1Pt>40||pho2Pt>40)  && pho1Pt> 25. && pho2Pt>25. && MR > 0. && t1Rsq > 0.0";
+  TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1Eta) <1.48 && abs(pho2Eta)<1.48 && (pho1Pt>40||pho2Pt>40)  && pho1Pt> 25. && pho2Pt>25. && t1MET > 0. && pTGammaGamma > 0.0 && lep1MT>0.0";
   TString categoryCutString;
   TString massWindowCut;
   if (categoryMode == "highpt")
@@ -123,14 +123,14 @@ int main( int argc, char* argv[] )
   //---------------
   TString bkgCut = "2.1*weight*pileupWeight*"+lumi+"*(" + cut + ")";
   std::cout << "bkgCut: " << bkgCut << std::endl;
-  bkgTree->Draw("t1Rsq:MR>>bkgH(197,150,10000, 2000,0, 10)", bkgCut, "goff");
+  bkgTree->Draw("t1MET:pTGammaGamma>>bkgH(200,0,10000, 200,0, 10000)", bkgCut, "goff");
   TH2F* bkgH = (TH2F*)gDirectory->Get("bkgH");
   //-----------------
   //mgg signal region
   //-----------------
   TString bkgCutSR = "2.1*weight*pileupWeight*"+lumi+"*(" + massWindowCut + ")";
   std::cout << "bkgCutSR: " << bkgCutSR << std::endl;
-  bkgTree->Draw("t1Rsq:MR>>bkgSRH(197,150,10000, 2000,0, 10)", bkgCutSR, "goff");
+  bkgTree->Draw("t1MET:pTGammaGamma>>bkgSRH(200,0,10000, 200,0, 10000)", bkgCutSR, "goff");
   TH2F* bkgSRH = (TH2F*)gDirectory->Get("bkgSRH");
   
   //------------------------------
@@ -140,7 +140,7 @@ int main( int argc, char* argv[] )
   //------------------------------
   TString smhCutSR = "weight*pileupWeight*"+lumi+"*(" + massWindowCut + ")";
   std::cout << "smhCutSR: " << smhCutSR << std::endl;
-  smhTree->Draw("t1Rsq:MR>>smhSRH(197,150,10000, 2000,0, 10)", smhCutSR, "goff");
+  smhTree->Draw("t1MET:pTGammaGamma>>smhSRH(200,0,10000, 200,0, 10000)", smhCutSR, "goff");
   TH2F* smhSRH = (TH2F*)gDirectory->Get("smhSRH");
 
   //------------------------------
@@ -150,7 +150,7 @@ int main( int argc, char* argv[] )
   //------------------------------
   TString sCutSR = "weight*"+lumi+"*(" + massWindowCut + ")";//SR:Signal Region
    std::cout << "sCutSR: " << sCutSR << std::endl;
-  sTree->Draw("t1Rsq:MR>>sSRH(197,150, 10000, 2000, 0, 10)", sCutSR, "goff");
+  sTree->Draw("t1MET:pTGammaGamma>>sSRH(200,0,10000, 200,0, 10000)", sCutSR, "goff");
   TH2F* sSRH = (TH2F*)gDirectory->Get("sSRH");
   
   
@@ -178,47 +178,47 @@ int main( int argc, char* argv[] )
   //Binning Algorithm 
   //------------------------
   //------------------------
-  //MR
-  TH1F* sigmaMR;
-  TH1F* fbkg0MR;
-  TH1F* fbkg1MR;
-  TH1F* bkg0MR;
-  TH1F* bkg1MR;
-  TH1F* smh0MR;
-  TH1F* smh1MR;
-  TH1F* s0MR;
-  TH1F* s1MR;
-  //Rsq
-  TH1F* sigmaRsq;
-  TH1F* fbkg0Rsq;
-  TH1F* fbkg1Rsq;
-  TH1F* bkg0Rsq;
-  TH1F* bkg1Rsq;
-  TH1F* smh0Rsq;
-  TH1F* smh1Rsq;
-  TH1F* s0Rsq;
-  TH1F* s1Rsq;
+  //MET
+  TH1F* sigmaMET;
+  TH1F* fbkg0MET;
+  TH1F* fbkg1MET;
+  TH1F* bkg0MET;
+  TH1F* bkg1MET;
+  TH1F* smh0MET;
+  TH1F* smh1MET;
+  TH1F* s0MET;
+  TH1F* s1MET;
+  //pTgg
+  TH1F* sigmapTgg;
+  TH1F* fbkg0pTgg;
+  TH1F* fbkg1pTgg;
+  TH1F* bkg0pTgg;
+  TH1F* bkg1pTgg;
+  TH1F* smh0pTgg;
+  TH1F* smh1pTgg;
+  TH1F* s0pTgg;
+  TH1F* s1pTgg;
 
   bool splitI     = true;
   bool splitII    = true;
-  int binMRsplit  = 1;
+  int binMETsplit  = 1;
   int binRSQsplit = 1;
   int nsplits = 2;
-  float MR_L = 0.;
-  float MR_H = 10000.;
-  float Rsq_L = .0;
-  float Rsq_H = 10.;
-  int nMRbins  = 200;
-  int nRSQbins = 2000;
+  float MET_L = 0.;
+  float MET_H = 10000.;
+  float pTgg_L = .0;
+  float pTgg_H = 10000.;
+  int nMETbins  = 200;
+  int npTggbins = 1000;
 
-  float binWidth_MR  = (MR_H - MR_L)/nMRbins;
-  float binWidth_Rsq = (Rsq_H - Rsq_L)/nRSQbins;
+  float binWidth_MET  = (MET_H - MET_L)/nMETbins;
+  float binWidth_pTgg = (pTgg_H - pTgg_L)/npTggbins;
   
   finalBin bE;
   bE.xl = 1;
-  bE.xh = nMRbins;
+  bE.xh = nMETbins;
   bE.yl = 1;
-  bE.yh = nRSQbins;
+  bE.yh = npTggbins;
   bE._final = false;
   std::map<int, finalBin> myMap;
   int nfbins = 0;
@@ -228,7 +228,7 @@ int main( int argc, char* argv[] )
     {
       std::cout << "[INFO]: iteration: " << k << std::endl;
            
-      int partitionType = -1;//MR = 0, Rsq = 1
+      int partitionType = -1;//MET = 0, pTgg = 1
       int maxIbin = -1;
       int maxBin = -1;
       std::cout << "==========" << std::endl;
@@ -237,27 +237,27 @@ int main( int argc, char* argv[] )
 	  //std::cout << "[INFO]: splitting ibin: " << ibin << std::endl;
 	  //std::cout << " analyzing bin " << ibin << " :"<< myMap[ibin].xl << "-" << myMap[ibin].xh << "," << myMap[ibin].yl << "-" << myMap[ibin].yh << std::endl;
 
-	  //MR
+	  //MET
 	  TString index = Form("_%d_%d", k, ibin);
-	  sigmaMR = new TH1F("sigmaMR"+index, "sigma-MR", 30, MR_L, 1500);
-	  fbkg0MR = new TH1F("fbkg0MR"+index, "fbkg0-MR", 30, MR_L, 1500);
-	  fbkg1MR = new TH1F("fbkg1MR"+index, "fbkg1-MR", 30, MR_L, 1500);
-	  bkg0MR  = new TH1F("bkg0MR"+index, "bkg0-MR", 30, MR_L, 1500);
-	  bkg1MR  = new TH1F("bkg1MR"+index, "bkg1-MR", 30, MR_L, 1500);
-	  smh0MR  = new TH1F("smh0MR"+index, "smh0-MR", 30, MR_L, 1500);
-	  smh1MR  = new TH1F("smh1MR"+index, "smh1-MR", 30, MR_L, 1500);
-	  s0MR    = new TH1F("s0MR"+index, "s0-MR", 30, MR_L, 1500);
-	  s1MR    = new TH1F("s1MR"+index, "s1-MR", 30, MR_L, 1500);
-	  //Rsq
-	  sigmaRsq = new TH1F("sigmaRsq"+index, "sigma-Rsq", 200, 0, 1);
-	  fbkg0Rsq = new TH1F("fbkg0Rsq"+index, "fbkg0-Rsq", 200, 0, 1);//full bkg bin0
-	  fbkg1Rsq = new TH1F("fbkg1Rsq"+index, "fbkg1-Rsq", 200, 0, 1);//full bkg bin1
-	  bkg0Rsq  = new TH1F("bkg0Rsq"+index, "bkg0-Rsq", 200, 0, 1);//sr bkg bin0
-	  bkg1Rsq  = new TH1F("bkg1Rsq"+index, "bkg1-Rsq", 200, 0, 1);//sr bkg bin1
-	  smh0Rsq  = new TH1F("smh0Rsq"+index, "smh0-Rsq", 200, 0, 1);//sr smh bin0
-	  smh1Rsq  = new TH1F("smh1Rsq"+index, "smh1-Rsq", 200, 0, 1);//sr smh bin1
-	  s0Rsq    = new TH1F("s0Rsq"+index, "s0-Rsq", 200, 0, 1);//sr signal bin0
-	  s1Rsq    = new TH1F("s1Rsq"+index, "s1-Rsq", 200, 0, 1);//sr signal bin1
+	  sigmaMET = new TH1F("sigmaMET"+index, "sigma-MET", 30, 0, 1500);
+	  fbkg0MET = new TH1F("fbkg0MET"+index, "fbkg0-MET", 30, 0, 1500);
+	  fbkg1MET = new TH1F("fbkg1MET"+index, "fbkg1-MET", 30, 0, 1500);
+	  bkg0MET  = new TH1F("bkg0MET"+index, "bkg0-MET", 30, 0, 1500);
+	  bkg1MET  = new TH1F("bkg1MET"+index, "bkg1-MET", 30, 0, 1500);
+	  smh0MET  = new TH1F("smh0MET"+index, "smh0-MET", 30, 0, 1500);
+	  smh1MET  = new TH1F("smh1MET"+index, "smh1-MET", 30, 0, 1500);
+	  s0MET    = new TH1F("s0MET"+index, "s0-MET", 30, 0, 1500);
+	  s1MET    = new TH1F("s1MET"+index, "s1-MET", 30, 0, 1500);
+	  //pTgg
+	  sigmapTgg = new TH1F("sigmapTgg"+index, "sigma-pTgg", 30, 0, 1500);
+	  fbkg0pTgg = new TH1F("fbkg0pTgg"+index, "fbkg0-pTgg", 30, 0, 1500);//full bkg bin0
+	  fbkg1pTgg = new TH1F("fbkg1pTgg"+index, "fbkg1-pTgg", 30, 0, 1500);//full bkg bin1
+	  bkg0pTgg  = new TH1F("bkg0pTgg"+index, "bkg0-pTgg", 30, 0, 1500);//sr bkg bin0
+	  bkg1pTgg  = new TH1F("bkg1pTgg"+index, "bkg1-pTgg", 30, 0, 1500);//sr bkg bin1
+	  smh0pTgg  = new TH1F("smh0pTgg"+index, "smh0-pTgg", 30, 0, 1500);//sr smh bin0
+	  smh1pTgg  = new TH1F("smh1pTgg"+index, "smh1-pTgg", 30, 0, 1500);//sr smh bin1
+	  s0pTgg    = new TH1F("s0pTgg"+index, "s0-pTgg", 30, 0, 1500);//sr signal bin0
+	  s1pTgg    = new TH1F("s1pTgg"+index, "s1-pTgg", 30, 0, 1500);//sr signal bin1
 	  
 	  for (int bb = 0; bb < k+2; bb++ )
 	    {
@@ -288,10 +288,10 @@ int main( int argc, char* argv[] )
 	      continue;//do not split bin if already final
 	    }
 	  
-	  float MR  = MR_L;
-	  for ( int i = 1; i <= nMRbins; i++ )//sum over MR bin ins histogram
+	  float MET  = MET_L;
+	  for ( int i = 1; i <= nMETbins; i++ )//sum over MET bin ins histogram
 	    {
-	      if ( i > myMap[ibin].xl && i < myMap[ibin].xh ) //checks that i (MR bin) is above the boundary of the current ibin
+	      if ( i > myMap[ibin].xl && i < myMap[ibin].xh ) //checks that i (MET bin) is above the boundary of the current ibin
 		{
 		  bFull[k+0] = bkgH->Integral( myMap[ibin].xl, i-1, myMap[ibin].yl, myMap[ibin].yh );
 		  bFull[k+1] = bkgH->Integral( i, myMap[ibin].xh, myMap[ibin].yl, myMap[ibin].yh );
@@ -316,47 +316,47 @@ int main( int argc, char* argv[] )
 	      double mu   = GetBestFitSignalStrength( k+2, b, s, obs );
 	      double qnot = GetQnotTestStatistics( k+2, b, s, obs, mu );
 	      /*std::cout << "==========" << std::endl;
-	      std::cout << "MR: " << MR << " best fit mu: " << mu << " ==> nsigma = " << sqrt( qnot )
+	      std::cout << "MET: " << MET << " best fit mu: " << mu << " ==> nsigma = " << sqrt( qnot )
 			<< " --> b: " << b[k+0] << ", " << b[k+1] << "; obs: " << obs[k+0] << ", " << obs[k+1] << std::endl;
 	      */
 	      //-----------------------
 	      //filling info histograms
 	      //-----------------------
-	      sigmaMR->SetBinContent(i, sqrt(qnot) );
-	      fbkg0MR->SetBinContent( i, bFull[k+0] );
-	      fbkg1MR->SetBinContent( i, bFull[k+1] );
-	      bkg0MR->SetBinContent( i, b_nr[k+0] );
-	      bkg1MR->SetBinContent( i, b_nr[k+1] );
-	      smh0MR->SetBinContent( i, b_smh[k+0] );
-	      smh1MR->SetBinContent( i, b_smh[k+1] );
-	      s0MR->SetBinContent( i, s[k+0] );
-	      s1MR->SetBinContent( i, s[k+1] );
-	      MR += binWidth_MR; 
+	      sigmaMET->SetBinContent(i, sqrt(qnot) );
+	      fbkg0MET->SetBinContent( i, bFull[k+0] );
+	      fbkg1MET->SetBinContent( i, bFull[k+1] );
+	      bkg0MET->SetBinContent( i, b_nr[k+0] );
+	      bkg1MET->SetBinContent( i, b_nr[k+1] );
+	      smh0MET->SetBinContent( i, b_smh[k+0] );
+	      smh1MET->SetBinContent( i, b_smh[k+1] );
+	      s0MET->SetBinContent( i, s[k+0] );
+	      s1MET->SetBinContent( i, s[k+1] );
+	      MET += binWidth_MET; 
 	    }
 
-	  if ( sigmaMR->GetMaximum() > 1.001*maxSignificance && sigmaMR->GetMaximum() > 0 )
+	  if ( sigmaMET->GetMaximum() > 1.001*maxSignificance && sigmaMET->GetMaximum() > 0 )
 	    {
-	      maxSignificance = sigmaMR->GetMaximum();
-	      maxBin = sigmaMR->GetMaximumBin();
+	      maxSignificance = sigmaMET->GetMaximum();
+	      maxBin = sigmaMET->GetMaximumBin();
 	      partitionType = 1;
 	      maxIbin = ibin;
-	      bestBkgNR[0]   = bkg0MR->GetBinContent(maxBin);
-	      bestBkgNR[1]   = bkg1MR->GetBinContent(maxBin);
-	      bestBkgSMH[0]  = smh0MR->GetBinContent(maxBin);
-	      bestBkgSMH[1]  = smh1MR->GetBinContent(maxBin);
-	      bestBkgFull[0] = fbkg0MR->GetBinContent(maxBin);
-	      bestBkgFull[1] = fbkg1MR->GetBinContent(maxBin);
-	      bestS[0]       = s0MR->GetBinContent(maxBin);
-	      bestS[1]       = s1MR->GetBinContent(maxBin);
-	      std::cout << "MR: Improved significance: " << maxSignificance << " " << maxBin << " maxIbin " << maxIbin << std::endl;
+	      bestBkgNR[0]   = bkg0MET->GetBinContent(maxBin);
+	      bestBkgNR[1]   = bkg1MET->GetBinContent(maxBin);
+	      bestBkgSMH[0]  = smh0MET->GetBinContent(maxBin);
+	      bestBkgSMH[1]  = smh1MET->GetBinContent(maxBin);
+	      bestBkgFull[0] = fbkg0MET->GetBinContent(maxBin);
+	      bestBkgFull[1] = fbkg1MET->GetBinContent(maxBin);
+	      bestS[0]       = s0MET->GetBinContent(maxBin);
+	      bestS[1]       = s1MET->GetBinContent(maxBin);
+	      std::cout << "MET: Improved significance: " << maxSignificance << " " << maxBin << " maxIbin " << maxIbin << std::endl;
 	      std::cout << "new bins: " << myMap[ibin].xl << "," << maxBin << " - " << maxBin << "," <<  myMap[ibin].xh << std::endl;
 	      std::cout << "Bkg0: " << bestBkgFull[0] << "," << bestBkgFull[1] << std::endl;
 	      //std::cout << " analyzing bin " << ibin << " :"<< myMap[ibin].xl << "-" << myMap[ibin].xh << "," << myMap[ibin].yl << "-" << myMap[ibin].yh << std::endl;
 	      //for (int bb = 0; bb < k+2; bb++ ) std::cout << "b[" << bb << "] = " << b[bb] << std::endl;
 	    }
 	  
-	  float Rsq  = Rsq_L;
-	  for ( int i = 1; i <= nRSQbins; i++ )
+	  float pTgg  = pTgg_L;
+	  for ( int i = 1; i <= npTggbins; i++ )
 	    {
 	      if ( i > myMap[ibin].yl && i < myMap[ibin].yh ) 
 		{
@@ -385,7 +385,7 @@ int main( int argc, char* argv[] )
 	      double qnot = GetQnotTestStatistics( k+2, b, s, obs, mu );
 	      
 	      /*std::cout << "==========" << std::endl;
-	      std::cout << " Rsq: " << Rsq << " best fit mu: " << mu << " ==> nsigma = " << sqrt( qnot )
+	      std::cout << " pTgg: " << pTgg << " best fit mu: " << mu << " ==> nsigma = " << sqrt( qnot )
 			<< " --> bF: " << bFull[k+0] << ", " << bFull[k+1]
 			<< " --> b: " << b[k+0] << ", " << b[k+1]
 			<< "; s: " << s[k+0] << ", " << s[k+1]
@@ -395,78 +395,78 @@ int main( int argc, char* argv[] )
 	      //-----------------------
 	      //filling info histograms
 	      //-----------------------
-	      sigmaRsq->SetBinContent(i, sqrt(qnot) );
-	      fbkg0Rsq->SetBinContent( i, bFull[k+0] );
-	      fbkg1Rsq->SetBinContent( i, bFull[k+1] );
-	      bkg0Rsq->SetBinContent( i, b_nr[k+0] );
-	      bkg1Rsq->SetBinContent( i, b_nr[k+1] );
-	      smh0Rsq->SetBinContent( i, b_smh[k+0] );
-	      smh1Rsq->SetBinContent( i, b_smh[k+1] );
-	      s0Rsq->SetBinContent( i, s[k+0] );
-	      s1Rsq->SetBinContent( i, s[k+1] );
-	      Rsq += binWidth_Rsq; 
+	      sigmapTgg->SetBinContent(i, sqrt(qnot) );
+	      fbkg0pTgg->SetBinContent( i, bFull[k+0] );
+	      fbkg1pTgg->SetBinContent( i, bFull[k+1] );
+	      bkg0pTgg->SetBinContent( i, b_nr[k+0] );
+	      bkg1pTgg->SetBinContent( i, b_nr[k+1] );
+	      smh0pTgg->SetBinContent( i, b_smh[k+0] );
+	      smh1pTgg->SetBinContent( i, b_smh[k+1] );
+	      s0pTgg->SetBinContent( i, s[k+0] );
+	      s1pTgg->SetBinContent( i, s[k+1] );
+	      pTgg += binWidth_pTgg; 
 	    }
 
-	  if ( sigmaRsq->GetMaximum() > 1.001*maxSignificance && sigmaRsq->GetMaximum() > 0)
+	  if ( sigmapTgg->GetMaximum() > 1.001*maxSignificance && sigmapTgg->GetMaximum() > 0)
 	    {
-	      maxSignificance = sigmaRsq->GetMaximum();
-	      maxBin = sigmaRsq->GetMaximumBin();
+	      maxSignificance = sigmapTgg->GetMaximum();
+	      maxBin = sigmapTgg->GetMaximumBin();
 	      partitionType = 2;
 	      maxIbin = ibin;
-	      bestBkgNR[0]   = bkg0Rsq->GetBinContent(maxBin);
-	      bestBkgNR[1]   = bkg1Rsq->GetBinContent(maxBin);
-	      bestBkgSMH[0]  = smh0Rsq->GetBinContent(maxBin);
-	      bestBkgSMH[1]  = smh1Rsq->GetBinContent(maxBin);
-	      bestBkgFull[0] = fbkg0Rsq->GetBinContent(maxBin);
-	      bestBkgFull[1] = fbkg1Rsq->GetBinContent(maxBin);
-	      bestS[0]       = s0Rsq->GetBinContent(maxBin);
-	      bestS[1]       = s1Rsq->GetBinContent(maxBin);
-	      std::cout << "Rsq: Improved significance: " << maxSignificance << " " << maxBin << " maxIbin " << maxIbin << std::endl;
+	      bestBkgNR[0]   = bkg0pTgg->GetBinContent(maxBin);
+	      bestBkgNR[1]   = bkg1pTgg->GetBinContent(maxBin);
+	      bestBkgSMH[0]  = smh0pTgg->GetBinContent(maxBin);
+	      bestBkgSMH[1]  = smh1pTgg->GetBinContent(maxBin);
+	      bestBkgFull[0] = fbkg0pTgg->GetBinContent(maxBin);
+	      bestBkgFull[1] = fbkg1pTgg->GetBinContent(maxBin);
+	      bestS[0]       = s0pTgg->GetBinContent(maxBin);
+	      bestS[1]       = s1pTgg->GetBinContent(maxBin);
+	      std::cout << "pTgg: Improved significance: " << maxSignificance << " " << maxBin << " maxIbin " << maxIbin << std::endl;
 	      std::cout << "new bins: " << myMap[ibin].yl << "," << maxBin << " - " << maxBin << ","<<  myMap[ibin].yh << std::endl;
 	      std::cout << "Bkg0: " << bestBkgFull[0] << "," << bestBkgFull[1] << std::endl;
 	      
 	      //for (int bb = 0; bb < k+2; bb++ ) std::cout << "b[" << bb << "] = " << b[bb] << std::endl;
 	    }
 	  
-	  sigmaMR->Write();
-	  fbkg0MR->Write();
-	  fbkg1MR->Write();
-	  bkg0MR->Write();
-	  bkg1MR->Write();
-	  smh0MR->Write();
-	  smh1MR->Write();
-	  s0MR->Write();
-	  s1MR->Write();
+	  sigmaMET->Write();
+	  fbkg0MET->Write();
+	  fbkg1MET->Write();
+	  bkg0MET->Write();
+	  bkg1MET->Write();
+	  smh0MET->Write();
+	  smh1MET->Write();
+	  s0MET->Write();
+	  s1MET->Write();
 	  
-	  sigmaRsq->Write();
-	  fbkg0Rsq->Write();
-	  fbkg1Rsq->Write();
-	  bkg0Rsq->Write();
-	  bkg1Rsq->Write();
-	  smh0Rsq->Write();
-	  smh1Rsq->Write();
-	  s0Rsq->Write();
-	  s1Rsq->Write();
-	  //MR
-	  delete sigmaMR;
-	  delete fbkg0MR;
-	  delete fbkg1MR;
-	  delete bkg0MR;
-	  delete bkg1MR;
-	  delete smh0MR;
-	  delete smh1MR;
-	  delete s0MR;
-	  delete s1MR;
-	  //Rsq
-	  delete sigmaRsq;
-	  delete fbkg0Rsq;
-	  delete fbkg1Rsq;
-	  delete bkg0Rsq;
-	  delete bkg1Rsq;
-	  delete smh0Rsq;
-	  delete smh1Rsq;
-	  delete s0Rsq;
-	  delete s1Rsq;
+	  sigmapTgg->Write();
+	  fbkg0pTgg->Write();
+	  fbkg1pTgg->Write();
+	  bkg0pTgg->Write();
+	  bkg1pTgg->Write();
+	  smh0pTgg->Write();
+	  smh1pTgg->Write();
+	  s0pTgg->Write();
+	  s1pTgg->Write();
+	  //MET
+	  delete sigmaMET;
+	  delete fbkg0MET;
+	  delete fbkg1MET;
+	  delete bkg0MET;
+	  delete bkg1MET;
+	  delete smh0MET;
+	  delete smh1MET;
+	  delete s0MET;
+	  delete s1MET;
+	  //pTgg
+	  delete sigmapTgg;
+	  delete fbkg0pTgg;
+	  delete fbkg1pTgg;
+	  delete bkg0pTgg;
+	  delete bkg1pTgg;
+	  delete smh0pTgg;
+	  delete smh1pTgg;
+	  delete s0pTgg;
+	  delete s1pTgg;
 	}
       
       if ( partitionType == 1 )
@@ -485,8 +485,8 @@ int main( int argc, char* argv[] )
 		  //std::cout << "skippen maxIBin: " << maxIbin << " when cloning map" << std::endl;
 		}
 	    }
-	  std::cout << "splitting in MR @ " << maxBin << ", significance = " << maxSignificance << " nsigmas" << std::endl;
-	  std::cout << "MR @ " << maxBin << " NBkg0: " << bestBkgFull[0]
+	  std::cout << "splitting in MET @ " << maxBin << ", significance = " << maxSignificance << " nsigmas" << std::endl;
+	  std::cout << "MET @ " << maxBin << " NBkg0: " << bestBkgFull[0]
 		    << " NBkg1: " << bestBkgFull[1] << std::endl;
 	  finalBin fb;
 	  //filling low bin
@@ -502,7 +502,7 @@ int main( int argc, char* argv[] )
 	  tmpMap[itmp] = fb;
 	  if ( (fb.b_full - NBKG) < NBKG )
 	    {
-	      std::cout << "MR: First partition is at minimum bkg events: " << fb.b_full << std::endl;
+	      std::cout << "MET: First partition is at minimum bkg events: " << fb.b_full << std::endl;
 	      tmpMap[itmp]._final = true;
 	    }
 	  itmp++;
@@ -519,15 +519,15 @@ int main( int argc, char* argv[] )
 	  tmpMap[itmp] = fb;
 	  if ( (fb.b_full - NBKG) < NBKG )
 	    {
-	      std::cout << "MR: Second partition is at minimum bkg events: " << fb.b_full << std::endl;
+	      std::cout << "MET: Second partition is at minimum bkg events: " << fb.b_full << std::endl;
 	      tmpMap[itmp]._final = true;
 	    }
 	  myMap = tmpMap;
 	}
       else if ( partitionType == 2 )
 	{
-	  std::cout << "splitting in Rsq @ " << maxBin << ", significance = " << maxSignificance << " nsigmas" << std::endl;
-	  std::cout << "Rsq @ " << maxBin << " NBkg0: " << bestBkgFull[0]
+	  std::cout << "splitting in pTgg @ " << maxBin << ", significance = " << maxSignificance << " nsigmas" << std::endl;
+	  std::cout << "pTgg @ " << maxBin << " NBkg0: " << bestBkgFull[0]
 		    << " NBkg1: " << bestBkgFull[1] << std::endl;
 	  
 	  std::map<int, finalBin> tmpMap;
@@ -558,7 +558,7 @@ int main( int argc, char* argv[] )
 	  tmpMap[itmp] = fb;
 	  if ( (fb.b_full - NBKG) < NBKG )
 	    {
-	      std::cout << "Rsq: First partition is at minimum bkg events: " << fb.b_full << std::endl;
+	      std::cout << "pTgg: First partition is at minimum bkg events: " << fb.b_full << std::endl;
 	      tmpMap[itmp]._final = true;
 	    }
 	  itmp++;
@@ -575,7 +575,7 @@ int main( int argc, char* argv[] )
 	  tmpMap[itmp] = fb;
 	  if ( (fb.b_full - NBKG) < NBKG )
 	    {
-	      std::cout << "Rsq: Second partition is at minimum bkg events: " << fb.b_full << std::endl;
+	      std::cout << "pTgg: Second partition is at minimum bkg events: " << fb.b_full << std::endl;
 	      tmpMap[itmp]._final = true;
 	    }
 	  myMap = tmpMap;
@@ -628,32 +628,32 @@ int main( int argc, char* argv[] )
 		<< "; b: " << tmp.second.b_nr + tmp.second.b_smh 
 		<< ", s: " << tmp.second.s << std::endl;
       */
-      double MR_bw  = (MR_H-MR_L)/nMRbins;
-      double Rsq_bw = (Rsq_H-Rsq_L)/nRSQbins;
+      double MET_bw  = (MET_H-MET_L)/nMETbins;
+      double pTgg_bw = (pTgg_H-pTgg_L)/npTggbins;
       
-      double MR_low   = MR_L + MR_bw*(tmp.second.xl - 1);
-      double MR_high  = MR_L + MR_bw*((tmp.second.xh+1) - 1);//had to artificially subtract 1 from the xh in the code above, restoring the correct values here
-      double Rsq_low  = Rsq_L + Rsq_bw*(tmp.second.yl - 1);
-      double Rsq_high = Rsq_L + Rsq_bw*((tmp.second.yh+1) - 1);//had to artificially subtract 1 from the xh in the code above, restoring the correct values here
-      if ( Rsq_high > 1.0 ) Rsq_high  = 1.0;
-      if ( MR_high > 9000.0 ) MR_high = 10000.0;
+      double MET_low   = MET_L + MET_bw*(tmp.second.xl - 1);
+      double MET_high  = MET_L + MET_bw*((tmp.second.xh+1) - 1);//had to artificially subtract 1 from the xh in the code above, restoring the correct values here
+      double pTgg_low  = pTgg_L + pTgg_bw*(tmp.second.yl - 1);
+      double pTgg_high = pTgg_L + pTgg_bw*((tmp.second.yh+1) - 1);//had to artificially subtract 1 from the xh in the code above, restoring the correct values here
+      if ( pTgg_high > 9000.0 ) pTgg_high  = 10000.0;
+      if ( MET_high > 9000.0 ) MET_high = 10000.0;
 
-      /*std::cout << "BIN #" << tmp.first << "--> xl: " << MR_low << ", xh: " << MR_high
-		<< ", yl: " << Rsq_low << ", yh: " << Rsq_high
+      /*std::cout << "BIN #" << tmp.first << "--> xl: " << MET_low << ", xh: " << MET_high
+		<< ", yl: " << pTgg_low << ", yh: " << pTgg_high
 		<< "; b: " << tmp.second.b_nr + tmp.second.b_smh 
 		<< ", s: " << tmp.second.s << std::endl;
       */
 
      
-      std::cout << "float bin_" << categoryMode << ctr << "[4] = {" << MR_low<< "," << Rsq_low << "," <<  MR_high << "," <<  Rsq_high << "};\n";
+      std::cout << "float bin_" << categoryMode << ctr << "[4] = {" << MET_low<< "," << pTgg_low << "," <<  MET_high << "," <<  pTgg_high << "};\n";
       ctr++;
       
-      h2p->AddBin( MR_low, Rsq_low, MR_high, Rsq_high );
-      h2p_nr->AddBin( MR_low, Rsq_low, MR_high, Rsq_high );
-      h2p_smh->AddBin( MR_low, Rsq_low, MR_high, Rsq_high );
-      h2p_s->AddBin( MR_low, Rsq_low, MR_high, Rsq_high );
-      h2p_SoverSqrtB->AddBin( MR_low, Rsq_low, MR_high, Rsq_high );
-      int bin = h2p->FindBin( MR_low+0.5*MR_bw, Rsq_low+0.5*Rsq_bw );
+      h2p->AddBin( MET_low, pTgg_low, MET_high, pTgg_high );
+      h2p_nr->AddBin( MET_low, pTgg_low, MET_high, pTgg_high );
+      h2p_smh->AddBin( MET_low, pTgg_low, MET_high, pTgg_high );
+      h2p_s->AddBin( MET_low, pTgg_low, MET_high, pTgg_high );
+      h2p_SoverSqrtB->AddBin( MET_low, pTgg_low, MET_high, pTgg_high );
+      int bin = h2p->FindBin( MET_low+0.5*MET_bw, pTgg_low+0.5*pTgg_bw );
       h2p->SetBinContent( bin, tmp.second.b_full);
       h2p_nr->SetBinContent( bin, tmp.second.b_nr);
       h2p_smh->SetBinContent( bin, tmp.second.b_smh);
@@ -677,20 +677,20 @@ int main( int argc, char* argv[] )
   std::cout << "$\\mathrm{M_{R}}\\otimes\\mathrm{R^{2}}$ & non-resonant (MC) & SM Higgs & Signal\\\\\n\\hline\n";
   for( auto tmp : myMap )
     {
-      double MR_bw  = (MR_H-MR_L)/nMRbins;
-      double Rsq_bw = (Rsq_H-Rsq_L)/nRSQbins;
+      double MET_bw  = (MET_H-MET_L)/nMETbins;
+      double pTgg_bw = (pTgg_H-pTgg_L)/npTggbins;
       
-      double MR_low   = MR_L + MR_bw*(tmp.second.xl - 1);
-      double MR_high  = MR_L + MR_bw*((tmp.second.xh+1) - 1);//had to artificially subtract 1 from the xh in the code above, restoring the correct values here
-      double Rsq_low  = Rsq_L + Rsq_bw*(tmp.second.yl - 1);
-      double Rsq_high = Rsq_L + Rsq_bw*((tmp.second.yh+1) - 1);//had to artificially subtract 1 from the xh in the code above, restoring the correct values here
-      if ( Rsq_high > 1.0 ) Rsq_high  = 1.0;
-      if ( MR_high > 9000.0 ) MR_high = 10000.0;
+      double MET_low   = MET_L + MET_bw*(tmp.second.xl - 1);
+      double MET_high  = MET_L + MET_bw*((tmp.second.xh+1) - 1);//had to artificially subtract 1 from the xh in the code above, restoring the correct values here
+      double pTgg_low  = pTgg_L + pTgg_bw*(tmp.second.yl - 1);
+      double pTgg_high = pTgg_L + pTgg_bw*((tmp.second.yh+1) - 1);//had to artificially subtract 1 from the xh in the code above, restoring the correct values here
+      if ( pTgg_high > 9000.0 ) pTgg_high  = 10000.0;
+      if ( MET_high > 9000.0 ) MET_high = 10000.0;
       
-      TString s = Form("%.0f-%.0f\\GeV $\\otimes$ %.3f-%.3f & %.2f & %.2f & %.2f \\\\", MR_low, MR_high, Rsq_low, Rsq_high, tmp.second.b_nr, tmp.second.b_smh, tmp.second.s);
+      TString s = Form("%.0f-%.0f\\GeV $\\otimes$ %.3f-%.3f & %.2f & %.2f & %.2f \\\\", MET_low, MET_high, pTgg_low, pTgg_high, tmp.second.b_nr, tmp.second.b_smh, tmp.second.s);
       std::cout << s << std::endl;
-      /*std::cout << MR_low << "-" << MR_high << "\\GeV $\\otimes$ "
-		<< Rsq_low << "-"  << Rsq_high;
+      /*std::cout << MET_low << "-" << MET_high << "\\GeV $\\otimes$ "
+		<< pTgg_low << "-"  << pTgg_high;
       std::cout << " & " << tmp.second.b_nr << " & "
 		<< tmp.second.b_smh << " & "  << tmp.second.s << "\\\\" << std::endl;
       */

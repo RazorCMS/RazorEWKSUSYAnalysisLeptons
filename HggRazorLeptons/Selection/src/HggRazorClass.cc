@@ -68,6 +68,9 @@ HggRazorClass::HggRazorClass( TTree* tree, TString processName, TString boxName,
   //jets
   InitNjets();
   InitMrRsqHisto();
+  //met+mt
+  InitMET();
+  InitMT();	     
 };
 
 HggRazorClass::~HggRazorClass()
@@ -393,6 +396,32 @@ bool HggRazorClass::InitNjets( )
   return true;
 };
 
+//MET
+bool HggRazorClass::InitMET( )
+{
+  if ( n_met == 0 || met_l == met_h )
+    {
+      std::cerr << "[ERROR]: MET histogram parameters not initialized" << std::endl;
+      return false;
+    }
+  if ( _debug ) std::cout << "[DEBUG]: Initialized MET histogram" << std::endl;
+  h_met = new TH1F( this->processName + "_" + this->boxName + "_met", "met", n_met, met_l, met_h);
+  return true;
+};
+
+//MT
+bool HggRazorClass::InitMT( )
+{
+  if ( n_mt == 0 || mt_l == mt_h )
+    {
+      std::cerr << "[ERROR]: MT histogram parameters not initialized" << std::endl;
+      return false;
+    }
+  if ( _debug ) std::cout << "[DEBUG]: Initialized MT histogram" << std::endl;
+  h_mt = new TH1F( this->processName + "_" + this->boxName + "_mt", "mt", n_mt, mt_l, mt_h);
+  return true;
+};
+
 //2D Histos
 bool HggRazorClass::InitMrRsqHisto( )
 {
@@ -558,8 +587,12 @@ void HggRazorClass::Loop()
       h_pho2sumNeutralHadronEt->Fill( pho2sumNeutralHadronEt, w );
       h_pho2sumPhotonEt->Fill( pho2sumPhotonEt, w );
       h_pho2sigmaEoverE->Fill( pho2sigmaEOverE, w );
-      
+      //njets
       h_njets->Fill( n_Jets, w );
+      //met
+      h_met->Fill( t1MET, w );
+      //mt
+      h_mt->Fill( lep1MT, w );
       if ( pTGammaGamma > 110. ) h_unroll_highPt->Fill( GetHighPtGB(MR, t1Rsq), w);
       if ( pTGammaGamma < 110. ) h_unroll_highRes->Fill( GetHighResGB(MR, t1Rsq), w);
       if ( h_mr_rsq_c != NULL ) h_mr_rsq_c->Fill( MR, Rsq, w );
@@ -959,6 +992,9 @@ TH1F HggRazorClass::GetHisto( HistoTypes htype )
   if ( htype == HistoTypes::pho2sigmaEoverE ) return *h_pho2sigmaEoverE;
   
   if ( htype == HistoTypes::njets ) return *h_njets;
+  if ( htype == HistoTypes::met ) return *h_met;
+  if ( htype == HistoTypes::mt ) return *h_mt;
+  
   if ( htype == HistoTypes::unrollHighPt ) return *h_unroll_highPt;
   if ( htype == HistoTypes::unrollHighRes ) return *h_unroll_highRes;
   

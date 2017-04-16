@@ -49,6 +49,11 @@ public:
   bool InitPho2SumNeutralHadronEt( );
   bool InitPho2SumPhotonEt( );
   bool InitPho2SigmaEoverE( );
+
+  //MET and Lepton
+  bool InitMET( );
+  bool InitMT( );
+  
   
   bool InitNjets( );
   bool InitMrRsqHisto( );
@@ -240,6 +245,20 @@ private:
   static float njets_l;
   static float njets_h;
   TH1F* h_njets;
+
+  //---------
+  // MET + MT
+  //---------
+  static int   n_met;
+  static float met_l;
+  static float met_h;
+  TH1F* h_met;
+
+  static int   n_mt;
+  static float mt_l;
+  static float mt_h;
+  TH1F* h_mt;
+  
 
   //2D Histos
   TH2F* h_mr_rsq;
