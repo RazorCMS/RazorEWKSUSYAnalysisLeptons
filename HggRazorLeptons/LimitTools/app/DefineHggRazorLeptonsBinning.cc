@@ -33,7 +33,7 @@ struct finalBin
   bool _final;
 };
 
-const float NBKG = 20.0;
+const float NBKG = 10.0;
 
 int main( int argc, char* argv[] )
 {
@@ -59,7 +59,7 @@ int main( int argc, char* argv[] )
       return -1;
     }
   
-  TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1Eta) <1.48 && abs(pho2Eta)<1.48 && (pho1Pt>40||pho2Pt>40)  && pho1Pt> 25. && pho2Pt>25. && MR > 0. && t1Rsq > 0.0";
+  TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1Eta) <1.48 && abs(pho2Eta)<1.48 && (pho1Pt>40||pho2Pt>40)  && pho1Pt> 25. && pho2Pt>25. && MR >= 0. && t1Rsq >= 0.0 && box == 2";
   TString categoryCutString;
   TString massWindowCut;
   if (categoryMode == "highpt")
@@ -96,7 +96,7 @@ int main( int argc, char* argv[] )
   cut = cut + categoryCutString;
   massWindowCut = cut + categoryCutString + massWindowCut;
   
-  TFile* fb = new TFile("/Users/cmorgoth/Work/data/HggRazorLepton/V3p13_Apr132017/HggRazorLeptons_NonResonant_1pb_weighted.root");
+  TFile* fb = new TFile("/Users/cmorgoth/Work/data/HggRazorLepton/V3p13_Apr132017/HggRazorLeptons_NonResonant_MuBox_Pythia8_1pb_weighted.root");
   assert(fb);
   TTree* bkgTree = (TTree*)fb->Get("HggRazorLeptons");
   assert(bkgTree);
@@ -121,14 +121,14 @@ int main( int argc, char* argv[] )
   //---------------
   //full mgg region
   //---------------
-  TString bkgCut = "2.1*weight*pileupWeight*"+lumi+"*(" + cut + ")";
+  TString bkgCut = "weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF*"+lumi+"*(" + cut + ")";
   std::cout << "bkgCut: " << bkgCut << std::endl;
   bkgTree->Draw("t1Rsq:MR>>bkgH(197,150,10000, 2000,0, 10)", bkgCut, "goff");
   TH2F* bkgH = (TH2F*)gDirectory->Get("bkgH");
   //-----------------
   //mgg signal region
   //-----------------
-  TString bkgCutSR = "2.1*weight*pileupWeight*"+lumi+"*(" + massWindowCut + ")";
+  TString bkgCutSR = "weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF*"+lumi+"*(" + massWindowCut + ")";
   std::cout << "bkgCutSR: " << bkgCutSR << std::endl;
   bkgTree->Draw("t1Rsq:MR>>bkgSRH(197,150,10000, 2000,0, 10)", bkgCutSR, "goff");
   TH2F* bkgSRH = (TH2F*)gDirectory->Get("bkgSRH");
@@ -138,7 +138,7 @@ int main( int argc, char* argv[] )
   //SM higgs bkg histograms
   //------------------------------
   //------------------------------
-  TString smhCutSR = "weight*pileupWeight*"+lumi+"*(" + massWindowCut + ")";
+  TString smhCutSR = "weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF*"+lumi+"*(" + massWindowCut + ")";
   std::cout << "smhCutSR: " << smhCutSR << std::endl;
   smhTree->Draw("t1Rsq:MR>>smhSRH(197,150,10000, 2000,0, 10)", smhCutSR, "goff");
   TH2F* smhSRH = (TH2F*)gDirectory->Get("smhSRH");
@@ -148,7 +148,7 @@ int main( int argc, char* argv[] )
   //signal model histogram
   //------------------------------
   //------------------------------
-  TString sCutSR = "weight*"+lumi+"*(" + massWindowCut + ")";//SR:Signal Region
+  TString sCutSR = "weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF*"+lumi+"*(" + massWindowCut + ")";//SR:Signal Region
    std::cout << "sCutSR: " << sCutSR << std::endl;
   sTree->Draw("t1Rsq:MR>>sSRH(197,150, 10000, 2000, 0, 10)", sCutSR, "goff");
   TH2F* sSRH = (TH2F*)gDirectory->Get("sSRH");

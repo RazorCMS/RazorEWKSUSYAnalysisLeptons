@@ -496,36 +496,23 @@ void HggRazorClass::Loop()
 
       //SigmaMoverM Correction
       double SigmaMoverMreweight = hSigmaMoverM_reweight->GetBinContent(hSigmaMoverM_reweight->FindFixBin(sigmaMoverM +0.0000000000001));
+      SigmaMoverMreweight = 1.;
       //std::cout << "SigmaMoverMreweight: " << SigmaMoverMreweight << std::endl;
 
       //**********************************************************
       //Calculate weights
       //**********************************************************
-      double w;
-      if ( this->processName == "data" || this->processName == "signal")
-	{
-	  w = 1.0;
-	}
-      else if ( this->processName == "diphoton" || this->processName == "dy" )
-	{ 
-	  //w = weight*pileupWeight*photonEffSF*triggerEffSFWeight;
-	  w = weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF;
-	  //w = weight*pileupWeight*photonEffSF;
-	  //w = weight*pileupWeight*triggerEffWeight;
-	  //w = weight*pileupWeight;
-	  // std::cout <<  "process " << this->processName << " : " << w << " = " 
-	  // 	    << weight << " * " 
-	  // 	    << pileupWeight << " * " 
-	  // 	    << triggerEffWeight << " * " 
-	  // 	    << photonEffSF << "\n";
-	}
-      else 
-	{ 
-	  //w = weight*pileupWeight*triggerEffWeight;
-	  w = weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF;
-	  //std::cout <<  "other use weight: " << photonEffSF << " " << w  << "\n";
-	}
 
+       float w = 0;
+       if ( this->processName == "data" || this->processName == "signal")
+	 {
+	   w = 1.0;
+	 }
+       else
+	 {
+	   w = weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF;//FullSim
+	 }
+       
       total_in += w;
       bool pho1_isFake = false;
       bool pho2_isFake = false;

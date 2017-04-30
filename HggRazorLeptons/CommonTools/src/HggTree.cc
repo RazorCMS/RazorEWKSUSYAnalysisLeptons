@@ -19,3 +19,22 @@ void HggTree::Loop()
     // if (Cut(ientry) < 0) continue;
   }
 };
+
+void HggTree::Clone( float kf )
+{
+  TFile* newfile = new TFile("test_clone_HggRazorLeptons.root", "RECREATE");
+  TTree* newtree = this->fChain->CloneTree( 0 );
+  //newtree->Print();
+  int nentries = this->fChain->GetEntries();
+  float weight;
+  newtree->SetBranchAddress("weight", &weight);
+  for ( int i = 0; i < nentries; i++ )
+    {
+      this->fChain->GetEntry(i);
+      weight = kf*this->weight;
+      newtree->Fill();
+    }
+  newtree->Write();
+  delete newfile;
+  
+};

@@ -1,7 +1,7 @@
 void NarrowResLimit_BIAS_fix()
 {
 //=========Macro generated from canvas: c/c
-//=========  (Mon Apr 10 10:49:31 2017) by ROOT version6.08/00
+//=========  (Mon Apr 17 21:41:00 2017) by ROOT version6.08/00
    TCanvas *c = new TCanvas("c", "c",0,0,800,700);
    c->SetHighLightColor(2);
    c->Range(70.62313,-2.962963,424.0304,21.7284);
@@ -997,13 +997,19 @@ tex->SetNDC();
    tex->SetTextSize(0.04);
    tex->SetLineWidth(2);
    tex->Draw();
-      tex = new TLatex(0.29,0.88,"pp #rightarrow #tilde{#chi}^{0,#pm}_{i} #tilde{#chi}^{0,#pm}_{j} #rightarrow  #tilde{#chi}^{0}_{1} #tilde{#chi}^{0}_{1} + X_{soft}; #tilde{#chi}^{0}_{1} #rightarrow H #tilde{G} (100%)");
+      tex = new TLatex(0.29,0.88,"pp #rightarrow #tilde{#chi}^{0,#pm}_{i} #tilde{#chi}^{0,#pm}_{j} #rightarrow  #tilde{#chi}^{0}_{1} #tilde{#chi}^{0}_{1} + X_{soft}; #tilde{#chi}^{0}_{1} #rightarrow H #tilde{G} (50%)");
 tex->SetNDC();
    tex->SetTextFont(42);
    tex->SetTextSize(0.038);
    tex->SetLineWidth(2);
    tex->Draw();
-      tex = new TLatex(0.553,0.81,"m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}};  m_{#tilde{G}} = 1 GeV");
+      tex = new TLatex(0.705,0.81,"#tilde{#chi}^{0}_{1} #rightarrow Z #tilde{G} (50%)");
+tex->SetNDC();
+   tex->SetTextFont(42);
+   tex->SetTextSize(0.038);
+   tex->SetLineWidth(2);
+   tex->Draw();
+      tex = new TLatex(0.54,0.75,"m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}};  m_{#tilde{G}} = 1 GeV");
 tex->SetNDC();
    tex->SetTextFont(42);
    tex->SetTextSize(0.038);

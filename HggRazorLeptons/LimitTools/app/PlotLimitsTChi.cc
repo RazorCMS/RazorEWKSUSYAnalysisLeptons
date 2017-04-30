@@ -119,9 +119,9 @@ int main( int argc, char** argv )
 	  //	  std::cout << "fname: " << fname << std::endl;
 	  TFile* fin = new TFile( fname.c_str(), "READ" );
 	  if ( fin->IsZombie() ) continue;
-	  int low = fname.find("April8/");
+	  int low = fname.find("April19Limits/");
 	  int high = fname.find("_Asymptotic.root");
-	  std::string mass = fname.substr( low+7, high-(low+7) );
+	  std::string mass = fname.substr( low+14, high-(low+14) );
 	  float _mass = atof( mass.c_str() );
 	  std::cout << "mass: " << _mass << std::endl;
 	  TTree* tree = (TTree*)fin->Get("limit");
@@ -267,7 +267,7 @@ int main( int argc, char** argv )
   gTwoS->GetYaxis()->SetTitle("#sigma^{95%}_{excl} [pb]");
 
   //gTwoS->GetYaxis()->SetRangeUser(0,20.6);
-  gTwoS->GetYaxis()->SetRangeUser(0,20);
+  gTwoS->GetYaxis()->SetRangeUser(0,15);
   gTwoS->GetXaxis()->SetRangeUser(120,400);
   
   gTwoS->Draw("AFC");
@@ -329,7 +329,7 @@ int main( int argc, char** argv )
   //latex2.DrawLatex(cmsx+0.415, cmsy-0.07, "#tilde{#chi}^{0}_{1} #rightarrow Z #tilde{G} (50%)");
   //latex2.DrawLatex(cmsx+0.25, cmsy-0.13, "m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}};  m_{#tilde{G}} = 1 GeV");
   latex2.DrawLatex(cmsx+0.263, cmsy-0.07, "m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}};  m_{#tilde{G}} = 1 GeV");
-  std::cout << "hola " << latex2.GetTextFont() << std::endl;
+  //std::cout << "hola " << latex2.GetTextFont() << std::endl;
   AddCMS(c);
 
   //c->SetLogx();

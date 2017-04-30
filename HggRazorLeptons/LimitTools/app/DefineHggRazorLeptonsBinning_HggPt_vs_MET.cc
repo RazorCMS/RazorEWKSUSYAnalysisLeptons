@@ -33,7 +33,7 @@ struct finalBin
   bool _final;
 };
 
-const float NBKG = 20.0;
+const float NBKG = 10.0;
 
 int main( int argc, char* argv[] )
 {
@@ -58,8 +58,8 @@ int main( int argc, char* argv[] )
       std::cerr << "[ERROR]: please provide the integrated luminosity. Use --lumi=<lumi(pb-1)>" << std::endl;
       return -1;
     }
-  
-  TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1Eta) <1.48 && abs(pho2Eta)<1.48 && (pho1Pt>40||pho2Pt>40)  && pho1Pt> 25. && pho2Pt>25. && t1MET > 0. && pTGammaGamma > 0.0 && lep1MT>0.0";
+
+  TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1Eta) <1.48 && abs(pho2Eta)<1.48 && (pho1Pt>40||pho2Pt>40)  && pho1Pt> 25. && pho2Pt>25. && MR > 0. && t1Rsq > 0.0 && box == 2";
   TString categoryCutString;
   TString massWindowCut;
   if (categoryMode == "highpt")
@@ -96,7 +96,7 @@ int main( int argc, char* argv[] )
   cut = cut + categoryCutString;
   massWindowCut = cut + categoryCutString + massWindowCut;
   
-  TFile* fb = new TFile("/Users/cmorgoth/Work/data/HggRazorLepton/V3p13_Apr132017/HggRazorLeptons_NonResonant_1pb_weighted.root");
+  TFile* fb = new TFile("/Users/cmorgoth/Work/data/HggRazorLepton/V3p13_Apr132017/HggRazorLeptons_NonResonant_MuBox_Pythia8_1pb_weighted.root");
   assert(fb);
   TTree* bkgTree = (TTree*)fb->Get("HggRazorLeptons");
   assert(bkgTree);
@@ -121,14 +121,14 @@ int main( int argc, char* argv[] )
   //---------------
   //full mgg region
   //---------------
-  TString bkgCut = "2.1*weight*pileupWeight*"+lumi+"*(" + cut + ")";
+  TString bkgCut = "weight*pileupWeight*"+lumi+"*(" + cut + ")";
   std::cout << "bkgCut: " << bkgCut << std::endl;
   bkgTree->Draw("t1MET:pTGammaGamma>>bkgH(200,0,10000, 200,0, 10000)", bkgCut, "goff");
   TH2F* bkgH = (TH2F*)gDirectory->Get("bkgH");
   //-----------------
   //mgg signal region
   //-----------------
-  TString bkgCutSR = "2.1*weight*pileupWeight*"+lumi+"*(" + massWindowCut + ")";
+  TString bkgCutSR = "weight*pileupWeight*"+lumi+"*(" + massWindowCut + ")";
   std::cout << "bkgCutSR: " << bkgCutSR << std::endl;
   bkgTree->Draw("t1MET:pTGammaGamma>>bkgSRH(200,0,10000, 200,0, 10000)", bkgCutSR, "goff");
   TH2F* bkgSRH = (TH2F*)gDirectory->Get("bkgSRH");
@@ -208,8 +208,8 @@ int main( int argc, char* argv[] )
   float MET_H = 10000.;
   float pTgg_L = .0;
   float pTgg_H = 10000.;
-  int nMETbins  = 200;
-  int npTggbins = 1000;
+  int nMETbins  = 2000;
+  int npTggbins = 2000;
 
   float binWidth_MET  = (MET_H - MET_L)/nMETbins;
   float binWidth_pTgg = (pTgg_H - pTgg_L)/npTggbins;

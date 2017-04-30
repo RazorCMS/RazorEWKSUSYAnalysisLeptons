@@ -16,7 +16,7 @@
 // D e f i n e  B i n n i n g
 //---------------------------
 //H
-int HggRazorClass::n_mgg   = 38;
+int HggRazorClass::n_mgg   = 28;
 float HggRazorClass::mgg_l = 103.;
 float HggRazorClass::mgg_h = 160.;
 
@@ -30,7 +30,7 @@ float HggRazorClass::mgg_h = 160.;
 //float HggRazorClass::mgg_l = 60.;
 //float HggRazorClass::mgg_h = 120.;
 
-int HggRazorClass::n_ptgg   = 52;
+int HggRazorClass::n_ptgg   = 26;
 float HggRazorClass::ptgg_l = 0.;
 float HggRazorClass::ptgg_h = 520.;
 
@@ -38,11 +38,11 @@ int HggRazorClass::n_sigmaMoverM   = 80;
 float HggRazorClass::sigmaMoverM_l = .0;
 float HggRazorClass::sigmaMoverM_h = .04;
 
-int HggRazorClass::n_mr   = 50;
-float HggRazorClass::mr_l = 130.;
-float HggRazorClass::mr_h = 2630.;
+int HggRazorClass::n_mr   = 25;
+float HggRazorClass::mr_l = 0.;
+float HggRazorClass::mr_h = 2500.;
 
-int HggRazorClass::n_rsq   = 60;
+int HggRazorClass::n_rsq   = 30;
 float HggRazorClass::rsq_l = .0;
 float HggRazorClass::rsq_h = 3.0;
 
@@ -149,11 +149,11 @@ int HggRazorClass::n_njets = 11;
 float HggRazorClass::njets_l = .0;
 float HggRazorClass::njets_h = 10;
 
-int HggRazorClass::n_met = 70;
+int HggRazorClass::n_met = 30;
 float HggRazorClass::met_l = .0;
-float HggRazorClass::met_h = 2100;
+float HggRazorClass::met_h = 600;
 
-int HggRazorClass::n_mt = 40;
+int HggRazorClass::n_mt = 20;
 float HggRazorClass::mt_l = .0;
 float HggRazorClass::mt_h = 400;
 
@@ -184,11 +184,11 @@ float lres_k[2] = { 1.0, 1.0};
 
 //DATA
 //GammaGamma
-TString cut = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma>103 && mGammaGamma<160 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 )";
+TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 ) && box == 3";
 
 //MC
 //GammaGamma
-TString cut_mc = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma>103 && mGammaGamma<160 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1";
+TString cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && box == 3";
 
 
 //---------------
@@ -315,7 +315,7 @@ int main ( int argc, char* argv[] )
   TH1D* mc2 = new TH1D();
 
   int map_size = mapList.size();
-  const int nprocesses = 11;//mc+data
+  const int nprocesses = 12;//mc+data
   //check nprocesses and map_size consistency
   if( map_size != nprocesses )
     {
@@ -327,7 +327,7 @@ int main ( int argc, char* argv[] )
   //double k_f = 1.62*1.05;//Difference in data/mc normalization
   //double k_f = 1.3291653769;
   //double k_f = 2.0014889911;//MORIOND HggRazor
-  double k_f = 2.65;
+  double k_f = 3.97;
   double lumi = 0;
   
   if (analysisTag == "Razor2015_76X") lumi = 2300;
@@ -350,7 +350,7 @@ int main ( int argc, char* argv[] )
 
       //Diphoton
       
-      if ( !(process == Process::data || process == Process::diphoton  
+      if ( !(process == Process::data || process == Process::diphoton  || process == Process::gammaJet /*|| process == Process::qcd*/
 	     || process == Process::ggH  || process == Process::vbfH || process == Process::vH || process == Process::ttH || process == Process::bbH
 	     || process == Process::tg || process == Process::ttg || process == Process::wgg || process == Process::zgg)
 	   ) continue;
@@ -406,7 +406,8 @@ int main ( int argc, char* argv[] )
       //------------------------------------------------
       //C r e a t in g   S e l e c t i o n   O b j e c t
       //------------------------------------------------
-      hggclass = new HggRazorClass( cutTree, processName, "INCLUSIVE", true, true );
+      //hggclass = new HggRazorClass( cutTree, processName, "INCLUSIVE", true, true );
+      hggclass = new HggRazorClass( cutTree, processName, "INCLUSIVE", false, false );
       hggclass->InitMrRsqCustomHisto( N_HighRes, MR_HighRes, N_HighRes, Rsq_HighRes );
       //Creating Histos
       hggclass->Loop();
@@ -489,9 +490,13 @@ int main ( int argc, char* argv[] )
 	else if ( histos[i].process != Process::signal )
 	  {
 	    h_s->Scale( lumi );
-	    if ( _useKF && (histos[i].process == Process::gammaJet || histos[i].process == Process::qcd || histos[i].process == Process::diphoton
+	    //-----------------------
+	    //Scaling each MC process
+	    //-----------------------
+	    if ( _useKF && (histos[i].process == Process::gammaJet || histos[i].process == Process::qcd|| histos[i].process == Process::diphoton) ) h_s->Scale( k_f );
+	    /*if ( _useKF && (histos[i].process == Process::gammaJet || histos[i].process == Process::qcd || histos[i].process == Process::diphoton
 			    || histos[i].process == Process::tg || histos[i].process == Process::ttg || histos[i].process == Process::wgg
-			    || histos[i].process == Process::zgg) ) h_s->Scale( k_f );
+			    || histos[i].process == Process::zgg) ) h_s->Scale( k_f );*/
 	    
 	    std::cout << "stacking " << GetProcessString( histos[i].process ) << std::endl;
 	    if ( mc == NULL || _isFirstMC )
@@ -527,9 +532,14 @@ int main ( int argc, char* argv[] )
       TH1D* h_s = GetStyledHisto( (TH1D*)tmp_h, histos[i].process );
       h_s->Scale( lumi );
 
+      //--------------------------------------
+      //Scaling each MC process for stack plot
+      //--------------------------------------
       if ( _useKF && (histos[i].process == Process::gammaJet || histos[i].process == Process::qcd|| histos[i].process == Process::diphoton) ) h_s->Scale( k_f );
-      //if ( _useKF ) h_s->Scale( k_f );
-
+      /*if ( _useKF && (histos[i].process == Process::gammaJet || histos[i].process == Process::qcd || histos[i].process == Process::diphoton
+		      || histos[i].process == Process::tg || histos[i].process == Process::ttg || histos[i].process == Process::wgg
+		      || histos[i].process == Process::zgg) ) h_s->Scale( k_f );*/
+      
       if ( _shapeOnly ) h_s->Scale(1.0/NormFactor);
       if ( histos[i].process != Process::data && histos[i].process != Process::signal ) stack->Add( h_s, "histo" );
     }
