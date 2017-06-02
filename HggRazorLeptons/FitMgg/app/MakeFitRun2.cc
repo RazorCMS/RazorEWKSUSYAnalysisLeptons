@@ -63,7 +63,7 @@ int main( int argc, char* argv[])
   std::string categoryMode = ParseCommandLine( argc, argv, "-category=" );
   if (  categoryMode == "" )
     {
-      std::cerr << "[ERROR]: please provide the category. Use --category=<highpt,highres,lowres,inclusive>" << std::endl;
+      std::cerr << "[ERROR]: please provide the category. Use --category=<highpt,highres,lowres,inclusive,inclusiveElectron, inclusiveMuon>" << std::endl;
       return -1;
     }
 
@@ -494,6 +494,8 @@ int main( int argc, char* argv[])
       else if (categoryMode == "highres") categoryCutString = " && ptgg < 110 && abs(mbb-125)>=25 && abs(mbb-91.2)>=25 && pho1_sigEoE < 0.015 && pho2_sigEoE < 0.015 ";
       else if (categoryMode == "lowres") categoryCutString = " && ptgg < 110  && abs(mbb-125)>=25 && abs(mbb-91.2)>=25 && !(pho1_sigEoE < 0.015 && pho2_sigEoE < 0.015) ";
       else if (categoryMode == "inclusive") categoryCutString = "";
+      else if (categoryMode == "inclusiveElectron") categoryCutString = " && box == 3 ";
+      else if (categoryMode == "inclusiveMuon") categoryCutString = " && box == 2";
     }
   else if ( runPeriod == "run1" )
     {
@@ -518,6 +520,8 @@ int main( int argc, char* argv[])
       else if (categoryMode == "highpthighres") categoryCutString = " && pTGammaGamma >= 110 && sigmaMoverM < 0.0085";
       else if (categoryMode == "highptlowres") categoryCutString = " && pTGammaGamma >= 110 && sigmaMoverM >= 0.0085";
       else if (categoryMode == "inclusive") categoryCutString = "";
+      else if (categoryMode == "inclusiveElectron") categoryCutString = " && box == 3 ";
+      else if (categoryMode == "inclusiveMuon") categoryCutString = " && box == 2";
     }
   //---------------------------------------------
   // A l e x ' s   T r e e   F o r m at   C a s e

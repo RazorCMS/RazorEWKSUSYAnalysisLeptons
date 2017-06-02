@@ -264,8 +264,8 @@ void PrintAICTable(std::string category, std::string LowMRcut,std::string HighMR
 	grshade[0] = new TGraph(2*(n_g+1));
 	for ( int ig = 0; ig <= n_g; ig++ )
 	  {
-	    grshade[0]->SetPoint(ig, 120., (float)ig*(top_y/(float)n_g) );
-	    grshade[0]->SetPoint( (n_g+1) + ig, 135., top_y - (float)ig*(top_y/(float)n_g) );
+	    grshade[0]->SetPoint(ig, 121., (float)ig*(top_y/(float)n_g) );
+	    grshade[0]->SetPoint( (n_g+1) + ig, 129., top_y - (float)ig*(top_y/(float)n_g) );
 	  }
 	grshade[0]->SetFillStyle(3344);//1001  
 	grshade[0]->SetFillColor(kRed-9);
@@ -301,8 +301,8 @@ void PrintAICTable(std::string category, std::string LowMRcut,std::string HighMR
 	grshade[1] = new TGraph(2*(n_g+1));
         for ( int ig = 0; ig <= n_g; ig++ )
           {
-            grshade[1]->SetPoint(ig, 120., (float)ig*(top_y/(float)n_g) );
-            grshade[1]->SetPoint( (n_g+1) + ig, 135., top_y - (float)ig*(top_y/(float)n_g) );
+            grshade[1]->SetPoint(ig, 121., (float)ig*(top_y/(float)n_g) );
+            grshade[1]->SetPoint( (n_g+1) + ig, 129., top_y - (float)ig*(top_y/(float)n_g) );
           }
 	grshade[1]->SetFillStyle(3344);//1001
         grshade[1]->SetFillColor(kRed-9);
@@ -324,8 +324,8 @@ void PrintAICTable(std::string category, std::string LowMRcut,std::string HighMR
         grshade[2] = new TGraph(2*(n_g+1));
         for ( int ig = 0; ig <= n_g; ig++ )
           {
-            grshade[2]->SetPoint(ig, 120., (float)ig*(top_y/(float)n_g) );
-            grshade[2]->SetPoint( (n_g+1) + ig, 135., top_y - (float)ig*(top_y/(float)n_g) );
+            grshade[2]->SetPoint(ig, 121., (float)ig*(top_y/(float)n_g) );
+            grshade[2]->SetPoint( (n_g+1) + ig, 129., top_y - (float)ig*(top_y/(float)n_g) );
           }
         grshade[2]->SetFillStyle(3344);//1001
         grshade[2]->SetFillColor(kRed-9);
@@ -348,8 +348,8 @@ void PrintAICTable(std::string category, std::string LowMRcut,std::string HighMR
         grshade[3] = new TGraph(2*(n_g+1));
         for ( int ig = 0; ig <= n_g; ig++ )
           {
-            grshade[3]->SetPoint(ig, 120., (float)ig*(top_y/(float)n_g) );
-            grshade[3]->SetPoint( (n_g+1) + ig, 135., top_y - (float)ig*(top_y/(float)n_g) );
+            grshade[3]->SetPoint(ig, 121., (float)ig*(top_y/(float)n_g) );
+            grshade[3]->SetPoint( (n_g+1) + ig, 129., top_y - (float)ig*(top_y/(float)n_g) );
           }
         grshade[3]->SetFillStyle(3344);//1001
         grshade[3]->SetFillColor(kRed-9);
@@ -372,8 +372,8 @@ void PrintAICTable(std::string category, std::string LowMRcut,std::string HighMR
         grshade[4] = new TGraph(2*(n_g+1));
         for ( int ig = 0; ig <= n_g; ig++ )
           {
-            grshade[4]->SetPoint(ig, 120., (float)ig*(top_y/(float)n_g) );
-            grshade[4]->SetPoint( (n_g+1) + ig, 135., top_y - (float)ig*(top_y/(float)n_g) );
+            grshade[4]->SetPoint(ig, 121., (float)ig*(top_y/(float)n_g) );
+            grshade[4]->SetPoint( (n_g+1) + ig, 129., top_y - (float)ig*(top_y/(float)n_g) );
           }
         grshade[4]->SetFillStyle(3344);//1001
         grshade[4]->SetFillColor(kRed-9);
@@ -396,8 +396,8 @@ void PrintAICTable(std::string category, std::string LowMRcut,std::string HighMR
         grshade[5] = new TGraph(2*(n_g+1));
         for ( int ig = 0; ig <= n_g; ig++ )
           {
-            grshade[5]->SetPoint(ig, 120., (float)ig*(top_y/(float)n_g) );
-            grshade[5]->SetPoint( (n_g+1) + ig, 135., top_y - (float)ig*(top_y/(float)n_g) );
+            grshade[5]->SetPoint(ig, 121., (float)ig*(top_y/(float)n_g) );
+            grshade[5]->SetPoint( (n_g+1) + ig, 129., top_y - (float)ig*(top_y/(float)n_g) );
           }
         grshade[5]->SetFillStyle(3344);//1001
         grshade[5]->SetFillColor(kRed-9);
@@ -420,8 +420,8 @@ void PrintAICTable(std::string category, std::string LowMRcut,std::string HighMR
         grshade[6] = new TGraph(2*(n_g+1));
         for ( int ig = 0; ig <= n_g; ig++ )
           {
-            grshade[6]->SetPoint(ig, 120., (float)ig*(top_y/(float)n_g) );
-            grshade[6]->SetPoint( (n_g+1) + ig, 135., top_y - (float)ig*(top_y/(float)n_g) );
+            grshade[6]->SetPoint(ig, 121., (float)ig*(top_y/(float)n_g) );
+            grshade[6]->SetPoint( (n_g+1) + ig, 129., top_y - (float)ig*(top_y/(float)n_g) );
           }
         grshade[6]->SetFillStyle(3344);//1001
         grshade[6]->SetFillColor(kRed-9);
@@ -444,8 +444,8 @@ void PrintAICTable(std::string category, std::string LowMRcut,std::string HighMR
         grshade[7] = new TGraph(2*(n_g+1));
         for ( int ig = 0; ig <= n_g; ig++ )
           {
-            grshade[7]->SetPoint(ig, 120., (float)ig*(top_y/(float)n_g) );
-            grshade[7]->SetPoint( (n_g+1) + ig, 135., top_y - (float)ig*(top_y/(float)n_g) );
+            grshade[7]->SetPoint(ig, 121., (float)ig*(top_y/(float)n_g) );
+            grshade[7]->SetPoint( (n_g+1) + ig, 129., top_y - (float)ig*(top_y/(float)n_g) );
           }
         grshade[7]->SetFillStyle(3344);//1001
         grshade[7]->SetFillColor(kRed-9);

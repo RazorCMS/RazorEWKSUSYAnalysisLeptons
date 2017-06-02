@@ -12,6 +12,11 @@ AIC test with 2015 data:
 
 ./MakeFitRun2 --inputFile=/afs/cern.ch/work/c/cpena/public/CMSSW_7_6_3/src/RazorAnalyzer/submission/DoubleEG_Run2015_CMSSW_7_6_March15_GoodLumi.root --treeName=HggRazor --LowMRcut=150 --HighMRcut=237.5 --LowRSQcut=0.053 --HighRSQcut=0.078 --dataMode=data --category=highres --fitMode=AIC2 --outputFile=/afs/cern.ch/work/z/zhicaiz/private/RazorFramework/CMSSW_7_6_3/src/RazorFramework_18Mar2016/HggRazor/FitMgg/AIC_output/highres/highres_150_0.root
 
+AIC test for HggRazorLeptons 2016 dataset
+
+./MakeFitRun2 --inputFile=/eos/cms/store/group/phys_susy/razor/Run2Analysis/HggRazorLeptons/V3p13_Mar62016/HggRazorLeptons_DoubleEG_2016_03Feb2017_GoodLumiGolden_35p9ifb.root --treeName=HggRazorLeptons --LowMRcut=0 --HighMRcut=1000 --LowRSQcut=0.140 --HighRSQcut=1.000 --dataMode=data --category=inclusiveElectron --fitMode=AIC2 --detector=ebeb --runPeriod=run2 --outputFile=/afs/cern.ch/work/z/zhicaiz/public/release/CMSSW_7_6_3/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/FitMgg/AIC_output/inclusiveElectron/0_0.140.root
+
+
 Bias test:
 ./MakeFitRun2 --inputFile=/afs/cern.ch/work/c/cpena/public/CMSSW_7_5_3_patch1/src/RazorCommon/DoubleEG_Run2015D_TOTAL_NoCuts_GoodLumi_Jan27.root --treeName=HggRazor --LowMRcut=400 --HighMRcut=1200 --LowRSQcut=0.00 --HighRSQcut=0.05 --dataMode=data --category=lowres --fitMode=biasSignal --signalFraction=0.5 --f1=singlePow --f2=singlePow --outputFile=/afs/cern.ch/work/z/zhicaiz/private/RazorFramework/CMSSW_7_6_3/src/RazorFramework/HggRazor/FitMgg/BiasSignal_output/lowres/lowres_400_0.00_singlePow_singlePow.root
 
