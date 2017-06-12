@@ -10,7 +10,7 @@ CommonTools = $(HggRazor)/CommonTools
 CPPFLAGS := $(shell root-config --cflags) -I$(INC)/include -I$(CommonTools)/include -I$(Aux)/include
 LDFLAGS := $(shell root-config --glibs) $(STDLIBDIR) -lRooFit -lRooFitCore -L$(INC)/include -lCustomPdfs
 
-CPPFLAGS += -g -std=c++11
+CPPFLAGS += -g -std=c++1y
 
 TARGET = MakeFit
 TARGET1 = MakeFitRun2

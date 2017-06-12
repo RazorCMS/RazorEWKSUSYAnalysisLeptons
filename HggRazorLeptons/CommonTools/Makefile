@@ -10,7 +10,7 @@ STDLIBDIR :=
 CPPFLAGS := $(shell root-config --cflags) $(STDINCDIR)
 LDFLAGS := $(shell root-config --glibs) $(STDLIBDIR) -lRooFit -lRooFitCore
 
-CPPFLAGS += -g
+CPPFLAGS += -g -std=c++1y
 
 TARGET  = FitMgg
 TARGET1 = TestSystematics
