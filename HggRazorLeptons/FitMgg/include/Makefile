@@ -7,7 +7,7 @@ Repo = $(shell git rev-parse --show-toplevel)
 CPPFLAGS := $(shell root-config --cflags) -I$(INC)/include 
 LDFLAGS := $(shell root-config --glibs) $(STDLIBDIR) -O -lRooFit -lRooFitCore -lMinuit -lHtml -lPyROOT -lFoam -lRooStats -lTreePlayer
 
-CPPFLAGS += -g -std=c++11 -fPIC
+CPPFLAGS += -g -std=c++1y -fPIC
 
 SRC = ../src/CustomPdfs.cc
 SHARED = libCustomPdfs.so

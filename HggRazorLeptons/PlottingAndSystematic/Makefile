@@ -12,7 +12,7 @@ FitTools = $(HggRazor)/FitMgg
 CPPFLAGS := $(shell root-config --cflags) -I$(INC)/include -I$(CommonTools)/include -I$(Aux)/include -I$(Selection)/include -I$(FitTools)/include
 LDFLAGS := $(shell root-config --glibs) $(STDLIBDIR) -lRooFit -lRooFitCore -L$(FitTools)/include -lCustomPdfs
 
-CPPFLAGS += -g -std=c++11
+CPPFLAGS += -g -std=c++1y
 
 TARGET  = PlotCustomMrRsq
 TARGET2 = PlotFromTree
