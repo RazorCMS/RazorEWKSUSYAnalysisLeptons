@@ -629,6 +629,25 @@ int main( int argc, char* argv[])
       std::cout << "finish MakeDataCard" << std::endl;
       //w_sb->Write("w_sb");
     }
+  else if ( fitMode == "datacardexpected" )
+    {
+      RooWorkspace* w_sb;
+      std::cout << "calling MakeDataCardExpected" << std::endl;
+      if ( _highMassMode )
+	{
+	  MakeDataCardHMD( tree->CopyTree( cut ), mggName, _Signal_Yield, Signal_CL, Mass, binNumber, categoryMode );
+	}
+      else
+	{
+	  std::cout << "================================================================================" << std::endl;
+	  std::cout << "[INFO]: cut for DATA--> " << cut+cutMETfiltersData+cutTriggerData << std::endl;
+	  std::cout << "================================================================================" << std::endl;
+	  w_sb = MakeDataCardExpected( tree->CopyTree( cut+cutMETfiltersData+cutTriggerData ), treeSignal->CopyTree( cut ), treeSMH->CopyTree( cut ), mggName, _SMH_Yield,
+			       _Signal_Yield, binNumber, categoryMode, _highMassMode, _sModel, f1, _signalOnly );
+	}
+      std::cout << "finish MakeDataCardExpected" << std::endl;
+      //w_sb->Write("w_sb");
+    }
   else if ( fitMode == "AIC" )
     {
       w_aic[0] = MakeSideBandFitAIC( tree->CopyTree( cut ), forceSigma, constrainMu, forceMu, mggName, aic[0], "doubleExp" );

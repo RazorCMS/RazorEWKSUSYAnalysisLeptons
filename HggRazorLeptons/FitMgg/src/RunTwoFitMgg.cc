@@ -2068,6 +2068,672 @@ RooWorkspace* MakeDataCard( TTree* treeData, TTree* treeSignal, TTree* treeSMH, 
   return ws;
 };
 
+RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* treeSMH, TString mggName, float SMH_Yield,
+			    float Signal_Yield, TString binNumber, TString category, bool isHighMass,
+			    TString sModel, TString f1, bool _signalOnly )
+{
+  std::cout << "entering datacard: " << SMH_Yield << " " << Signal_Yield << std::endl;
+//comment out SMH_CF Signal_CF stuff
+/*
+  std::stringstream ss_smh, ss_signal;
+  ss_smh << SMH_CF;
+  ss_signal << Signal_CF;
+  float tmp;
+  std::vector<float> smh_sys, signal_sys;
+  //---------------------------
+  //SMH systematics into vector
+  //---------------------------
+  while ( ss_smh.good() )
+    {
+      ss_smh >> tmp;
+      smh_sys.push_back( 1.0 + tmp );
+      //std::cout << "tmp: " << tmp << std::endl;
+      if ( ss_smh.eof() ) break;
+    }
+  //------------------------------
+  //Signal systematics into vector
+  //------------------------------
+  while ( ss_signal.good() )
+    {
+      ss_signal >> tmp;
+      signal_sys.push_back( 1.0 + tmp );
+      //std::cout << "tmp: " << tmp << std::endl;
+      if ( ss_signal.eof() ) break;
+    }
+*/ 
+  //------------------------------------------------
+  // C r e a t e   s i g n a l  s h a p e from TTree
+  //------------------------------------------------
+  system ("mkdir -p HggRazorDataCards/" + sModel );
+  TString combinedRootFileName = "HggRazorDataCards/" + sModel + "/HggRazorWorkspace_bin" + binNumber + ".root";
+  TFile* ftmp = new TFile( combinedRootFileName, "recreate");
+  
+  RooWorkspace* ws = new RooWorkspace( "ws", "" );
+  mggName = mggName + "_bin" + binNumber;
+  RooRealVar mgg( mggName, "m_{#gamma#gamma}", 103, 160, "GeV" );
+  //mgg.SetNameTitle( mggName, "m_{#gamma#gamma}" );
+  mgg.setMin( 103. );
+  mgg.setMax( 160. );
+  mgg.setUnit( "GeV" );
+  mgg.setBins(57);
+  mgg.setRange( "signal", 115, 129. );
+  mgg.setRange( "high", 129., 160. );
+  mgg.setRange( "low", 103., 121. );
+  mgg.setRange( "full", 103., 160. );
+  mgg.setRange( "Full", 103., 160. );
+  
+  //--------------------------------
+  //I m p or t i n g   D a t a
+  //--------------------------------
+
+  //Getting signal shape from signal MC
+  //-----------------------
+  //C r e a t e  doubleGaus
+  //-----------------------
+  bool sameMu = false;
+  TString tagSignal, tagSignalInterpol, tagSMH;
+  TString tag;
+  treeData->GetBranch("mGammaGamma")->SetName( mggName );
+  RooDataSet data( "data", "", RooArgSet(mgg), RooFit::Import(*treeData) );
+  treeSignal->GetBranch("mGammaGamma")->SetName( mggName );
+  RooDataSet dataSignal( "dataSignal", "", RooArgSet(mgg), RooFit::Import(*treeSignal) );
+  treeSMH->GetBranch("mGammaGamma")->SetName( mggName );
+  RooDataSet dataSMH( "dataSMH", "", RooArgSet(mgg), RooFit::Import(*treeSMH) );
+  //---------------------------------
+  //D e f i n e   s i g n a l   P D F
+  //---------------------------------
+  int npoints = dataSignal.numEntries();
+  int npoints_signal = dataSignal.numEntries();
+  if( sameMu )
+    {
+      tagSignal = MakeDoubleGauss( "DG_signal", mgg, *ws );
+      ws->var("DG_signal_gauss_Ns")->setVal( (double)npoints );
+    }
+  else
+    {
+      //tagSignal = MakeFullDoubleGauss( "DG_signal_bin"+binNumber , mgg, *ws );
+      //ws->var(tagSignal+"_Ns")->setVal( (double)npoints );
+
+      tagSignal = MakeDoubleCB( "DCB_Signal_bin"+ binNumber, mgg, *ws );
+      ws->var(tagSignal+"_Ns")->setVal( (double)npoints );
+      //--------------------------
+      //Setting initial parameters
+      //--------------------------
+      ws->var(tagSignal+"_muCB")->setVal( 125.0 );
+      ws->var(tagSignal+"_sigmaCB")->setVal( 1.2 );
+      ws->var(tagSignal+"_alpha1")->setVal( 1.6 );
+      ws->var(tagSignal+"_n1")->setVal( 2.9 );
+      ws->var(tagSignal+"_alpha2")->setVal( 1.9 );
+      ws->var(tagSignal+"_n2")->setVal( 3.2 );
+      if ( binNumber.Atof() == 8 ) ws->var(tagSignal+"_n2")->setVal( 1.8 );
+      if ( binNumber.Atof() >= 14 )
+	{
+	  ws->var(tagSignal+"_sigmaCB")->setVal( 2 );
+	  ws->var(tagSignal+"_alpha1")->setVal( 0.9 );
+	  ws->var(tagSignal+"_n1")->setVal( 2.2 );
+	  ws->var(tagSignal+"_alpha2")->setVal( 1.95 );
+	  ws->var(tagSignal+"_n2")->setVal( 2.1 );
+	}
+      
+    }
+
+  std::cout << tagSignal << std::endl;
+  RooFitResult* sres = ws->pdf( tagSignal )->fitTo( dataSignal, RooFit::Strategy(2), RooFit::Extended( kTRUE ), RooFit::Save( kTRUE ), RooFit::Range("full") );
+  sres->SetName("SignalFitResult");
+  ws->import( *sres );
+  
+  double DCB_mu_s    = ws->var(tagSignal+"_muCB")->getVal( );
+  double DCB_sigma_s = ws->var(tagSignal+"_sigmaCB")->getVal( );
+  double DCB_a1_s    = ws->var(tagSignal+"_alpha1")->getVal( );
+  double DCB_n1_s    = ws->var(tagSignal+"_n1")->getVal( );
+  double DCB_a2_s    = ws->var(tagSignal+"_alpha2")->getVal( );
+  double DCB_n2_s    = ws->var(tagSignal+"_n2")->getVal( );
+  //-------------------------------------
+  //D e f i n e   S M - H i g g s   P D F
+  //-------------------------------------
+  npoints = dataSMH.numEntries();
+  if( sameMu )
+    {
+      tagSMH = MakeDoubleGauss( "DG_SMH", mgg, *ws );
+      ws->var("DG_SMH_gauss_Ns")->setVal( (double)npoints );
+    }
+  else
+    {
+      //tagSMH = MakeFullDoubleGauss( "DG_SMH_bin"+binNumber, mgg, *ws );
+      //ws->var(tagSMH+"_Ns")->setVal( (double)npoints );
+      tagSMH = MakeDoubleCB( "DCB_SMH_bin"+ binNumber, mgg, *ws );
+      ws->var(tagSMH+"_Ns")->setVal( (double)npoints );
+      //--------------------------
+      //Setting initial parameters
+      //--------------------------
+      ws->var(tagSMH+"_muCB")->setVal( 125.0 );
+      ws->var(tagSMH+"_sigmaCB")->setVal( 1.22 );
+      ws->var(tagSMH+"_alpha1")->setVal( 1.3 );
+      ws->var(tagSMH+"_n1")->setVal( 4.4 );
+      ws->var(tagSMH+"_alpha2")->setVal( 1.9 );
+      //ws->var(tagSMH+"_n2")->setVal( 4.8 );
+      ws->var(tagSMH+"_n2")->setVal( 2.8 );
+      if ( binNumber.Atof() >= 14 )
+	{
+	  ws->var(tagSMH+"_sigmaCB")->setVal( 2 );
+	  ws->var(tagSMH+"_alpha1")->setVal( 0.9 );
+	  ws->var(tagSMH+"_n1")->setVal( 2.2 );
+	  ws->var(tagSMH+"_alpha2")->setVal( 1.95 );
+	  ws->var(tagSMH+"_n2")->setVal( 2.1 );
+	}
+    }
+  
+  RooFitResult* smhres  = ws->pdf( tagSMH )->fitTo( dataSMH, RooFit::Strategy(2), RooFit::Extended( kTRUE ), RooFit::Save( kTRUE ), RooFit::Range("full") );
+  smhres->SetName("SMHFitResult");
+  ws->import( *smhres );
+  /*
+  //double gaussian relic
+  double gausFrac_SMH   =  ws->var(tagSMH+"_frac")->getVal();
+  double gausMu1_SMH    =  ws->var(tagSMH+"_mu1")->getVal();
+  double gausMu2_SMH    =  ws->var(tagSMH+"_mu2")->getVal();
+  double gausSigma1_SMH =  ws->var(tagSMH+"_sigma1")->getVal();
+  double gausSigma2_SMH =  ws->var(tagSMH+"_sigma2")->getVal();
+  */
+  double DCB_mu_smh    = ws->var(tagSMH+"_muCB")->getVal( );
+  double DCB_sigma_smh = ws->var(tagSMH+"_sigmaCB")->getVal( );
+  double DCB_a1_smh    = ws->var(tagSMH+"_alpha1")->getVal( );
+  double DCB_n1_smh    = ws->var(tagSMH+"_n1")->getVal( );
+  double DCB_a2_smh    = ws->var(tagSMH+"_alpha2")->getVal( );
+  double DCB_n2_smh    = ws->var(tagSMH+"_n2")->getVal( );
+
+  
+  npoints = data.numEntries();
+  //set Nbkg Initial Value
+  std::cout << "entering constraints" << std::endl;
+  //--------------------------------------
+  //H i g g s   C o n s t r a i n s
+  //--------------------------------------
+  RooRealVar HiggsYield("HiggsYield","", SMH_Yield);
+  //RooRealVar HiggsYieldUn("HiggsYieldUn","",SMH_YieldUn);
+  //float SMH_NormUn = SMH_YieldUn/SMH_Yield;
+  //RooGaussian SMH_Constraint("SMH_Constraint", "SMH_Constraint", *ws->var("DG_SMH_DGF_Ns"), RooFit::RooConst(0.1), RooFit::RooConst(0.01) );
+  //RooGaussian SMH_Constraint("SMH_Constraint", "SMH_Constraint", *ws->var(tagSMH+"_Ns"), HiggsYield, HiggsYieldUn );
+  std::cout << "pass constraints" << std::endl;
+  std::cout << "pass forceSigma" << std::endl;
+
+  //---------------------
+  //F i t   t o   D a t a
+  //---------------------
+  float sExp_a;
+  float Nbkg;
+  float NbkgUn;
+  float BkgNormUn;
+  //HighMassDiphoton
+  float hmd_a;
+  float hmd_b;
+  RooFitResult* bres;
+
+  
+  //------------------------------------
+  // C r e a t e   b k g  s h a p e
+  //------------------------------------
+  TString tag_bkg;
+  if ( f1 == "doubleExp" )
+    {
+      tag_bkg = MakeDoubleExp( f1 + "_fullsb_fit", mgg, *ws );
+    }
+  else if ( f1 == "singleExp" )
+    {
+      tag_bkg = MakeSingleExp( f1 + "_fullsb_fit", mgg, *ws );
+    }
+  else if ( f1 == "modExp" )
+    {
+      tag_bkg = MakeModExp( f1 + "_fullsb_fit", mgg, *ws );
+    }
+  else if ( f1 == "singlePow" )
+    {
+      tag_bkg = MakeSinglePow( f1 + "_fullsb_fit", mgg, *ws );
+    }
+  else if ( f1 == "doublePow" )
+    {
+      tag_bkg = MakeDoublePow( f1 + "_fullsb_fit", mgg, *ws );
+    }
+  else if ( f1 == "poly2" )
+    {
+      tag_bkg = MakePoly2( f1 + "_fullsb_fit", mgg, *ws );
+    }
+  else if ( f1 == "poly3" )
+    {
+      tag_bkg = MakePoly3( f1 + "_fullsb_fit", mgg, *ws );
+    }
+  else if ( f1 == "poly4" )
+    {
+      tag_bkg = MakePoly4( f1 + "_fullsb_fit", mgg, *ws );
+    }
+  else
+    {
+      std::cout << "[ERROR]: fit option not recognized. QUITTING PROGRAM" << std::endl;
+      exit (EXIT_FAILURE);
+    }
+  std::cout << "[INFO]: f1 is a " << f1 << std::endl;
+
+  //Original SingleExp
+  //tag_bkg = MakeSingleExp( "fullsb_fit_singleExp", mgg, *ws );
+  //ws->var("fullsb_fit_singleExp_Nbkg")->setVal( npoints );
+
+
+  ws->var( f1 + "_fullsb_fit_Nbkg")->setVal( npoints );
+  //bres = ws->pdf( tag_bkg )->fitTo( data, RooFit::Strategy(2), RooFit::Extended(kTRUE), RooFit::Save(kTRUE), RooFit::Range("low,high") );
+  bres = ws->pdf( tag_bkg )->fitTo( data, RooFit::Strategy(2), RooFit::Extended(kTRUE), RooFit::Save(kTRUE), RooFit::Range("full") );//do FT for lxplus
+  bres->SetName("BkgOnlyFitResult");
+  ws->import( *bres );
+  
+
+  /*
+  sExp_a = ws->var("fullsb_fit_singleExp_a")->getVal();
+  Nbkg   = ws->var("fullsb_fit_singleExp_Nbkg")->getVal();
+  NbkgUn = ws->var("fullsb_fit_singleExp_Nbkg")->getError();
+  BkgNormUn = 1.0 + NbkgUn/Nbkg;//input a lnN to combine
+  */
+
+  
+  //------------------------------------------------------------------------------
+  //Define and obtain initial pdf parameters for f1, using sideband fit parameters
+  //------------------------------------------------------------------------------
+  double dE_N1, dE_N2, dE_a1, dE_a2;//doubleExp
+  double sE_N, sE_a;//singleExp
+  double mE_N, mE_a, mE_m;//modExp
+  double sP_N, sP_a;//singlePow
+  double dP_N, dP_f, dP_a1, dP_a2;//doubleExp
+  double pC, p0, p1, p2, p3, pN;//poly2,pol3;
+  if ( f1 == "doubleExp" )
+    {
+      dE_N1  = ws->var( f1 + "_fullsb_fit_Nbkg" )->getVal();
+      dE_a1  = ws->var( f1 + "_fullsb_fit_a1" )->getVal();
+      dE_a2  = ws->var( f1 + "_fullsb_fit_a2" )->getVal();
+    }
+  else if ( f1 == "singleExp" )
+    {
+      sE_N  = ws->var( f1 + "_fullsb_fit_Nbkg" )->getVal();
+      sE_a  = ws->var( f1 + "_fullsb_fit_a" )->getVal();
+    }
+  else if ( f1 == "modExp" )
+    {
+      mE_N  = ws->var( f1 + "_fullsb_fit_Nbkg" )->getVal();
+      mE_a  = ws->var( f1 + "_fullsb_fit_a" )->getVal();
+      mE_m  = ws->var( f1 + "_fullsb_fit_m" )->getVal();
+    }
+  else if ( f1 == "singlePow" )
+    {
+      sP_N  = ws->var( f1 + "_fullsb_fit_Nbkg" )->getVal();
+      sP_a  = ws->var( f1 + "_fullsb_fit_a" )->getVal();
+    }
+  else if ( f1 == "doublePow" )
+    {
+      dP_N   = ws->var( f1 + "_fullsb_fit_Nbkg" )->getVal();
+      dP_f   = ws->var( f1 + "_fullsb_fit_f" )->getVal();
+      dP_a1  = ws->var( f1 + "_fullsb_fit_a1" )->getVal();
+      dP_a2  = ws->var( f1 + "_fullsb_fit_a2" )->getVal();
+    }
+  else if ( f1 == "poly2" )
+    {
+      pN = ws->var( f1 + "_fullsb_fit_Nbkg" )->getVal();
+      pC = ws->var( f1 + "_fullsb_fit_pC" )->getVal();
+      p0 = ws->var( f1 + "_fullsb_fit_p0" )->getVal();
+      p1 = ws->var( f1 + "_fullsb_fit_p1" )->getVal();
+    }
+  else if ( f1 == "poly3" )
+    {
+      pN = ws->var( f1 + "_fullsb_fit_Nbkg" )->getVal();
+      pC = ws->var( f1 + "_fullsb_fit_pC" )->getVal();
+      p0 = ws->var( f1 + "_fullsb_fit_p0" )->getVal();
+      p1 = ws->var( f1 + "_fullsb_fit_p1" )->getVal();
+      p2 = ws->var( f1 + "_fullsb_fit_p2" )->getVal();
+    }
+  else if ( f1 == "poly4" )
+    {
+      pN = ws->var( f1 + "_fullsb_fit_Nbkg" )->getVal();
+      pC = ws->var( f1 + "_fullsb_fit_pC" )->getVal();
+      p0 = ws->var( f1 + "_fullsb_fit_p0" )->getVal();
+      p1 = ws->var( f1 + "_fullsb_fit_p1" )->getVal();
+      p2 = ws->var( f1 + "_fullsb_fit_p2" )->getVal();
+      p3 = ws->var( f1 + "_fullsb_fit_p3" )->getVal();
+    }
+  else
+    {
+      std::cout << "[ERROR]: fit option not recognized. QUITTING PROGRAM" << std::endl;
+      exit (EXIT_FAILURE);
+    }
+
+  Nbkg   = ws->var( f1 + "_fullsb_fit_Nbkg")->getVal();
+  NbkgUn = ws->var( f1 + "_fullsb_fit_Nbkg")->getError();
+  BkgNormUn = 1.0 + NbkgUn/Nbkg;//input a lnN to combine
+    
+  //RooDataSet* data_toys = GenerateToys( ws->pdf( tag_bkg ), mgg, npoints);
+  RooAbsData* data_toys = ws->pdf( tag_bkg )->generateBinned( mgg, npoints, RooFit::ExpectedData() );
+  data_toys->SetName("data_bin"+binNumber);
+  data.SetName("data_bin"+binNumber);
+  //--------------------------------
+  // m o d e l   1   p l o t t i n g
+  //--------------------------------
+  TCanvas* c = new TCanvas( "c", "c", 2119, 33, 800, 700 );
+  c->SetHighLightColor(2);
+  c->SetFillColor(0);
+  c->SetBorderMode(0);
+  c->SetBorderSize(2);
+  c->SetLeftMargin( leftMargin );
+  c->SetRightMargin( rightMargin );
+  c->SetTopMargin( topMargin );
+  c->SetBottomMargin( bottomMargin );
+  c->SetFrameBorderMode(0);
+  c->SetFrameBorderMode(0);
+  
+  RooPlot *fmgg = mgg.frame();
+  //data_toys->plotOn(fmgg);
+
+  RooDataSet* dataCut = (RooDataSet*) data.reduce(RooFit::Name("dataCut"),RooFit::SelectVars(RooArgSet(mgg)),RooFit::CutRange("low"));
+  RooDataSet* dataHigh = (RooDataSet*) data.reduce(RooFit::Name("dataHigh"),RooFit::SelectVars(RooArgSet(mgg)),RooFit::CutRange("high"));
+  dataCut->append(*dataHigh);
+  //data.plotOn(fmgg,RooFit::Invisible());
+  //
+  data.plotOn(fmgg);
+  //dataCut->plotOn(fmgg);
+  //data.plotOn(fmgg,RooFit::Invisible());
+  ws->pdf( tag_bkg )->plotOn(fmgg,RooFit::LineColor(kBlue));
+  //ws->pdf( tag_bkg )->plotOn(fmgg,RooFit::LineColor(kBlue), RooFit::LineStyle(kDashed) );
+  //ws->pdf( tag_bkg )->plotOn(fmgg,RooFit::LineColor(kRed), RooFit::Range("Full"), RooFit::NormRange("full"));
+  //ws->pdf( tag_bkg )->plotOn(fmgg,RooFit::LineColor(kBlue), RooFit::LineStyle(kDashed), RooFit::Range("low,high"),RooFit::NormRange("full"));
+  
+  //data.plotOn(fmgg);
+  //ws->pdf( tag_bkg)->plotOn(fmgg,RooFit::LineColor(kRed),RooFit::Range("Full"),RooFit::NormRange("Full"));
+  //ws->pdf( tag_bkg)->plotOn(fmgg,RooFit::LineColor(kBlue), RooFit::LineStyle(kDashed), RooFit::Range("low,high"),RooFit::NormRange("low,high"));
+  float maxC = fmgg->GetMaximum();
+  fmgg->GetXaxis()->SetTitleSize( axisTitleSize );
+  fmgg->GetXaxis()->SetTitleOffset( axisTitleOffset );
+  fmgg->GetYaxis()->SetTitleSize( axisTitleSize );
+  fmgg->GetYaxis()->SetTitleOffset( axisTitleOffset );
+  fmgg->SetAxisRange(0.1, maxC, "Y");
+  fmgg->Draw();
+  
+  c->Update();
+  fmgg->SetTitle("");
+  TBox* box = new TBox(121, 0.105, 129, maxC-0.1);
+  box->SetFillColor(kRed-9);
+  box->SetFillStyle(3344);
+  box->Draw("same");
+  c->SaveAs( "HggRazorDataCards/" + sModel + "/bkgFit_bin" + binNumber + ".pdf" );
+  fmgg->SetName( "BkgOnlyFitPlot" );
+  //ws->import( *model );
+  ws->import( *bres );
+  ws->import( *fmgg );
+  
+  //-----------------------------
+  //S i g n a l   p l o t t i n g
+  //-----------------------------
+  RooPlot *fmgg2 = mgg.frame();
+  dataSignal.plotOn(fmgg2);
+  ws->pdf( tagSignal )->plotOn(fmgg2, RooFit::LineColor(kRed), RooFit::Range("Full"), RooFit::NormRange("Full"));
+  //ws->pdf( tagSignal )->plotOn(fmgg2, RooFit::LineColor(kBlue), RooFit::LineStyle(kDashed), RooFit::Range("low,high"),RooFit::NormRange("low,high"));
+  //fmgg2->SetStats();
+  fmgg2->Draw();
+  TLatex* mytex = new TLatex();;
+  mytex->SetNDC(kTRUE);
+  mytex->DrawLatex(0.8, 0.7, Form("N = %d", npoints_signal));
+  mytex->Draw("same");
+  c->Update();
+  c->SaveAs( "HggRazorDataCards/" + sModel + "/signalFit_bin" + binNumber + ".pdf" );
+  fmgg2->SetName( "SignalFitPlot" );
+  ws->import( *fmgg2 );
+
+  //---------------------------------
+  //S M - H i g g s   p l o t t i n g
+  //---------------------------------
+  RooPlot *fmgg3 = mgg.frame();
+  dataSMH.plotOn(fmgg3);
+  ws->pdf( tagSMH )->plotOn(fmgg3, RooFit::LineColor(kRed), RooFit::Range("Full"), RooFit::NormRange("Full"));
+  //ws->pdf( tagSMH )->plotOn(fmgg3, RooFit::LineColor(kBlue), RooFit::LineStyle(kDashed), RooFit::Range("low,high"),RooFit::NormRange("low,high"));
+  fmgg3->Draw();
+  c->SaveAs( "HggRazorDataCards/" + sModel + "/smhFit_bin" + binNumber + ".pdf" );
+  fmgg3->SetName( "SMHFitPlot" );
+  ws->import( *fmgg3 );
+
+  //-------------------------------------------------------
+  // P r e p a r a t i o n   t o   C o m b i n e  I n p u t
+  //-------------------------------------------------------
+  ws->Write("w_sb");
+
+  //--------------
+  //SMH line shape
+  //--------------
+  RooWorkspace* combine_ws = new RooWorkspace( "combine_ws", "" );
+  TString combineSMH;
+  if ( category == "highres" || category == "inclusive" ) combineSMH = MakeDoubleCBNE( "SMH_bin"+binNumber, mgg, *combine_ws, true );
+  else combineSMH = MakeDoubleCBNE( "SMH_bin"+binNumber, mgg, *combine_ws, true, true, category );
+  combine_ws->var( combineSMH+"_muCB")->setVal( DCB_mu_smh );
+  combine_ws->var( combineSMH+"_sigmaCB")->setVal( DCB_sigma_smh );
+  combine_ws->var( combineSMH+"_alpha1")->setVal( DCB_a1_smh );
+  combine_ws->var( combineSMH+"_n1")->setVal( DCB_n1_smh );
+  combine_ws->var( combineSMH+"_alpha2")->setVal( DCB_a2_smh );
+  combine_ws->var( combineSMH+"_n2")->setVal( DCB_n1_smh );
+  
+  combine_ws->var( combineSMH+"_muCB")->setConstant(kTRUE);
+  combine_ws->var( combineSMH+"_sigmaCB")->setConstant(kTRUE);
+  combine_ws->var( combineSMH+"_alpha1")->setConstant(kTRUE);
+  combine_ws->var( combineSMH+"_n1")->setConstant(kTRUE);
+  combine_ws->var( combineSMH+"_alpha2")->setConstant(kTRUE);
+  combine_ws->var( combineSMH+"_n2")->setConstant(kTRUE);
+  RooRealVar SMH_norm( combineSMH+"_norm" ,"", SMH_Yield);
+  combine_ws->import( SMH_norm );
+  //-----------------
+  //Signal line shape
+  //-----------------
+  TString combineSignal;
+  if ( category == "highres" || category == "inclusive" )
+    {
+      combineSignal = MakeDoubleCBNE( "signal_bin"+binNumber, mgg, *combine_ws, true );
+      //tagSignalInterpol = MakeDoubleCBInterpolateNE( "SignalInterpol" + binNumber, mgg, *combine_ws, true );
+      //combine_ws->var( tagSignalInterpol+"_mass" )->setConstant(kTRUE);
+      RooRealVar SignalInterpol_norm( tagSignalInterpol + "_norm", "", Signal_Yield );
+      //Signal_norm.setConstant(kFALSE);
+      combine_ws->import( SignalInterpol_norm );
+    }
+  else
+    {
+      combineSignal = MakeDoubleCBNE( "signal_bin"+binNumber, mgg, *combine_ws, true, true, category );
+      //tagSignalInterpol = MakeDoubleCBInterpolateNE( "SignalInterpol" + binNumber, mgg, *combine_ws, true, true, category );
+      //combine_ws->var( tagSignalInterpol+"_mass" )->setConstant(kTRUE);
+      RooRealVar SignalInterpol_norm( tagSignalInterpol + "_norm", "", Signal_Yield );
+      //Signal_norm.setConstant(kFALSE);
+      combine_ws->import( SignalInterpol_norm );
+    }
+
+  combine_ws->var( combineSignal+"_muCB")->setVal( DCB_mu_s );
+  combine_ws->var( combineSignal+"_sigmaCB")->setVal( DCB_sigma_s );
+  combine_ws->var( combineSignal+"_alpha1")->setVal( DCB_a1_s );
+  combine_ws->var( combineSignal+"_n1")->setVal( DCB_n1_s );
+  combine_ws->var( combineSignal+"_alpha2")->setVal( DCB_a2_s );
+  combine_ws->var( combineSignal+"_n2")->setVal( DCB_n1_s );
+  //if ( binNumber.Atof() == 17 || binNumber.Atof() == 19 || binNumber.Atof() == 20 )
+  //if ( binNumber.Atof() >= 0 )
+  if ( npoints_signal < 500 )//number of signal events less than 300, use SMH shape
+    {
+      //USE SMH SHAPE!!
+      combine_ws->var( combineSignal+"_muCB")->setVal( DCB_mu_smh );
+      combine_ws->var( combineSignal+"_sigmaCB")->setVal( DCB_sigma_smh );
+      combine_ws->var( combineSignal+"_alpha1")->setVal( DCB_a1_smh );
+      combine_ws->var( combineSignal+"_n1")->setVal( DCB_n1_smh );
+      combine_ws->var( combineSignal+"_alpha2")->setVal( DCB_a2_smh );
+      combine_ws->var( combineSignal+"_n2")->setVal( DCB_n1_smh );
+    }
+ 
+  
+  combine_ws->var( combineSignal+"_muCB")->setConstant(kTRUE);
+  combine_ws->var( combineSignal+"_sigmaCB")->setConstant(kTRUE);
+  combine_ws->var( combineSignal+"_alpha1")->setConstant(kTRUE);
+  combine_ws->var( combineSignal+"_n1")->setConstant(kTRUE);
+  combine_ws->var( combineSignal+"_alpha2")->setConstant(kTRUE);
+  combine_ws->var( combineSignal+"_n2")->setConstant(kTRUE);
+  
+  RooRealVar Signal_norm( combineSignal + "_norm", "", Signal_Yield );
+  combine_ws->import( Signal_norm );
+
+  
+  //---------
+  //Bkg model
+  //---------
+  TString combineBkg;
+  if ( f1 == "doubleExp" )
+    {
+      combineBkg = MakeDoubleExpNE( f1 + "_Bkg_bin" + binNumber, mgg, *combine_ws );
+      combine_ws->var( combineBkg + "_a1" )->setVal( dE_a1 );
+      combine_ws->var( combineBkg + "_a2" )->setVal( dE_a2 );
+    }
+  else if ( f1 == "singleExp" )
+    {
+      combineBkg = MakeSingleExpNE( f1 + "_Bkg_bin" + binNumber, mgg, *combine_ws );
+      combine_ws->var( combineBkg + "_a" )->setVal( sE_a );
+    }
+  else if ( f1 == "modExp" )
+    {
+      combineBkg = MakeModExpNE( f1 + "_Bkg_bin" + binNumber, mgg, *combine_ws );
+      combine_ws->var( combineBkg + "_a" )->setVal( mE_a );
+      combine_ws->var( combineBkg + "_m" )->setVal( mE_m );
+    }
+  else if ( f1 == "singlePow" )
+    {
+      combineBkg = MakeSinglePowNE( f1 + "_Bkg_bin" + binNumber, mgg, *combine_ws );
+      combine_ws->var( combineBkg + "_a" )->setVal( sP_a );
+    }
+  else if ( f1 == "doublePow" )
+    {
+      combineBkg = MakeDoublePowNE( f1 + "_Bkg_bin" + binNumber, mgg, *combine_ws );
+      combine_ws->var( combineBkg + "_a1" )->setVal( dP_a1 );
+      combine_ws->var( combineBkg + "_a2" )->setVal( dP_a2 );
+      combine_ws->var( combineBkg + "_f" )->setVal( dP_f );
+    }
+  else if ( f1 == "poly2" )
+    {
+      combineBkg = MakePoly2NE( f1 + "_Bkg_bin" + binNumber, mgg, *combine_ws );
+      combine_ws->var( combineBkg + "_pC" )->setVal( pC );
+      combine_ws->var( combineBkg + "_p0" )->setVal( p0 );
+      combine_ws->var( combineBkg + "_p1" )->setVal( p1 );
+    }
+  else if ( f1 == "poly3" )
+    {
+      combineBkg = MakePoly3NE( f1 + "_Bkg_bin" + binNumber, mgg, *combine_ws );
+      combine_ws->var( combineBkg + "_pC" )->setVal( pC );
+      combine_ws->var( combineBkg + "_p0" )->setVal( p0 );
+      combine_ws->var( combineBkg + "_p1" )->setVal( p1 );
+      combine_ws->var( combineBkg + "_p2" )->setVal( p2 );
+    }
+  else if ( f1 == "poly4" )
+    {
+      combineBkg = MakePoly4NE( f1 + "_Bkg_bin" + binNumber, mgg, *combine_ws );
+      combine_ws->var( combineBkg + "_pC" )->setVal( pC );
+      combine_ws->var( combineBkg + "_p0" )->setVal( p0 );
+      combine_ws->var( combineBkg + "_p1" )->setVal( p1 );
+      combine_ws->var( combineBkg + "_p2" )->setVal( p2 );
+      combine_ws->var( combineBkg + "_p3" )->setVal( p3 );
+    }
+  else
+    {
+      std::cout << "[ERROR]: fit option not recognized. QUITTING PROGRAM" << std::endl;
+      exit (EXIT_FAILURE);
+    }
+  
+  //combineBkg = MakeSingleExpNE( "Bkg_bin"+binNumber, mgg, *combine_ws );
+  //combine_ws->var( combineBkg + "_a" )->setVal( sExp_a );
+  RooRealVar Bkg_norm(  combineBkg + "_norm", "", Nbkg );
+  Bkg_norm.setConstant(kFALSE);
+  combine_ws->import( Bkg_norm );
+
+
+  //-----------------------
+  //Importing dataset
+  //-----------------------
+  combine_ws->import( *data_toys );
+  //combine_ws->import( data );//import real data
+  
+  combine_ws->Write("combineWS");
+  ftmp->cd();
+  ftmp->Close();
+
+  std::cout << "[INFO]: Creating combine datacard" << std::endl;
+  //std::string bNumber( binNumber );//TString to std::string
+  combinedRootFileName = "HggRazorWorkspace_bin" + binNumber + ".root";
+  TString dataCardName = "HggRazorDataCards/" + sModel + "/HggRazorCard_bin" + binNumber + ".txt";
+  std::ofstream ofs( dataCardName , std::ofstream::out );
+
+  int combinedBinNumber = atoi(binNumber); // this is equal to binNumber, except for the LowRes bins, where it is equal to the number of the corresponding HighRes bin
+  if ( combinedBinNumber > 13 ) {
+      combinedBinNumber -= 5;
+  }
+  
+  //correction is of the form N+ = nominal/(1+highres_sigmaMoverM_corr)
+  //correction is of the form N- = nominal*(1+2*highres_sigmaMoverM_corr)/(1+highres_sigmaMoverM_corr)
+  const float highres_sigmaMoverM_corr = -0.10749;
+  //Caveat: the order in the datacard is inverted from highres since only one nuisance controls both fluctuations
+  //correction is of the form N+ = nominal*(1+2*lowres_sigmaMoverM_corr)/(1+lowres_sigmaMoverM_corr)
+  //correction is of the form N- = nominal/(1+lowres_sigmaMoverM_corr)
+  const float lowres_sigmaMoverM_corr = 0.24268;
+  
+      ofs << "imax 1 number of bins\njmax 1 number of processes minus 1\nkmax * number of nuisance parameters\n";
+      ofs << "----------------------------------------------------------------------------------------\n";
+      ofs << "shapes Bkg\t\tbin"      << binNumber << "\t" << combinedRootFileName << " combineWS:" << combineBkg << "\n";
+      ofs << "shapes signal\t\tbin"   << binNumber << "\t" << combinedRootFileName << " combineWS:" << combineSignal << "\n";
+      ofs << "shapes data_obs\t\tbin" << binNumber << "\t" << combinedRootFileName << " combineWS:" << "data_bin" << binNumber << "\n";
+      ofs << "----------------------------------------------------------------------------------------\n";
+      ofs << "bin\t\tbin" << binNumber << "\n";
+      ofs << "observation\t-1.0\n";
+      ofs << "----------------------------------------------------------------------------------------\n";
+      ofs << "bin\t\t\t\t\t\tbin" << binNumber << "\t\tbin" << binNumber << "\n";
+      ofs << "process\t\t\t\t\t\tsignal\t\tBkg\n";
+      ofs << "process\t\t\t\t\t\t0\t\t1\n";
+      ofs << "rate\t\t\t\t\t\t1\t\t1\n";
+      ofs << "----------------------------------------------------------------------------------------\n";
+      ofs << "CMS_Lumi\t\t\tlnN\t\t1.057\t\t-\n";
+      ofs << "Photon_Trigger\t\t\tlnN\t\t1.05\t\t-\n";
+      //int totalSys = smh_sys.size();
+      int ctr = 0;
+      //----------------------------------
+      //Signal Systematics
+      //----------------------------------
+/*
+      for( int isys = 0; isys < totalSys; isys++ )
+	{
+	  if ( isys == 0 )
+	    {
+	      ofs << "Signal_JES\t\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\n";
+	    }
+	  else if ( isys == 2 )
+	    {
+	      ofs << "Signal_facScale\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\n";
+	    }
+	  else if ( isys == 4 )
+	    {
+	      ofs << "Signal_renScale\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\n";
+	    }
+	  else if ( isys == 6 )
+	    {
+	      ofs << "Signal_facRenScale\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\n";
+	    }
+	  else if ( isys > 7 )
+	    {
+	      //--------------------
+	      //No signal PDF systematic as SUSY group prescription
+	      //--------------------
+	      //ofs << "Signal_pdf" << ctr << "\t\t\tlnN\t\t" << signal_sys.at(isys) << "\t\t-\n";
+	      ctr++;
+	    }
+	}
+*/      
+      if ( category == "hzbb" )
+	{
+	  ofs << "Signal_btag\t\t\tlnN\t\t" << "0.961/1.04\t\t-\n";
+	  ofs << "Signal_misstag\t\t\tlnN\t\t" << "0.992/1.008\t\t-\n";
+	}
+      ofs << "mu_Global\t\t\tparam\t\t 0 1.25\n";
+      if ( category != "highres" ) ofs << category << "_mu_Global\t\t\tparam\t\t 0 1.25\n";
+    
+  ofs.close();
+  return ws;
+};
+
 RooWorkspace* MakeSignalBkgFit( RooDataSet* data, RooRealVar& mgg, float mu, TString mggName, bool _Nconstraint )
 {
   RooWorkspace* ws = new RooWorkspace( "ws", "" );

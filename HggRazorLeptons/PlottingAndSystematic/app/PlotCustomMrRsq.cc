@@ -1,7 +1,10 @@
 //C++ INCLUDES
 #include <iostream>
 #include <map>
+#include <string>
+#include <sstream>
 //ROOT INCLUDES
+#include <TROOT.h>
 #include <TString.h>
 #include <TH1D.h>
 #include <TFile.h>
@@ -10,6 +13,8 @@
 #include "CommandLineInput.hh"
 #include "TChainTools.hh"
 #include "PlotCosmetics.hh"
+
+using namespace std; 
 
 #define _debug 1
 #define TYPES 4
