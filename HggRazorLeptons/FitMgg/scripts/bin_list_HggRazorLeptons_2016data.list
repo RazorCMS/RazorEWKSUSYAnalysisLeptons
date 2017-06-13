@@ -1,8 +1,7 @@
 inclusiveElectron 0    10000 0.140 1.000
 inclusiveElectron 0    150   0.000 0.140 
 inclusiveElectron 150  10000 0.040 0.140
-inclusiveElectron 150  10000 0.000 0.005
-inclusiveElectron 150  10000 0.005 0.040
+inclusiveElectron 150  10000 0.000 0.040
 inclusiveMuon     0    10000 0.105 1.000
 inclusiveMuon     0    10000 0.000 0.020
 inclusiveMuon     0    200   0.020 0.105
