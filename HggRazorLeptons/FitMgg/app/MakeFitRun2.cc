@@ -95,7 +95,7 @@ int main( int argc, char* argv[])
     }
   
   std::string f1 = ParseCommandLine( argc, argv, "-f1=" );
-  if (  f1 == "" && fitMode == "bias" )
+  if (  f1 == "" && ( fitMode == "datacard" || fitMode == "datacardexpected" || fitMode == "bias" ) )
     {
       std::cerr << "[WARNING]: f1 name not provided, using singleExp. Options are: singleExp\ndoubleExp\nsinglePow\ndoublePow";
       std::cerr << "\nmodExp\npoly2\npoly3" << std::endl;
@@ -206,14 +206,14 @@ int main( int argc, char* argv[])
   //combine datacard related
   //------------------------
   std::string inputFileSignal = ParseCommandLine( argc, argv, "-inputFileSignal=" );
-  if (  inputFileSignal == "" && (fitMode == "datacard"  || fitMode == "sb") && !_highMassMode )
+  if (  inputFileSignal == "" && (fitMode == "datacard"  || fitMode == "sb" || fitMode == "datacardexpected") && !_highMassMode )
     {
       std::cerr << "[ERROR]: please provide an input file using --inputFileSignal=<path_to_file>" << std::endl;
       exit (EXIT_FAILURE);
     }
   
   std::string inputFileSMH = ParseCommandLine( argc, argv, "-inputFileSMH=" );
-  if (  inputFileSMH == "" && (fitMode == "datacard" || fitMode == "sb") && !_highMassMode )
+  if (  inputFileSMH == "" && (fitMode == "datacard" || fitMode == "sb" || fitMode == "datacardexpected" ) && !_highMassMode )
     {
       std::cerr << "[ERROR]: please provide an input file using --inputFileSMH=<path_to_file>" << std::endl;
       exit (EXIT_FAILURE);
@@ -224,7 +224,7 @@ int main( int argc, char* argv[])
   //SMH nominal yield
   std::string SMH_Yield = ParseCommandLine( argc, argv, "-SMH_Yield=" );
   float _SMH_Yield = 1.e-2;
-  if (  SMH_Yield == "" && fitMode == "datacard" && !_highMassMode )
+  if (  SMH_Yield == "" && ( fitMode == "datacard" || fitMode == "datacardexpected" ) && !_highMassMode )
     {
       std::cerr << "[WARNING]: please provide an input SMH_Yield, --SMH_Yield=<Yield>\nEXIT" << std::endl;
     }
@@ -261,7 +261,7 @@ int main( int argc, char* argv[])
   //signal nominal yield
   std::string Signal_Yield = ParseCommandLine( argc, argv, "-Signal_Yield=" );
   float _Signal_Yield = 1.;
-  if (  Signal_Yield == "" && fitMode == "datacard" )
+  if (  Signal_Yield == "" && ( fitMode == "datacard" || fitMode == "datacardexpected" ) )
     {
       std::cerr << "[ERROR]: please provide an input Signal_Yield, --Signal_Yield=<Yield>\nEXIT" << std::endl;
       return -1;
@@ -273,7 +273,7 @@ int main( int argc, char* argv[])
   
   std::string binNumber = ParseCommandLine( argc, argv, "-binNumber=" );
   TString _binNumber = "-666";
-  if (  binNumber == "" && fitMode == "datacard" )
+  if (  binNumber == "" && ( fitMode == "datacard" || fitMode == "datacardexpected" ) )
     {
       std::cerr << "[WARNING]: please provide a binNumber, --binNumber=<binNumber>" << std::endl;
     }
@@ -284,7 +284,7 @@ int main( int argc, char* argv[])
 
   std::string sModel = ParseCommandLine( argc, argv, "-sModel=" );
   TString _sModel = "myModel";
-  if (  sModel == "" && fitMode == "datacard" )
+  if (  sModel == "" && ( fitMode == "datacard" || fitMode == "datacardexpected" ) )
     {
       std::cerr << "[WARNING]: please provide a Signal Model name, --sModel=<signal model name>" << std::endl;
     }
@@ -295,7 +295,7 @@ int main( int argc, char* argv[])
 
   bool _signalOnly = false;
   std::string sOnly = ParseCommandLine( argc, argv, "-sOnly=" );
-  if (  sOnly == "yes" && fitMode == "datacard" )
+  if (  sOnly == "yes" && ( fitMode == "datacard" || fitMode == "datacardexpected" ) )
     {
       _signalOnly = true;
     }
@@ -643,10 +643,9 @@ int main( int argc, char* argv[])
 	  std::cout << "[INFO]: cut for DATA--> " << cut+cutMETfiltersData+cutTriggerData << std::endl;
 	  std::cout << "================================================================================" << std::endl;
 	  w_sb = MakeDataCardExpected( tree->CopyTree( cut+cutMETfiltersData+cutTriggerData ), treeSignal->CopyTree( cut ), treeSMH->CopyTree( cut ), mggName, _SMH_Yield,
-			       _Signal_Yield, binNumber, categoryMode, _highMassMode, _sModel, f1, _signalOnly );
+				       _Signal_Yield, binNumber, categoryMode, _highMassMode, _sModel, f1, _signalOnly );
 	}
       std::cout << "finish MakeDataCardExpected" << std::endl;
-      //w_sb->Write("w_sb");
     }
   else if ( fitMode == "AIC" )
     {

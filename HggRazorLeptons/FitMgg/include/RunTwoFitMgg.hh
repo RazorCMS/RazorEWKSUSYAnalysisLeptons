@@ -28,9 +28,11 @@ RooWorkspace* MakeSignalBkgFit( RooDataSet* data, RooRealVar& mgg, float mu, TSt
 RooWorkspace* MakeDataCard( TTree* treeData, TTree* treeSignal, TTree* treeSMH, TString mggName, float SMH_Yield, std::string SMH_CF,
 			    float Signal_Yield, std::string Signal_CF, TString binNumber = "-1", TString category = "category",
 			    bool isHighMass = false, TString sModel = "dummy", TString f1 = "singleExp", bool _signalOnly = false );
+
 RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* treeSMH, TString mggName, float SMH_Yield,
-			    float Signal_Yield, TString binNumber = "-1", TString category = "category",
-			    bool isHighMass = false, TString sModel = "dummy", TString f1 = "singleExp", bool _signalOnly = false );
+				    float Signal_Yield, TString binNumber = "-1", TString category = "category",
+				    bool isHighMass = false, TString sModel = "dummy", TString f1 = "singleExp", bool _signalOnly = false );
+
 void MakeDataCardHMD( TTree* treeData, TString mggName, float Signal_Yield, std::string Signal_CF,
 		      float mass = 125., TString binNumber = "-1", TString category = "category", TString year = "2016" );
 

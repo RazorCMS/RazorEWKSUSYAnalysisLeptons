@@ -22,7 +22,7 @@ TARGET7 = PrintSignalSnipped
 TARGET8 = GetRefMass
 TARGET9 = CompareFit
 TARGET10 = PlotFitWithErrors
-TARGET11 = TestGaussianContraint
+#TARGET11 = TestGaussianContraint
 
 SRC = app/testapp.cc src/makeInvertedANFit_v2.cc $(Aux)/src/CommandLineInput.cc
 SRC1 = app/MakeFitRun2.cc src/RunTwoFitMgg.cc src/DefinePdfs.cc src/PrintAIC.cc $(Aux)/src/CommandLineInput.cc
@@ -34,7 +34,7 @@ SRC7 = app/PrintSignalSnipped.cc $(Aux)/src/CommandLineInput.cc
 SRC8 = scripts/PlotRefAnalysisMass.cc $(Aux)/src/CommandLineInput.cc
 SRC9 = scripts/CompareFit.cc $(Aux)/src/CommandLineInput.cc
 SRC10 = scripts/PlotFitWithErrors.cc $(Aux)/src/CommandLineInput.cc
-SRC11 = app/TestGaussianContraint.cc src/RunTwoFitMgg.cc src/DefinePdfs.cc src/PrintAIC.cc $(Aux)/src/CommandLineInput.cc
+#SRC11 = app/TestGaussianContraint.cc src/RunTwoFitMgg.cc src/DefinePdfs.cc src/PrintAIC.cc $(Aux)/src/CommandLineInput.cc
 
 
 OBJ = $(SRC:.cc=.o)
@@ -47,9 +47,8 @@ OBJ7 = $(SRC7:.cc=.o)
 OBJ8 = $(SRC8:.cc=.o)
 OBJ9 = $(SRC9:.cc=.o)
 OBJ10 = $(SRC10:.cc=.o)
-OBJ11 = $(SRC11:.cc=.o)
 
-all : $(TARGET) $(TARGET1) $(TARGET2) $(TARGET4) $(TARGET5) $(TARGET6) $(TARGET7) $(TARGET8) $(TARGET9) $(TARGET10) $(TARGET11)
+all : $(TARGET) $(TARGET1) $(TARGET2) $(TARGET4) $(TARGET5) $(TARGET6) $(TARGET7) $(TARGET8) $(TARGET9) $(TARGET10) 
 
 $(TARGET) : $(OBJ)
 	$(LD) $(CPPFLAGS) -o $(TARGET) $(OBJ) $(LDFLAGS)
@@ -113,11 +112,6 @@ $(TARGET10) : $(OBJ10)
 	@echo $<
 	@echo $^
 
-$(TARGET11) : $(OBJ11)
-	$(LD) $(CPPFLAGS) -o $(TARGET11) $(OBJ11) $(LDFLAGS)
-	@echo $@
-	@echo $<
-	@echo $^
 
 %.o : %.cc
 	$(CXX) $(CPPFLAGS) -o $@ -c $<

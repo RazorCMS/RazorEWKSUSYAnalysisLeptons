@@ -2068,12 +2068,13 @@ RooWorkspace* MakeDataCard( TTree* treeData, TTree* treeSignal, TTree* treeSMH, 
   return ws;
 };
 
+
 RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* treeSMH, TString mggName, float SMH_Yield,
-			    float Signal_Yield, TString binNumber, TString category, bool isHighMass,
-			    TString sModel, TString f1, bool _signalOnly )
+				    float Signal_Yield, TString binNumber, TString category, bool isHighMass,
+				    TString sModel, TString f1, bool _signalOnly )
 {
   std::cout << "entering datacard: " << SMH_Yield << " " << Signal_Yield << std::endl;
-//comment out SMH_CF Signal_CF stuff
+  //comment out SMH_CF Signal_CF stuff
 /*
   std::stringstream ss_smh, ss_signal;
   ss_smh << SMH_CF;
@@ -2099,8 +2100,8 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
       signal_sys.push_back( 1.0 + tmp );
       //std::cout << "tmp: " << tmp << std::endl;
       if ( ss_signal.eof() ) break;
-    }
-*/ 
+    } 
+*/
   //------------------------------------------------
   // C r e a t e   s i g n a l  s h a p e from TTree
   //------------------------------------------------
@@ -2226,14 +2227,7 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
   RooFitResult* smhres  = ws->pdf( tagSMH )->fitTo( dataSMH, RooFit::Strategy(2), RooFit::Extended( kTRUE ), RooFit::Save( kTRUE ), RooFit::Range("full") );
   smhres->SetName("SMHFitResult");
   ws->import( *smhres );
-  /*
-  //double gaussian relic
-  double gausFrac_SMH   =  ws->var(tagSMH+"_frac")->getVal();
-  double gausMu1_SMH    =  ws->var(tagSMH+"_mu1")->getVal();
-  double gausMu2_SMH    =  ws->var(tagSMH+"_mu2")->getVal();
-  double gausSigma1_SMH =  ws->var(tagSMH+"_sigma1")->getVal();
-  double gausSigma2_SMH =  ws->var(tagSMH+"_sigma2")->getVal();
-  */
+  
   double DCB_mu_smh    = ws->var(tagSMH+"_muCB")->getVal( );
   double DCB_sigma_smh = ws->var(tagSMH+"_sigmaCB")->getVal( );
   double DCB_a1_smh    = ws->var(tagSMH+"_alpha1")->getVal( );
@@ -2324,14 +2318,7 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
   ws->import( *bres );
   
 
-  /*
-  sExp_a = ws->var("fullsb_fit_singleExp_a")->getVal();
-  Nbkg   = ws->var("fullsb_fit_singleExp_Nbkg")->getVal();
-  NbkgUn = ws->var("fullsb_fit_singleExp_Nbkg")->getError();
-  BkgNormUn = 1.0 + NbkgUn/Nbkg;//input a lnN to combine
-  */
-
-  
+    
   //------------------------------------------------------------------------------
   //Define and obtain initial pdf parameters for f1, using sideband fit parameters
   //------------------------------------------------------------------------------
@@ -2688,40 +2675,6 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
       ofs << "----------------------------------------------------------------------------------------\n";
       ofs << "CMS_Lumi\t\t\tlnN\t\t1.057\t\t-\n";
       ofs << "Photon_Trigger\t\t\tlnN\t\t1.05\t\t-\n";
-      //int totalSys = smh_sys.size();
-      int ctr = 0;
-      //----------------------------------
-      //Signal Systematics
-      //----------------------------------
-/*
-      for( int isys = 0; isys < totalSys; isys++ )
-	{
-	  if ( isys == 0 )
-	    {
-	      ofs << "Signal_JES\t\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\n";
-	    }
-	  else if ( isys == 2 )
-	    {
-	      ofs << "Signal_facScale\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\n";
-	    }
-	  else if ( isys == 4 )
-	    {
-	      ofs << "Signal_renScale\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\n";
-	    }
-	  else if ( isys == 6 )
-	    {
-	      ofs << "Signal_facRenScale\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\n";
-	    }
-	  else if ( isys > 7 )
-	    {
-	      //--------------------
-	      //No signal PDF systematic as SUSY group prescription
-	      //--------------------
-	      //ofs << "Signal_pdf" << ctr << "\t\t\tlnN\t\t" << signal_sys.at(isys) << "\t\t-\n";
-	      ctr++;
-	    }
-	}
-*/      
       if ( category == "hzbb" )
 	{
 	  ofs << "Signal_btag\t\t\tlnN\t\t" << "0.961/1.04\t\t-\n";
