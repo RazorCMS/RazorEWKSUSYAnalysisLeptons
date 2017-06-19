@@ -1,0 +1,8 @@
+0	0	10000	0.140	10.00	inclusiveElectron	singleExp
+1	0	150	0.000	0.140   inclusiveElectron	modExp
+2	150	10000	0.040	0.140	inclusiveElectron	singleExp
+3	150	10000	0.000	0.040	inclusiveElectron	singleExp
+4	0	10000	0.105	10.00	inclusiveMuon	        poly2
+5	0	10000	0.000	0.020	inclusiveMuon	        modExp
+6	0	200	0.020	0.105	inclusiveMuon	        poly2
+7	200	10000	0.020	0.105	inclusiveMuon	        modExp
