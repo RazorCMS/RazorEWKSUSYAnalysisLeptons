@@ -64,7 +64,7 @@ int main( int argc, char* argv[] )
   std::string categoryMode = ParseCommandLine( argc, argv, "-category=" );
   if (  categoryMode == "" )
     {
-      std::cerr << "[ERROR]: please provide the category. Use --category=<highpt,hzbb,highres,lowres>" << std::endl;
+      std::cerr << "[ERROR]: please provide the category. Use --category=<inclusiveElectron,inclusiveMuon>" << std::endl;
       return -1;
     }
 
@@ -184,6 +184,8 @@ int main( int argc, char* argv[] )
   else if (categoryMode == "highreslowres") categoryCutString = " && pTGammaGamma < 110 && abs(mbbH_L-125.) >= 15 && abs(mbbZ_L-91.) >= 15";
   else if (categoryMode == "highpthighres") categoryCutString = " && pTGammaGamma >= 110 && sigmaMoverM < 0.0085";
   else if (categoryMode == "highptlowres") categoryCutString = " && pTGammaGamma >= 110 && sigmaMoverM >= 0.0085";
+  else if (categoryMode == "inclusiveElectron") categoryCutString = " && box == 3 ";
+  else if (categoryMode == "inclusiveMuon") categoryCutString = " && box == 2";
 
   TString triggerCut = " && ( HLTDecision[82] || HLTDecision[83] || HLTDecision[93] ) ";
   // TString metFilterCut = " && (Flag_HBHENoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1)";
@@ -227,68 +229,68 @@ int main( int argc, char* argv[] )
 
   //get correct binning category in case of nonstandard box choice
   std::string binCategory = categoryMode;
+/*
   if ( categoryMode == "highreslowres" ) {
       binCategory = "highres"; //use highres binning
   }
   else if ( categoryMode == "highpthighres" || categoryMode == "highptlowres" ) {
       binCategory = "highpt"; //use highpt binning
   }
-
+*/
   myVectBinning = SetBinning(binVector, binCategory);
 
-  if (!(binCategory == "highpt" || binCategory == "hzbb" 
-	|| binCategory == "highres"|| binCategory == "lowres"))
+  if (!(binCategory == "inclusiveElectron" || binCategory == "inclusiveMuon"))
      {
-       std::cerr << "[ERROR]: category is not <highpt/hzbb/highres/lowres>; quitting" << std::endl;
+       std::cerr << "[ERROR]: category is not <inclusiveElectron/inclusiveMuon>; quitting" << std::endl;
        return -1;
      } 
 
-  TH2Poly* nominal  = new TH2Poly("nominal_SMH", "", 150, 10000, 0, 1 );
-  TH2Poly* nominalS = new TH2Poly("nominal_Signal", "", 150, 10000, 0, 1 );
+  TH2Poly* nominal  = new TH2Poly("nominal_SMH", "", 0, 10000, 0, 1 );
+  TH2Poly* nominalS = new TH2Poly("nominal_Signal", "", 0, 10000, 0, 1 );
 
-  TH2Poly* ISRUpS   = new TH2Poly("ISRUpS", "", 150, 10000, 0, 1 );
-  TH2Poly* ISRDownS = new TH2Poly("ISRDownS", "", 150, 10000, 0, 1 );
+  TH2Poly* ISRUpS   = new TH2Poly("ISRUpS", "", 0, 10000, 0, 1 );
+  TH2Poly* ISRDownS = new TH2Poly("ISRDownS", "", 0, 10000, 0, 1 );
 
-  TH2Poly* facScaleUp    = new TH2Poly("facScaleUp", "", 150, 10000, 0, 1 );
-  TH2Poly* facScaleDown  = new TH2Poly("facScaleDown", "", 150, 10000, 0, 1 );
-  TH2Poly* facScaleUpS   = new TH2Poly("facScaleUpS", "", 150, 10000, 0, 1 );
-  TH2Poly* facScaleDownS = new TH2Poly("facScaleDownS", "", 150, 10000, 0, 1 );
+  TH2Poly* facScaleUp    = new TH2Poly("facScaleUp", "", 0, 10000, 0, 1 );
+  TH2Poly* facScaleDown  = new TH2Poly("facScaleDown", "", 0, 10000, 0, 1 );
+  TH2Poly* facScaleUpS   = new TH2Poly("facScaleUpS", "", 0, 10000, 0, 1 );
+  TH2Poly* facScaleDownS = new TH2Poly("facScaleDownS", "", 0, 10000, 0, 1 );
   
-  TH2Poly* renScaleUp    = new TH2Poly("renScaleUp", "", 150, 10000, 0, 1 );
-  TH2Poly* renScaleDown  = new TH2Poly("renScaleDown", "", 150, 10000, 0, 1 );
-  TH2Poly* renScaleUpS   = new TH2Poly("renScaleUpS", "", 150, 10000, 0, 1 );
-  TH2Poly* renScaleDownS = new TH2Poly("renScaleDownS", "", 150, 10000, 0, 1 );
+  TH2Poly* renScaleUp    = new TH2Poly("renScaleUp", "", 0, 10000, 0, 1 );
+  TH2Poly* renScaleDown  = new TH2Poly("renScaleDown", "", 0, 10000, 0, 1 );
+  TH2Poly* renScaleUpS   = new TH2Poly("renScaleUpS", "", 0, 10000, 0, 1 );
+  TH2Poly* renScaleDownS = new TH2Poly("renScaleDownS", "", 0, 10000, 0, 1 );
   
-  TH2Poly* facRenScaleUp    = new TH2Poly("facRenScaleUp", "", 150, 10000, 0, 1 );
-  TH2Poly* facRenScaleDown  = new TH2Poly("facRenScaleDown", "", 150, 10000, 0, 1 );
-  TH2Poly* facRenScaleUpS   = new TH2Poly("facRenScaleUpS", "", 150, 10000, 0, 1 );
-  TH2Poly* facRenScaleDownS = new TH2Poly("facRenScaleDownS", "", 150, 10000, 0, 1 );
+  TH2Poly* facRenScaleUp    = new TH2Poly("facRenScaleUp", "", 0, 10000, 0, 1 );
+  TH2Poly* facRenScaleDown  = new TH2Poly("facRenScaleDown", "", 0, 10000, 0, 1 );
+  TH2Poly* facRenScaleUpS   = new TH2Poly("facRenScaleUpS", "", 0, 10000, 0, 1 );
+  TH2Poly* facRenScaleDownS = new TH2Poly("facRenScaleDownS", "", 0, 10000, 0, 1 );
   
-  TH2Poly* JesUp    = new TH2Poly("JesUp", "", 150, 10000, 0, 1 );
-  TH2Poly* JesDown  = new TH2Poly("JesDown", "", 150, 10000, 0, 1 );
-  TH2Poly* JesUpS   = new TH2Poly("JesUpS", "", 150, 10000, 0, 1 );//signal
-  TH2Poly* JesDownS = new TH2Poly("JesDownS", "", 150, 10000, 0, 1 );//signal
+  TH2Poly* JesUp    = new TH2Poly("JesUp", "", 0, 10000, 0, 1 );
+  TH2Poly* JesDown  = new TH2Poly("JesDown", "", 0, 10000, 0, 1 );
+  TH2Poly* JesUpS   = new TH2Poly("JesUpS", "", 0, 10000, 0, 1 );//signal
+  TH2Poly* JesDownS = new TH2Poly("JesDownS", "", 0, 10000, 0, 1 );//signal
 
-  TH2Poly* btagUp    = new TH2Poly("btagUp", "", 150, 10000, 0, 1 );
-  TH2Poly* btagDown  = new TH2Poly("btagDown", "", 150, 10000, 0, 1 );
-  TH2Poly* btagUpS   = new TH2Poly("btagUpS", "", 150, 10000, 0, 1 );//signal
-  TH2Poly* btagDownS = new TH2Poly("btagDownS", "", 150, 10000, 0, 1 );//signal
+  TH2Poly* btagUp    = new TH2Poly("btagUp", "", 0, 10000, 0, 1 );
+  TH2Poly* btagDown  = new TH2Poly("btagDown", "", 0, 10000, 0, 1 );
+  TH2Poly* btagUpS   = new TH2Poly("btagUpS", "", 0, 10000, 0, 1 );//signal
+  TH2Poly* btagDownS = new TH2Poly("btagDownS", "", 0, 10000, 0, 1 );//signal
 
-  TH2Poly* misstagUp    = new TH2Poly("misstagUp", "", 150, 10000, 0, 1 );
-  TH2Poly* misstagDown  = new TH2Poly("misstagDown", "", 150, 10000, 0, 1 );
-  TH2Poly* misstagUpS   = new TH2Poly("misstagUpS", "", 150, 10000, 0, 1 );//signal
-  TH2Poly* misstagDownS = new TH2Poly("misstagDownS", "", 150, 10000, 0, 1 );//signal
+  TH2Poly* misstagUp    = new TH2Poly("misstagUp", "", 0, 10000, 0, 1 );
+  TH2Poly* misstagDown  = new TH2Poly("misstagDown", "", 0, 10000, 0, 1 );
+  TH2Poly* misstagUpS   = new TH2Poly("misstagUpS", "", 0, 10000, 0, 1 );//signal
+  TH2Poly* misstagDownS = new TH2Poly("misstagDownS", "", 0, 10000, 0, 1 );//signal
   
-  TH2Poly* genMetS = new TH2Poly("genMet_Signal", "", 150, 10000, 0, 1 );//signal
-  TH2Poly* pileupS = new TH2Poly("pileup_Signal", "", 150, 10000, 0, 1 );//signal
+  TH2Poly* genMetS = new TH2Poly("genMet_Signal", "", 0, 10000, 0, 1 );//signal
+  TH2Poly* pileupS = new TH2Poly("pileup_Signal", "", 0, 10000, 0, 1 );//signal
 
   TH2Poly* pdf[60];
   TH2Poly* pdfS[60];
   for ( int i = 0; i < 60; i++ )
     {
       TString pdfName = Form("pdf%d", i);
-      pdf[i]  = new TH2Poly( pdfName, "", 150, 10000, 0, 1 );
-      pdfS[i] = new TH2Poly( pdfName+"S", "", 150, 10000, 0, 1 );
+      pdf[i]  = new TH2Poly( pdfName, "", 0, 10000, 0, 1 );
+      pdfS[i] = new TH2Poly( pdfName+"S", "", 0, 10000, 0, 1 );
     }
   std::map< std::pair<float,float>, float > sysMap;
   for ( auto tmp : myVectBinning )
@@ -348,7 +350,7 @@ int main( int argc, char* argv[] )
       //------------------------
       //Getting TTree and Histos
       //------------------------
-      TTree* tree = (TTree*)fin->Get("HggRazor");
+      TTree* tree = (TTree*)fin->Get("HggRazorLeptons");
       assert( tree );
       TH1F* NEvents = (TH1F*)fin->Get("NEvents");
       if ( process != "signal" ) assert( NEvents );

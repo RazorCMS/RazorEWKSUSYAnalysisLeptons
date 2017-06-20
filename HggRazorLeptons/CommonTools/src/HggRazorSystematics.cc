@@ -124,38 +124,38 @@ bool HggRazorSystematics::InitMrRsqTH2Poly( int mode )
 	  std::cerr << "[ERROR]: Imposible to create TH2Poly; no binning defined yet, please use object->SetBinningMap( yourMap );" << std::endl;
 	  return false;
 	}
-      h2p = new TH2Poly(this->processName+"_nominal", "", 150, 10000, 0, 1);
-      h2p_Err = new TH2Poly(this->processName+"_nominal_err", "", 150, 10000, 0, 1);
-      h2p_eff = new TH2Poly(this->processName+"_eff", "", 150, 10000, 0, 1);
+      h2p = new TH2Poly(this->processName+"_nominal", "", 0, 10000, 0, 1);
+      h2p_Err = new TH2Poly(this->processName+"_nominal_err", "", 0, 10000, 0, 1);
+      h2p_eff = new TH2Poly(this->processName+"_eff", "", 0, 10000, 0, 1);
       
-      h2p_ISRUp      = new TH2Poly(this->processName+"_ISRUp", "", 150, 10000, 0, 1);
-      h2p_ISRDown    = new TH2Poly(this->processName+"_ISRDown", "", 150, 10000, 0, 1);
-      h2p_facScaleUp      = new TH2Poly(this->processName+"_facScaleUp", "", 150, 10000, 0, 1);
-      h2p_facScaleDown    = new TH2Poly(this->processName+"_facScaleDown", "", 150, 10000, 0, 1);
-      h2p_renScaleUp      = new TH2Poly(this->processName+"_renScaleUp", "", 150, 10000, 0, 1);
-      h2p_renScaleDown    = new TH2Poly(this->processName+"_renScaleDown", "", 150, 10000, 0, 1);
-      h2p_facRenScaleUp   = new TH2Poly(this->processName+"_facRenScaleUp", "", 150, 10000, 0, 1);
-      h2p_facRenScaleDown = new TH2Poly(this->processName+"_facRenScaleDown", "", 150, 10000, 0, 1);
-      h2p_JesUp           = new TH2Poly(this->processName+"_JesUp", "", 150, 10000, 0, 1);
-      h2p_JesDown         = new TH2Poly(this->processName+"_JesDown", "", 150, 10000, 0, 1);
+      h2p_ISRUp      = new TH2Poly(this->processName+"_ISRUp", "", 0, 10000, 0, 1);
+      h2p_ISRDown    = new TH2Poly(this->processName+"_ISRDown", "", 0, 10000, 0, 1);
+      h2p_facScaleUp      = new TH2Poly(this->processName+"_facScaleUp", "", 0, 10000, 0, 1);
+      h2p_facScaleDown    = new TH2Poly(this->processName+"_facScaleDown", "", 0, 10000, 0, 1);
+      h2p_renScaleUp      = new TH2Poly(this->processName+"_renScaleUp", "", 0, 10000, 0, 1);
+      h2p_renScaleDown    = new TH2Poly(this->processName+"_renScaleDown", "", 0, 10000, 0, 1);
+      h2p_facRenScaleUp   = new TH2Poly(this->processName+"_facRenScaleUp", "", 0, 10000, 0, 1);
+      h2p_facRenScaleDown = new TH2Poly(this->processName+"_facRenScaleDown", "", 0, 10000, 0, 1);
+      h2p_JesUp           = new TH2Poly(this->processName+"_JesUp", "", 0, 10000, 0, 1);
+      h2p_JesDown         = new TH2Poly(this->processName+"_JesDown", "", 0, 10000, 0, 1);
       for( int i = 0; i < n_PdfSys; i++ )
 	{
 	  TString PdfSysName = Form(this->processName+"_PdfEigenVect_%d",i);
-	  h2p_Pdf[i] = new TH2Poly( PdfSysName, "", 150, 10000, 0, 1);
+	  h2p_Pdf[i] = new TH2Poly( PdfSysName, "", 0, 10000, 0, 1);
 	}
       //btag
-      h2p_btagUp   = new TH2Poly(this->processName+"_btagUp", "", 150, 10000, 0, 1);
-      h2p_btagDown = new TH2Poly(this->processName+"_btagDown", "", 150, 10000, 0, 1);
+      h2p_btagUp   = new TH2Poly(this->processName+"_btagUp", "", 0, 10000, 0, 1);
+      h2p_btagDown = new TH2Poly(this->processName+"_btagDown", "", 0, 10000, 0, 1);
       //misstag
-      h2p_misstagUp   = new TH2Poly(this->processName+"_misstagUp", "", 150, 10000, 0, 1);
-      h2p_misstagDown = new TH2Poly(this->processName+"_misstagDown", "", 150, 10000, 0, 1);
+      h2p_misstagUp   = new TH2Poly(this->processName+"_misstagUp", "", 0, 10000, 0, 1);
+      h2p_misstagDown = new TH2Poly(this->processName+"_misstagDown", "", 0, 10000, 0, 1);
       //genmet
-      h2p_genMet   = new TH2Poly(this->processName+"_genMet", "", 150, 10000, 0, 1);
+      h2p_genMet   = new TH2Poly(this->processName+"_genMet", "", 0, 10000, 0, 1);
       //pileup
-      h2p_pileupLowNPV   = new TH2Poly(this->processName+"_pileupLowNPV", "", 150, 10000, 0, 1);
-      h2p_pileupHighNPV   = new TH2Poly(this->processName+"_pileupHighNPV", "", 150, 10000, 0, 1);
-      h2p_pileupLowNPVErrSqr   = new TH2Poly(this->processName+"_pileupLowNPVErrSqr", "", 150, 10000, 0, 1);
-      h2p_pileupHighNPVErrSqr   = new TH2Poly(this->processName+"_pileupHighNPVErrSqr", "", 150, 10000, 0, 1);
+      h2p_pileupLowNPV   = new TH2Poly(this->processName+"_pileupLowNPV", "", 0, 10000, 0, 1);
+      h2p_pileupHighNPV   = new TH2Poly(this->processName+"_pileupHighNPV", "", 0, 10000, 0, 1);
+      h2p_pileupLowNPVErrSqr   = new TH2Poly(this->processName+"_pileupLowNPVErrSqr", "", 0, 10000, 0, 1);
+      h2p_pileupHighNPVErrSqr   = new TH2Poly(this->processName+"_pileupHighNPVErrSqr", "", 0, 10000, 0, 1);
 
       //adding bins
       for ( auto tmp : this->binningMap )
@@ -202,42 +202,42 @@ bool HggRazorSystematics::InitMrRsqTH2Poly( int mode )
 	}
 
       
-      h2p = new TH2Poly(this->processName+"_nominal", "", 150, 10000, 0, 1);
-      h2p_Err = new TH2Poly(this->processName+"_nominal_err", "", 150, 10000, 0, 1);
-      h2p_eff = new TH2Poly(this->processName+"_eff", "", 150, 10000, 0, 1);
+      h2p = new TH2Poly(this->processName+"_nominal", "", 0, 10000, 0, 1);
+      h2p_Err = new TH2Poly(this->processName+"_nominal_err", "", 0, 10000, 0, 1);
+      h2p_eff = new TH2Poly(this->processName+"_eff", "", 0, 10000, 0, 1);
       
-      h2p_ISRUp      = new TH2Poly(this->processName+"_ISRUp", "", 150, 10000, 0, 1);
-      h2p_ISRDown    = new TH2Poly(this->processName+"_ISRDown", "", 150, 10000, 0, 1);
+      h2p_ISRUp      = new TH2Poly(this->processName+"_ISRUp", "", 0, 10000, 0, 1);
+      h2p_ISRDown    = new TH2Poly(this->processName+"_ISRDown", "", 0, 10000, 0, 1);
 
-      h2p_facScaleUp      = new TH2Poly(this->processName+"_facScaleUp", "", 150, 10000, 0, 1);
-      h2p_facScaleDown    = new TH2Poly(this->processName+"_facScaleDown", "", 150, 10000, 0, 1);
+      h2p_facScaleUp      = new TH2Poly(this->processName+"_facScaleUp", "", 0, 10000, 0, 1);
+      h2p_facScaleDown    = new TH2Poly(this->processName+"_facScaleDown", "", 0, 10000, 0, 1);
 
-      h2p_renScaleUp      = new TH2Poly(this->processName+"_renScaleUp", "", 150, 10000, 0, 1);
-      h2p_renScaleDown    = new TH2Poly(this->processName+"_renScaleDown", "", 150, 10000, 0, 1);
+      h2p_renScaleUp      = new TH2Poly(this->processName+"_renScaleUp", "", 0, 10000, 0, 1);
+      h2p_renScaleDown    = new TH2Poly(this->processName+"_renScaleDown", "", 0, 10000, 0, 1);
 
-      h2p_facRenScaleUp   = new TH2Poly(this->processName+"_facRenScaleUp", "", 150, 10000, 0, 1);
-      h2p_facRenScaleDown = new TH2Poly(this->processName+"_facRenScaleDown", "", 150, 10000, 0, 1);
+      h2p_facRenScaleUp   = new TH2Poly(this->processName+"_facRenScaleUp", "", 0, 10000, 0, 1);
+      h2p_facRenScaleDown = new TH2Poly(this->processName+"_facRenScaleDown", "", 0, 10000, 0, 1);
 
-      h2p_JesUp           = new TH2Poly(this->processName+"_JesUp", "", 150, 10000, 0, 1);
-      h2p_JesDown         = new TH2Poly(this->processName+"_JesDown", "", 150, 10000, 0, 1);
+      h2p_JesUp           = new TH2Poly(this->processName+"_JesUp", "", 0, 10000, 0, 1);
+      h2p_JesDown         = new TH2Poly(this->processName+"_JesDown", "", 0, 10000, 0, 1);
       
       for( int i = 0; i < n_PdfSys; i++ )
 	{
 	  TString PdfSysName = Form(this->processName+"_PdfEigenVect_%d",i);
-	  h2p_Pdf[i] = new TH2Poly( PdfSysName, "", 150, 10000, 0, 1);
+	  h2p_Pdf[i] = new TH2Poly( PdfSysName, "", 0, 10000, 0, 1);
 	}
       
-      h2p_btagUp           = new TH2Poly(this->processName+"_btagUp", "", 150, 10000, 0, 1);
-      h2p_btagDown         = new TH2Poly(this->processName+"_btagDown", "", 150, 10000, 0, 1);
+      h2p_btagUp           = new TH2Poly(this->processName+"_btagUp", "", 0, 10000, 0, 1);
+      h2p_btagDown         = new TH2Poly(this->processName+"_btagDown", "", 0, 10000, 0, 1);
       
-      h2p_misstagUp        = new TH2Poly(this->processName+"_misstagUp", "", 150, 10000, 0, 1);
-      h2p_misstagDown      = new TH2Poly(this->processName+"_misstagDown", "", 150, 10000, 0, 1);
+      h2p_misstagUp        = new TH2Poly(this->processName+"_misstagUp", "", 0, 10000, 0, 1);
+      h2p_misstagDown      = new TH2Poly(this->processName+"_misstagDown", "", 0, 10000, 0, 1);
       
-      h2p_genMet           = new TH2Poly(this->processName+"_genMet", "", 150, 10000, 0, 1);
-      h2p_pileupLowNPV     = new TH2Poly(this->processName+"_pileupLowNPV", "", 150, 10000, 0, 1);
-      h2p_pileupHighNPV    = new TH2Poly(this->processName+"_pileupHighNPV", "", 150, 10000, 0, 1);
-      h2p_pileupLowNPVErrSqr     = new TH2Poly(this->processName+"_pileupLowNPVErrSqr", "", 150, 10000, 0, 1);
-      h2p_pileupHighNPVErrSqr    = new TH2Poly(this->processName+"_pileupHighNPVErrSqr", "", 150, 10000, 0, 1);
+      h2p_genMet           = new TH2Poly(this->processName+"_genMet", "", 0, 10000, 0, 1);
+      h2p_pileupLowNPV     = new TH2Poly(this->processName+"_pileupLowNPV", "", 0, 10000, 0, 1);
+      h2p_pileupHighNPV    = new TH2Poly(this->processName+"_pileupHighNPV", "", 0, 10000, 0, 1);
+      h2p_pileupLowNPVErrSqr     = new TH2Poly(this->processName+"_pileupLowNPVErrSqr", "", 0, 10000, 0, 1);
+      h2p_pileupHighNPVErrSqr    = new TH2Poly(this->processName+"_pileupHighNPVErrSqr", "", 0, 10000, 0, 1);
 
       for ( auto tmp : binningVect )
 	{
@@ -443,7 +443,8 @@ void HggRazorSystematics::Loop()
 	  if (_useISRPtCorrection && this->processName == "signal") {
 	    commonW = this->Lumi*weight*btagCorrFactor*triggerEffSFWeight*photonEffSF*triggerEffWeight*ISRCorrValue;//FastSim
 	  } else {
-	    commonW = this->Lumi*weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF*ISRCorrValue;//FullSim
+	    //commonW = this->Lumi*weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF*ISRCorrValue;//FullSim
+	    commonW = this->Lumi*weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF;//Only for testing
 	  }
 	}
       else
