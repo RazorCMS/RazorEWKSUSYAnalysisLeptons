@@ -443,8 +443,7 @@ void HggRazorSystematics::Loop()
 	  if (_useISRPtCorrection && this->processName == "signal") {
 	    commonW = this->Lumi*weight*btagCorrFactor*triggerEffSFWeight*photonEffSF*triggerEffWeight*ISRCorrValue;//FastSim
 	  } else {
-	    //commonW = this->Lumi*weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF*ISRCorrValue;//FullSim
-	    commonW = this->Lumi*weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF;//Only for testing
+	    commonW = this->Lumi*weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF*ISRCorrValue;//FullSim
 	  }
 	}
       else

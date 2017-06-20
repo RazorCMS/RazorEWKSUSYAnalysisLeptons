@@ -618,7 +618,7 @@ int main( int argc, char* argv[] )
        outf << "\n";
       
        std::cout << "Bin : " << bin << " " << tmp[0] << " " << tmp[1] << " " << tmp[2] << " " << tmp[3] << " : "
-	    << nom << " +/- " << 100*sqrt(totalFractionalUncertaintySqr) << "%\n";
+		 << nom << " +/- " << 100*sqrt(totalFractionalUncertaintySqr) << "%; signal: " << nomS << "\n";
  
      }
 
