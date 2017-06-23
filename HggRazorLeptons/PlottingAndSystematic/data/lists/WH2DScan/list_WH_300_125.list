@@ -1,0 +1,6 @@
+ggH /eos/cms/store/group/phys_susy/razor/Run2Analysis/HggRazorLeptons/V3p13_Apr132017/HggRazorLeptons_GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_1pb_weighted.root
+vbfH /eos/cms/store/group/phys_susy/razor/Run2Analysis/HggRazorLeptons/V3p13_Apr132017/HggRazorLeptons_VBFHToGG_M125_13TeV_amcatnlo_pythia8_1pb_weighted.root
+vH /eos/cms/store/group/phys_susy/razor/Run2Analysis/HggRazorLeptons/V3p13_Apr132017/HggRazorLeptons_VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_1pb_weighted.root
+ttH /eos/cms/store/group/phys_susy/razor/Run2Analysis/HggRazorLeptons/V3p13_Apr132017/HggRazorLeptons_ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_v2_1pb_weighted.root
+bbH /eos/cms/store/group/phys_susy/razor/Run2Analysis/HggRazorLeptons/V3p13_Apr132017/HggRazorLeptons_bbHToGG_M-125_4FS_13TeV_amcatnlo_1pb_weighted.root
+signal /eos/cms/store/group/phys_susy/razor/Run2Analysis/HggRazorLeptons/V3p13_Apr132017/FastsimSignal/SMS-TChiWH_300_125_1pb_weighted.root
