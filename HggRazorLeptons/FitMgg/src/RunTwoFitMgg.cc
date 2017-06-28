@@ -2392,7 +2392,10 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
   BkgNormUn = 1.0 + NbkgUn/Nbkg;//input a lnN to combine
     
   //RooDataSet* data_toys = GenerateToys( ws->pdf( tag_bkg ), mgg, npoints);
-  RooAbsData* data_toys = ws->pdf( tag_bkg )->generateBinned( mgg, npoints, RooFit::ExpectedData() );
+  //RooAbsData* data_toys = ws->pdf( tag_bkg )->generateBinned( mgg, npoints, RooFit::ExpectedData() );
+  RooDataHist* data_toys = ws->pdf( tag_bkg )->generateBinned( mgg, npoints, RooFit::ExpectedData() );
+  RooDataHist* data_toys_smh = ws->pdf( tagSMH )->generateBinned( mgg, SMH_Yield, RooFit::ExpectedData() );
+  data_toys->add(*data_toys_smh);
   data_toys->SetName("data_bin"+binNumber);
   data.SetName("data_bin"+binNumber);
   //--------------------------------
@@ -2441,7 +2444,7 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
   fmgg->SetTitle("");
   TBox* box = new TBox(121, 0.105, 129, maxC-0.1);
   box->SetFillColor(kRed-9);
-  box->SetFillStyle(3344);
+  //box->SetFillStyle(3344);
   box->Draw("same");
   c->SaveAs( "HggRazorDataCards/" + sModel + "/bkgFit_bin" + binNumber + ".pdf" );
   fmgg->SetName( "BkgOnlyFitPlot" );
