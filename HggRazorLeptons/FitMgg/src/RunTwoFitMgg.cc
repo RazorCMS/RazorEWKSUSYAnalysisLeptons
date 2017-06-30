@@ -2069,13 +2069,13 @@ RooWorkspace* MakeDataCard( TTree* treeData, TTree* treeSignal, TTree* treeSMH, 
 };
 
 
-RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* treeSMH, TString mggName, float SMH_Yield,
-				    float Signal_Yield, TString binNumber, TString category, bool isHighMass,
-				    TString sModel, TString f1, bool _signalOnly )
+RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* treeSMH, TString mggName, float SMH_Yield, std::string SMH_CF,
+			    float Signal_Yield, std::string Signal_CF, TString binNumber, TString category, bool isHighMass,
+			    TString sModel, TString f1, bool _signalOnly )
 {
   std::cout << "entering datacard: " << SMH_Yield << " " << Signal_Yield << std::endl;
-  //comment out SMH_CF Signal_CF stuff
-/*
+  //uncomment out SMH_CF Signal_CF stuff
+
   std::stringstream ss_smh, ss_signal;
   ss_smh << SMH_CF;
   ss_signal << Signal_CF;
@@ -2101,7 +2101,7 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
       //std::cout << "tmp: " << tmp << std::endl;
       if ( ss_signal.eof() ) break;
     } 
-*/
+
   //------------------------------------------------
   // C r e a t e   s i g n a l  s h a p e from TTree
   //------------------------------------------------
@@ -2650,7 +2650,7 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
   std::ofstream ofs( dataCardName , std::ofstream::out );
 
   int combinedBinNumber = atoi(binNumber); // this is equal to binNumber, except for the LowRes bins, where it is equal to the number of the corresponding HighRes bin
-  if ( combinedBinNumber > 13 ) {
+  if ( combinedBinNumber > 8 ) {
       combinedBinNumber -= 5;
   }
   

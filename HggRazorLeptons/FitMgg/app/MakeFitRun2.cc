@@ -236,7 +236,7 @@ int main( int argc, char* argv[])
   //SMH Config Line
   std::string SMH_CL = ParseCommandLine( argc, argv, "-SMH_CL=" );
   std::stringstream _SMH_CL;
-  if (  SMH_CL == "" && fitMode == "datacard" && !_highMassMode )
+  if (  SMH_CL == "" && ( fitMode == "datacard" || fitMode == "datacardexpected" ) && !_highMassMode )
     {
       std::cerr << "[ERROR]: please provide an input SMH_CL, --SMH_CL=<SMH config line>\nEXIT" << std::endl;
       return -1;
@@ -248,7 +248,7 @@ int main( int argc, char* argv[])
   //Signal Config Line
   std::string Signal_CL = ParseCommandLine( argc, argv, "-Signal_CL=" );
   std::stringstream _Signal_CL;
-  if (  Signal_CL == "" && fitMode == "datacard" )
+  if (  Signal_CL == "" && ( fitMode == "datacard" || fitMode == "datacardexpected" ) )
     {
       std::cerr << "[ERROR]: please provide an input Signal_CL, --Signal_CL=<Signal config line>\nEXIT" << std::endl;
       return -1;
@@ -642,8 +642,8 @@ int main( int argc, char* argv[])
 	  std::cout << "================================================================================" << std::endl;
 	  std::cout << "[INFO]: cut for DATA--> " << cut+cutMETfiltersData+cutTriggerData << std::endl;
 	  std::cout << "================================================================================" << std::endl;
-	  w_sb = MakeDataCardExpected( tree->CopyTree( cut+cutMETfiltersData+cutTriggerData ), treeSignal->CopyTree( cut ), treeSMH->CopyTree( cut ), mggName, _SMH_Yield,
-				       _Signal_Yield, binNumber, categoryMode, _highMassMode, _sModel, f1, _signalOnly );
+	  w_sb = MakeDataCardExpected( tree->CopyTree( cut+cutMETfiltersData+cutTriggerData ), treeSignal->CopyTree( cut ), treeSMH->CopyTree( cut ), mggName, _SMH_Yield, SMH_CL, 
+                                        _Signal_Yield, Signal_CL, binNumber, categoryMode, _highMassMode, _sModel, f1, _signalOnly );
 	}
       std::cout << "finish MakeDataCardExpected" << std::endl;
     }
