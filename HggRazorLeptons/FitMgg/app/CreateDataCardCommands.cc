@@ -315,7 +315,8 @@ int main( int argc, char* argv[] )
 	   << "--inputFile=" << dataFile
 	   << " --inputFileSignal=" << signalFile
 	   << " --inputFileSMH=" << smhFile
-	   << " --treeName=HggRazor --runPeriod=run2 --dataMode=data+signal --fitMode=datacard --category=" << category<< " --LowMRcut=" << MR_l 
+	   << " --treeName=HggRazor --runPeriod=run2 --dataMode=data+signal --fitMode=datacardexpected --category=" << category<< " --LowMRcut=" << MR_l 
+	   //<< " --treeName=HggRazor --runPeriod=run2 --dataMode=data+signal --fitMode=datacard --category=" << category<< " --LowMRcut=" << MR_l 
 	   << " --HighMRcut=" << MR_h << " --LowRSQcut=" << Rsq_l << " --HighRSQcut=" << Rsq_h << " --f1=" << Bkg_f1
 	   << " --SMH_Yield=" << SMH << " --SMH_CL=" << SMH_sys.str()
 	   << " --Signal_Yield=" << Signal << " --Signal_CL=" << Signal_sys.str()
