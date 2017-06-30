@@ -336,7 +336,7 @@ int main( int argc, char* argv[] )
       
     }
  
-
+/*
   //Do Combine DataCard step
   outf << "\n\n";
   outf << "cd HggRazorDataCards/" << sModel << "\n"; 
@@ -368,7 +368,7 @@ int main( int argc, char* argv[] )
        << "combine -M ProfileLikelihood --pvalue combineAll.txt -n _all.pvalue --setPhysicsModelParameterRanges r=-20,20 --uncapped=1\n"
        << "hadd PL_nsigma_npvalue_all.root higgsCombine_all.nsigma.ProfileLikelihood.mH120.root higgsCombine_all.pvalue.ProfileLikelihood.mH120.root"
        << "\ncd - \n";
-
+*/
   //close files
   ifs.close();  
   if ( secondInputCF != "" ) ifs2.close();
