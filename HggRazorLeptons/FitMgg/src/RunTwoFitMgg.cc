@@ -41,6 +41,7 @@
 #include <RooRandom.h>
 #include <RooDataHist.h>
 #include <RooHistPdf.h>
+#include <RooArgList.h>
 //#include <RealVar.h>
 //LOCAL INCLUDES
 #include "RunTwoFitMgg.hh"
@@ -2388,14 +2389,20 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
     }
 
   Nbkg   = ws->var( f1 + "_fullsb_fit_Nbkg")->getVal();
+  RooRealVar BkgYield("BkgYield","", Nbkg);
+  std::cout<< "npoints = " << npoints << std::endl;
+  std::cout<< "Nbkg = " << Nbkg << std::endl;
   NbkgUn = ws->var( f1 + "_fullsb_fit_Nbkg")->getError();
   BkgNormUn = 1.0 + NbkgUn/Nbkg;//input a lnN to combine
     
   //RooDataSet* data_toys = GenerateToys( ws->pdf( tag_bkg ), mgg, npoints);
   //RooAbsData* data_toys = ws->pdf( tag_bkg )->generateBinned( mgg, npoints, RooFit::ExpectedData() );
-  RooDataHist* data_toys = ws->pdf( tag_bkg )->generateBinned( mgg, npoints, RooFit::ExpectedData() );
-  RooDataHist* data_toys_smh = ws->pdf( tagSMH )->generateBinned( mgg, SMH_Yield, RooFit::ExpectedData() );
-  data_toys->add(*data_toys_smh);
+  //RooDataHist* data_toys = ws->pdf( tag_bkg )->generateBinned( mgg, Nbkg, RooFit::ExpectedData() );
+  RooAddPdf* totalBkg = new RooAddPdf("totalBkgPdf", "",RooArgList( *ws->pdf(tag_bkg), *ws->pdf(tagSMH) ), RooArgList(BkgYield,HiggsYield) ); 
+  RooDataHist* data_toys = totalBkg->generateBinned( mgg, Nbkg, RooFit::ExpectedData() );
+  //RooAddPdf* totalBkg = new RooAddPdf("totalBkgPdf","",*ws->pdf(tag_bkg), *ws->pdf(tagSMH) ,Nbkg,SMH_Yield ); 
+  //RooDataHist* data_toys_smh = ws->pdf( tagSMH )->generateBinned( mgg, SMH_Yield, RooFit::ExpectedData() );
+  //data_toys->add(*data_toys_smh);
   data_toys->SetName("data_bin"+binNumber);
   data.SetName("data_bin"+binNumber);
   //--------------------------------
@@ -2662,6 +2669,136 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
   //correction is of the form N- = nominal/(1+lowres_sigmaMoverM_corr)
   const float lowres_sigmaMoverM_corr = 0.24268;
   
+  if ( !_signalOnly )
+    {
+      ofs << "imax 1 number of bins\njmax 2 number of processes minus 1\nkmax * number of nuisance parameters\n";
+      ofs << "----------------------------------------------------------------------------------------\n";
+      ofs << "shapes Bkg\t\tbin"      << binNumber << "\t" << combinedRootFileName << " combineWS:" << combineBkg << "\n";
+      ofs << "shapes SMH\t\tbin"      << binNumber << "\t" << combinedRootFileName << " combineWS:" << combineSMH << "\n";
+      ofs << "shapes signal\t\tbin"   << binNumber << "\t" << combinedRootFileName << " combineWS:" << combineSignal << "\n";
+      ofs << "shapes data_obs\t\tbin" << binNumber << "\t" << combinedRootFileName << " combineWS:" << "data_bin" << binNumber << "\n";
+      ofs << "----------------------------------------------------------------------------------------\n";
+      ofs << "bin\t\tbin" << binNumber << "\n";
+      ofs << "observation\t-1.0\n";
+      ofs << "----------------------------------------------------------------------------------------\n";
+      ofs << "bin\t\t\t\t\t\tbin" << binNumber << "\t\tbin" << binNumber << "\t\tbin" << binNumber << "\n";
+      ofs << "process\t\t\t\t\t\tsignal\t\tSMH\t\tBkg\n";
+      ofs << "process\t\t\t\t\t\t0\t\t1\t\t2\n";
+      ofs << "rate\t\t\t\t\t\t1\t\t1\t\t1\n";
+      ofs << "----------------------------------------------------------------------------------------\n";
+      ofs << "CMS_Lumi\t\t\tlnN\t\t1.026\t\t1.026\t\t-\n";
+      ofs << "Photon_Trigger\t\t\tlnN\t\t1.05\t\t1.05\t\t-\n";
+      //ofs << "ScaleNorm\t\t\tlnN\t\t-\t\t0.931/1.065\t\t-\n"; //instead allow scale variations to change xsection
+      ofs << "PdfNorm\t\t\t\tlnN\t\t-\t\t0.948/1.062\t\t-\n";
+      
+      if ( category == "highres" ) {
+	ofs << "SigmaMoverMEfficiency\t\t\t\tlnN\t\t" << (1.+2.*highres_sigmaMoverM_corr)/(1.+highres_sigmaMoverM_corr) << "/" << 1./(1.+highres_sigmaMoverM_corr) << "\t\t" << (1.+2.*highres_sigmaMoverM_corr)/(1.+highres_sigmaMoverM_corr) << "/" << 1./(1.+highres_sigmaMoverM_corr) << "\t\t-\n";
+      } else if (category == "lowres" ) {
+	ofs << "SigmaMoverMEfficiency\t\t\t\tlnN\t\t" << (1.+2.*lowres_sigmaMoverM_corr)/(1.+lowres_sigmaMoverM_corr) << "/" << 1./(1.+lowres_sigmaMoverM_corr) << "\t\t" << (1.+2.*lowres_sigmaMoverM_corr)/(1.+lowres_sigmaMoverM_corr) << "/" << 1./(1.+lowres_sigmaMoverM_corr) << "\t\t-\n";
+      }
+
+      int totalSys = smh_sys.size();
+      int ctr = 0;
+      for( int isys = 0; isys < totalSys; isys++ )
+	{
+	  if ( isys == 0 )
+	    {
+	      ofs << "SMH_JES\t\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "/" << smh_sys.at(isys) << "\t\t-\n";
+	    }
+	  else if ( isys == 2 )
+	    {
+	      //ofs << "SMH_facScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "/" << smh_sys.at(isys) << "\t\t-\n";
+	      ofs << "SMH_facScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "\t\t-\n";
+	    }
+	  else if ( isys == 4 )
+	    {
+	      //ofs << "SMH_renScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "/" << smh_sys.at(isys) << "\t\t-\n";
+	      ofs << "SMH_renScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "\t\t-\n";
+	    }
+	  else if ( isys == 6 )
+	    {
+	      //ofs << "SMH_facRenScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "/" << smh_sys.at(isys) << "\t\t-\n";
+	      ofs << "SMH_facRenScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "\t\t-\n";
+	    }
+	  else if ( isys > 7 )
+	    {
+	      ofs << "SMH_pdf" << ctr << "\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys) << "\t\t-\n";
+	      ctr++;
+	    }
+	}
+      ofs << "mu_Global\t\t\tparam\t\t 0 1.25\n";
+      if ( category != "highres" ) ofs << category << "_mu_Global\t\t\tparam\t\t 0 1.25\n";
+      if ( category == "hzbb" )
+	{
+	  ofs << "SMH_btag\t\t\tlnN\t\t-\t\t" << "0.961/1.04" "\t\t-\n";
+	  ofs << "SMH_misstag\t\t\tlnN\t\t-\t\t" << "0.992/1.008" << "\t\t-\n";
+	}
+      
+      //----------------------------------
+      //Signal Systematics
+      //----------------------------------
+      ctr = 0;
+      for( int isys = 0; isys < signal_sys.size(); isys++ )
+	{
+	  if ( isys == 0 )
+	    {
+	      ofs << "Signal_JES\t\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\t\t-\n";
+	    }
+	  else if ( isys == 2 )
+	    {
+	      ofs << "Signal_ISR\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\t\t-\n";
+	    }
+	  else if ( isys == 4 )
+	    {
+	      //ofs << "Signal_facScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\t\t-\n";
+	      ofs << "Signal_facScale" << "\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\t\t-\n";
+	    }
+	  else if ( isys == 6 )
+	    {
+	      //ofs << "Signal_renScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\t\t-\n";
+	      ofs << "Signal_renScale" << "\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\t\t-\n";
+	    }
+	  else if ( isys == 8 )
+	    {
+	      //ofs << "Signal_facRenScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\t\t-\n";
+	      ofs << "Signal_facRenScale" << "\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\t\t-\n";
+	    }
+	  else if ( isys >= 10 && isys <= 69 )
+	    {
+	      //--------------------
+	      //No signal PDF systematic as SUSY group prescription
+	      //--------------------
+	      //ofs << "Signal_pdf" << ctr << "\t\t\tlnN\t\t" << signal_sys.at(isys) << "\t\t-\t\t-\n";
+	      ctr++;
+	    }
+	  else if ( isys == 70 ) 
+	    {
+	      if (signal_sys.at(isys) != 1.0) {
+		ofs << "Signal_FastsimMet" << "\t\t\tlnN\t\t" << signal_sys.at(isys) << "\t\t-\t\t-\n";
+	      }
+	    }
+	  else if ( isys == 71 ) 
+	    {
+	      if (signal_sys.at(isys) != 1.0) {
+		ofs << "Signal_FastsimPileup" << "\t\t\tlnN\t\t" << signal_sys.at(isys) << "\t\t-\t\t-\n";
+	      }
+	    } 
+	  else {
+	    //Weird: more than expected
+	  }
+	}
+      
+      if ( category == "hzbb" )
+	{
+	  ofs << "Signal_btag\t\t\tlnN\t\t" << "0.961/1.04\t\t-\t\t-\n";
+	  ofs << "Signal_misstag\t\t\tlnN\t\t" << "0.992/1.008\t\t-\t\t-\n";
+	}
+      //ofs << "SMH_renScale\t\t\tlnN\t\t-\t\t" << SMH_renScale << "\t\t-\n";
+      //ofs << "SMH_facRenScale\t\t\tlnN\t\t-\t\t" << SMH_facRenScale << "\t\t-\n";
+      //ofs << "BkgNorm_bin" << binNumber << "\t\t\tlnN\t\t-\t\t-\t\t" << BkgNormUn << std::endl;
+    }
+  else
+    {
       ofs << "imax 1 number of bins\njmax 1 number of processes minus 1\nkmax * number of nuisance parameters\n";
       ofs << "----------------------------------------------------------------------------------------\n";
       ofs << "shapes Bkg\t\tbin"      << binNumber << "\t" << combinedRootFileName << " combineWS:" << combineBkg << "\n";
@@ -2678,6 +2815,39 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
       ofs << "----------------------------------------------------------------------------------------\n";
       ofs << "CMS_Lumi\t\t\tlnN\t\t1.057\t\t-\n";
       ofs << "Photon_Trigger\t\t\tlnN\t\t1.05\t\t-\n";
+      int totalSys = smh_sys.size();
+      int ctr = 0;
+      //----------------------------------
+      //Signal Systematics
+      //----------------------------------
+      for( int isys = 0; isys < totalSys; isys++ )
+	{
+	  if ( isys == 0 )
+	    {
+	      ofs << "Signal_JES\t\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\n";
+	    }
+	  else if ( isys == 2 )
+	    {
+	      ofs << "Signal_facScale\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\n";
+	    }
+	  else if ( isys == 4 )
+	    {
+	      ofs << "Signal_renScale\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\n";
+	    }
+	  else if ( isys == 6 )
+	    {
+	      ofs << "Signal_facRenScale\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\n";
+	    }
+	  else if ( isys > 7 )
+	    {
+	      //--------------------
+	      //No signal PDF systematic as SUSY group prescription
+	      //--------------------
+	      //ofs << "Signal_pdf" << ctr << "\t\t\tlnN\t\t" << signal_sys.at(isys) << "\t\t-\n";
+	      ctr++;
+	    }
+	}
+      
       if ( category == "hzbb" )
 	{
 	  ofs << "Signal_btag\t\t\tlnN\t\t" << "0.961/1.04\t\t-\n";
@@ -2685,7 +2855,8 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
 	}
       ofs << "mu_Global\t\t\tparam\t\t 0 1.25\n";
       if ( category != "highres" ) ofs << category << "_mu_Global\t\t\tparam\t\t 0 1.25\n";
-    
+    }
+  
   ofs.close();
   return ws;
 };
