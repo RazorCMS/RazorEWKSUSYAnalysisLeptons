@@ -63,7 +63,7 @@ int main( int argc, char* argv[])
   std::string categoryMode = ParseCommandLine( argc, argv, "-category=" );
   if (  categoryMode == "" )
     {
-      std::cerr << "[ERROR]: please provide the category. Use --category=<highpt,highres,lowres,inclusive,inclusiveElectron, inclusiveMuon>" << std::endl;
+      std::cerr << "[ERROR]: please provide the category. Use --category=<highpt,highres,lowres,inclusive, inclusiveElectron, inclusiveMuon, twoLeptons>" << std::endl;
       return -1;
     }
 
@@ -522,6 +522,7 @@ int main( int argc, char* argv[])
       else if (categoryMode == "inclusive") categoryCutString = "";
       else if (categoryMode == "inclusiveElectron") categoryCutString = " && box == 3 ";
       else if (categoryMode == "inclusiveMuon") categoryCutString = " && box == 2";
+      else if (categoryMode == "twoLeptons") categoryCutString = " && (box == 0 || box == 1)";
     }
   //---------------------------------------------
   // A l e x ' s   T r e e   F o r m at   C a s e
