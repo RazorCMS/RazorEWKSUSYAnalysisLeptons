@@ -310,7 +310,7 @@ int main( int argc, char* argv[] )
       Bkg_f1 = "singleExp";
       Bkg_f1 = mapBinNumberToBin[binNumber].f1;
       
-      Signal = 5.0*Signal; //scaling signal by 5
+      Signal = 1.0*Signal; //scaling signal by 5
       outf << "./MakeFitRun2 " 
 	   << "--inputFile=" << dataFile
 	   << " --inputFileSignal=" << signalFile
