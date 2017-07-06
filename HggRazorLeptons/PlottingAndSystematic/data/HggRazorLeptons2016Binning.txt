@@ -6,3 +6,4 @@
 5	0	10000	0.000	0.020	inclusiveMuon	        modExp
 6	0	200	0.020	0.105	inclusiveMuon	        poly2
 7	200	10000	0.020	0.105	inclusiveMuon	        modExp
+8	0	10000	0.000	10.00	twoLeptons	        singleExp
