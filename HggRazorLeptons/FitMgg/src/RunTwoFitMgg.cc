@@ -2399,7 +2399,7 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
   //RooAbsData* data_toys = ws->pdf( tag_bkg )->generateBinned( mgg, npoints, RooFit::ExpectedData() );
   //RooDataHist* data_toys = ws->pdf( tag_bkg )->generateBinned( mgg, Nbkg, RooFit::ExpectedData() );
   RooAddPdf* totalBkg = new RooAddPdf("totalBkgPdf", "",RooArgList( *ws->pdf(tag_bkg), *ws->pdf(tagSMH) ), RooArgList(BkgYield,HiggsYield) ); 
-  RooDataHist* data_toys = totalBkg->generateBinned( mgg, Nbkg, RooFit::ExpectedData() );
+  RooDataHist* data_toys = totalBkg->generateBinned( mgg, Nbkg+SMH_Yield, RooFit::ExpectedData() );
   //RooAddPdf* totalBkg = new RooAddPdf("totalBkgPdf","",*ws->pdf(tag_bkg), *ws->pdf(tagSMH) ,Nbkg,SMH_Yield ); 
   //RooDataHist* data_toys_smh = ws->pdf( tagSMH )->generateBinned( mgg, SMH_Yield, RooFit::ExpectedData() );
   //data_toys->add(*data_toys_smh);
