@@ -64,7 +64,7 @@ int main( int argc, char* argv[] )
   std::string categoryMode = ParseCommandLine( argc, argv, "-category=" );
   if (  categoryMode == "" )
     {
-      std::cerr << "[ERROR]: please provide the category. Use --category=<inclusiveElectron,inclusiveMuon>" << std::endl;
+      std::cerr << "[ERROR]: please provide the category. Use --category=<inclusiveElectron,inclusiveMuon,twoLeptons>" << std::endl;
       return -1;
     }
 
@@ -186,6 +186,7 @@ int main( int argc, char* argv[] )
   else if (categoryMode == "highptlowres") categoryCutString = " && pTGammaGamma >= 110 && sigmaMoverM >= 0.0085";
   else if (categoryMode == "inclusiveElectron") categoryCutString = " && box == 3 ";
   else if (categoryMode == "inclusiveMuon") categoryCutString = " && box == 2";
+  else if (categoryMode == "twoLeptons") categoryCutString = " && (box == 0 || box == 1)";
 
   TString triggerCut = " && ( HLTDecision[82] || HLTDecision[83] || HLTDecision[93] ) ";
   // TString metFilterCut = " && (Flag_HBHENoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1)";
@@ -239,9 +240,9 @@ int main( int argc, char* argv[] )
 */
   myVectBinning = SetBinning(binVector, binCategory);
 
-  if (!(binCategory == "inclusiveElectron" || binCategory == "inclusiveMuon"))
+  if (!(binCategory == "inclusiveElectron" || binCategory == "inclusiveMuon" || binCategory == "twoLeptons"))
      {
-       std::cerr << "[ERROR]: category is not <inclusiveElectron/inclusiveMuon>; quitting" << std::endl;
+       std::cerr << "[ERROR]: category is not <inclusiveElectron/inclusiveMuon/twoLeptons>; quitting" << std::endl;
        return -1;
      } 
 
