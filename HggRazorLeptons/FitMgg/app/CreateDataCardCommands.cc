@@ -369,9 +369,21 @@ int main( int argc, char* argv[] )
        << "hadd PL_nsigma_npvalue_all.root higgsCombine_all.nsigma.ProfileLikelihood.mH120.root higgsCombine_all.pvalue.ProfileLikelihood.mH120.root"
        << "\ncd - \n";
 */
+  
+  outf << "\ncd /afs/cern.ch/work/c/cpena/public/combineDiphotonHM/CMSSW_7_4_7/src\neval `scramv1 run -sh`;\ncd -\n";
+  //Do Combine DataCard step
+  outf << "\n\n";
+  outf << "cd HggRazorDataCards/" << sModel << "\n";
+  outf << "combineCards.py HggRazorCard_bin0.txt HggRazorCard_bin1.txt HggRazorCard_bin2.txt HggRazorCard_bin3.txt HggRazorCard_bin4.txt HggRazorCard_bin5.txt HggRazorCard_bin6.txt HggRazorCard_bin7.txt HggRazorCard_bin8.txt > combineAll.txt\n"
+       << "combine -M Asymptotic combineAll.txt --minimizerStrategy=1 -n _combineAll\n"
+       << "combine -M ProfileLikelihood --signif combineAll.txt -n _all.nsigma --setPhysicsModelParameterRanges r=-20,20 --uncapped=1\n"
+       << "combine -M ProfileLikelihood --pvalue combineAll.txt -n _all.pvalue --setPhysicsModelParameterRanges r=-20,20 --uncapped=1\n"
+       << "hadd PL_nsigma_npvalue_all.root higgsCombine_all.nsigma.ProfileLikelihood.mH120.root higgsCombine_all.pvalue.ProfileLikelihood.mH120.root"
+       << "\ncd - \n";
+  
   //close files
   ifs.close();  
   if ( secondInputCF != "" ) ifs2.close();
-
+  
   return 0;
 }

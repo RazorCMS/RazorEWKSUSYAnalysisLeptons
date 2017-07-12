@@ -24,6 +24,10 @@ do
 	    anTag="$2"
 	    shift # past argument
 	    ;;
+	 -e|--EWKSUSYSignal)
+            ewksignal="$2"
+            shift # past argument
+            ;;
 	-b|--binningFile)
 	    bFile="$2"
 	    shift # past argument
@@ -42,14 +46,15 @@ done
 echo INPUT FILE  = $inlist
 echo OUTFILE PREFIX = $outfile
 
-categories=( highpt hzbb highres lowres )
+categories=( inclusiveElectron inclusiveMuon twoLeptons )
 
 for j in $(ls $inlist);
 do
+    echo $j
     for i in "${categories[@]}";
     do
-	echo ./GetHggRazorSystematicsQuadrature --inputList=$inlist/$j --category=$i --outputFile=$outfile"_"$i".txt" --lumi=$lumi --analysisTag=$anTag --binningFile=$bFile
-	./GetHggRazorSystematicsQuadrature --inputList=$inlist/$j --category=$i --outputFile=$outfile"_"$i".txt" --lumi=$lumi --analysisTag=$anTag --binningFile=$bFile
+	echo ./GetHggRazorSystematicsQuadrature --inputList=$inlist/$j --category=$i --outputFile=$outfile"_"$i".txt" --lumi=$lumi --analysisTag=$anTag --binningFile=$bFile --EWKSUSYSignal=$ewksignal
+	./GetHggRazorSystematicsQuadrature --inputList=$inlist/$j --category=$i --outputFile=$outfile"_"$i".txt" --lumi=$lumi --analysisTag=$anTag --binningFile=$bFile --EWKSUSYSignal=$ewksignal
     done
     #echo $outfile"_"${categories[0]}".txt" $outfile"_"${categories[1]}".txt" $outfile"_"${categories[2]}".txt" $outfile"_"${categories[3]}".txt"
     #echo $outfile"_AllCategories_"$j
