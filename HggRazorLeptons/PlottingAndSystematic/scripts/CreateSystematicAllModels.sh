@@ -58,7 +58,7 @@ do
     done
     #echo $outfile"_"${categories[0]}".txt" $outfile"_"${categories[1]}".txt" $outfile"_"${categories[2]}".txt" $outfile"_"${categories[3]}".txt"
     #echo $outfile"_AllCategories_"$j
-    cat $outfile"_"${categories[0]}".txt" $outfile"_"${categories[1]}".txt" $outfile"_"${categories[2]}".txt" $outfile"_"${categories[3]}".txt" > $outfile"_AllCategories_"$j
+    cat $outfile"_"${categories[0]}".txt" $outfile"_"${categories[1]}".txt" $outfile"_"${categories[2]}".txt" > $outfile"_AllCategories_"$j
 done
 
 
