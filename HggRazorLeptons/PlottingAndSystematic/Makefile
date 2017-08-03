@@ -30,6 +30,7 @@ TARGET9 = CompareHggVariables
 TARGET12 = GetSigmaMoverM_Correction
 TARGET13 = GetHggRazorSystematicsQuadratureFaster
 TARGET14 = GetHggRazorPull
+TARGET15 = GetHggLeptonRazorSMH_BkgTable 
 
 
 SRC = app/PlotCustomMrRsq.cc $(CommonTools)/src/HggAux.cc $(Aux)/src/CommandLineInput.cc $(Aux)/src/TChainTools.cc $(Aux)/src/PlotCosmetics.cc
@@ -48,6 +49,7 @@ SRC9 = app/CompareHggVariables.cc src/CompareHggMC.cc src/CalStyleRemix.cc
 SRC12 = app/GetSigmaMoverM_Correction.cc $(CommonTools)/src/HggTree.cc $(Selection)/src/HggRazorClass.cc $(CommonTools)/src/HggAux.cc $(Aux)/src/CommandLineInput.cc $(Aux)/src/TChainTools.cc $(Aux)/src/PlotCosmetics.cc
 SRC13 = app/GetHggRazorSystematicsQuadratureFaster.cc $(CommonTools)/src/HggRazorSystematics.cc $(CommonTools)/src/HggTree.cc $(CommonTools)/src/HggAux.cc $(Aux)/src/CommandLineInput.cc
 SRC14 = app/GetHggRazorPullTable.cc $(CommonTools)/src/HggRazorSystematics.cc $(CommonTools)/src/HggTree.cc $(CommonTools)/src/HggAux.cc $(Aux)/src/CommandLineInput.cc $(FitTools)/src/DefinePdfs.cc
+SRC15 = app/GetHggLeptonRazorSMH_BkgTable.cc $(CommonTools)/src/HggRazorSystematics.cc $(CommonTools)/src/HggTree.cc $(CommonTools)/src/HggAux.cc $(Aux)/src/CommandLineInput.cc $(FitTools)/src/DefinePdfs.cc
 
 
 OBJ  = $(SRC:.cc=.o)
@@ -66,8 +68,9 @@ OBJ9 = $(SRC9:.cc=.o)
 OBJ12 = $(SRC12:.cc=.o)
 OBJ13 = $(SRC13:.cc=.o)
 OBJ14 = $(SRC14:.cc=.o)
+OBJ15 = $(SRC15:.cc=.o)
 
-all : $(TARGET) $(TARGET2) $(TARGET3) $(TARGET12) $(TARGET11) $(TARGET10) $(TARGET4) $(TARGET5) $(TARGET6) $(TARGET7) $(TARGET8) $(TARGETA) $(TARGETB) $(TARGET9) $(TARGET13) $(TARGET14)
+all : $(TARGET) $(TARGET2) $(TARGET3) $(TARGET12) $(TARGET11) $(TARGET10) $(TARGET4) $(TARGET5) $(TARGET6) $(TARGET7) $(TARGET8) $(TARGETA) $(TARGETB) $(TARGET9) $(TARGET13) $(TARGET14) $(TARGET15)
 
 #comp : $(TARGETA) $(TARGETB) $(TARGET9)
 comp : $(TARGET9)
@@ -157,9 +160,15 @@ $(TARGET14) : $(OBJ14)
 	@echo $<
 	@echo $^
 
+$(TARGET15) : $(OBJ15) 
+	$(LD) $(CPPFLAGS) -o $(TARGET15) $(OBJ15) $(LDFLAGS)
+	@echo $@
+	@echo $<
+	@echo $^
+
 %.o : %.cc
 	$(CXX) $(CPPFLAGS) -o $@ -c $<
 	@echo $@
 	@echo $<
 clean :
-	rm -f *.o app/*.o src/*.o $(Selection)/src/*.o $(CommonTools)/src/*.o $(Aux)/src/*.o $(TARGET) $(TARGET2) $(TARGET3) $(TARGET10) $(TARGET4) $(TARGET5) $(TARGET6) $(TARGET7) $(TARGET8) $(TARGET9) $(TARGETA) $(TARGETB) $(TARGET11) $(TARGET12) $(TARGET13) $(TARGET14) *~
+	rm -f *.o app/*.o src/*.o $(Selection)/src/*.o $(CommonTools)/src/*.o $(Aux)/src/*.o $(TARGET) $(TARGET2) $(TARGET3) $(TARGET10) $(TARGET4) $(TARGET5) $(TARGET6) $(TARGET7) $(TARGET8) $(TARGET9) $(TARGETA) $(TARGETB) $(TARGET11) $(TARGET12) $(TARGET13) $(TARGET14) $(TARGET15) *~
