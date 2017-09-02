@@ -173,7 +173,8 @@ int main( int argc, char* argv[] )
     } 
   
 
-  TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1Eta) <1.48 && abs(pho2Eta)<1.48 && (pho1Pt>40||pho2Pt>40)  && pho1Pt> 25. && pho2Pt>25.";
+  TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1Eta) <1.48 && abs(pho2Eta)<1.48 && (pho1Pt>40||pho2Pt>40)  && pho1Pt> 25. && pho2Pt>25. && MR>150 && box>4 && box<10";
+  //TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1Eta) <1.48 && abs(pho2Eta)<1.48 && (pho1Pt>40||pho2Pt>40)  && pho1Pt> 25. && pho2Pt>25.";
   TString categoryCutString;
 
   if (categoryMode == "highpt") categoryCutString = " && pTGammaGamma >= 110 ";
@@ -353,7 +354,8 @@ int main( int argc, char* argv[] )
       //------------------------
       //Getting TTree and Histos
       //------------------------
-      TTree* tree = (TTree*)fin->Get("HggRazor");
+      TTree* tree = (TTree*)fin->Get("HggRazorLeptons");
+      //TTree* tree = (TTree*)fin->Get("HggRazor");
       assert( tree );
       TH1F* NEvents = (TH1F*)fin->Get("NEvents");
       if ( process != "signal" ) assert( NEvents );
