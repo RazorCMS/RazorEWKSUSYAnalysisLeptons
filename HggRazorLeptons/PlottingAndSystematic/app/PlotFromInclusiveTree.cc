@@ -315,7 +315,7 @@ int main ( int argc, char* argv[] )
   TH1D* mc2 = new TH1D();
 
   int map_size = mapList.size();
-  const int nprocesses = 13;//mc+data
+  const int nprocesses = 9;//mc+data
   //check nprocesses and map_size consistency
   if( map_size != nprocesses )
     {
@@ -350,16 +350,16 @@ int main ( int argc, char* argv[] )
 
       //Diphoton
       
-      if ( !(process == Process::data || process == Process::diphoton  || process == Process::gammaJet /*|| process == Process::qcd*/
-	     || process == Process::ggH  || process == Process::vbfH || process == Process::vH || process == Process::ttH || process == Process::bbH
-	     || process == Process::tg || process == Process::ttg || process == Process::wgg || process == Process::zgg)
-	   ) continue;
+      //if ( !(process == Process::data || process == Process::diphoton  || process == Process::gammaJet /*|| process == Process::qcd*/
+	//     || process == Process::ggH  || process == Process::vbfH || process == Process::vH || process == Process::ttH || process == Process::bbH
+	//     || process == Process::tg || process == Process::ttg || process == Process::wgg || process == Process::zgg)
+	//   ) continue;
        
 
       //Diphoton with Signal
-      /*if ( !(process == Process::data || process == Process::signal || process == Process::diphoton || process == Process::gammaJet
+      if ( !(process == Process::data || process == Process::bbH || process == Process::diphoton || process == Process::gammaJet || process ==Process::qcd
 	|| process == Process::ggH  || process == Process::vbfH || process == Process::vH || process == Process::ttH) ) continue;
-	std::cout << "[INFO] PROCESS: " << processName << " ,process #: " << ctr << std::endl;*/
+	std::cout << "[INFO] PROCESS: " << processName << " ,process #: " << ctr << std::endl;
 
       //-----------------------------
       // R e t r i e v i n g  T r e e
