@@ -315,7 +315,7 @@ int main ( int argc, char* argv[] )
   TH1D* mc2 = new TH1D();
 
   int map_size = mapList.size();
-  const int nprocesses = 12;//mc+data
+  const int nprocesses = 13;//mc+data
   //check nprocesses and map_size consistency
   if( map_size != nprocesses )
     {
