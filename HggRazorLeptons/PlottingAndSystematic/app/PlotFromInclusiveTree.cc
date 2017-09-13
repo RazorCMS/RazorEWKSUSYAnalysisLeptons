@@ -338,13 +338,13 @@ int main ( int argc, char* argv[] )
   int ctr = 0;
   Histos histos[nprocesses];
 
-  TH1F* sigmaMoverM_data;
-  TH1F* sigmaMoverM_dy;
+  TH1F* sigmaMoverM_data = NULL;
+  TH1F* sigmaMoverM_dy = NULL;
   
   for( const auto& process : Process() )
     {
       std::string processName = GetProcessString( process );
-      std::cout << "[INFO] PROCESS: " << processName << " ,process #: " << ctr << std::endl;
+      //std::cout << "[INFO] PROCESS: " << processName << " ,process #: " << ctr << std::endl;
       //DY control region
       //if ( !(process == Process::data || process == Process::dy) ) continue;
 
@@ -358,9 +358,10 @@ int main ( int argc, char* argv[] )
 
       //Diphoton with Signal
       if ( !(process == Process::data || process == Process::bbH || process == Process::diphoton || process == Process::gammaJet || process ==Process::qcd
-	|| process == Process::ggH  || process == Process::vbfH || process == Process::vH || process == Process::ttH) ) continue;
-	std::cout << "[INFO] PROCESS: " << processName << " ,process #: " << ctr << std::endl;
-
+	     || process == Process::ggH  || process == Process::vbfH || process == Process::vH || process == Process::ttH) ) continue;
+      //if ( !(process == Process::data || process == Process::gammaJet) ) continue;
+      std::cout << "[INFO] PROCESS: " << processName << " ,process #: " << ctr << std::endl;
+      
       //-----------------------------
       // R e t r i e v i n g  T r e e
       //-----------------------------
@@ -432,15 +433,17 @@ int main ( int argc, char* argv[] )
       ctr++;
       delete hggclass;
     }
-  //std::cout << "here" << std::endl;
+  std::cout << "out of loop" << std::endl;
 
   //----------------------------------
   //SigmaMoverM correction calculation
   //----------------------------------
 
   if ( sigmaMoverM_data != NULL ) sigmaMoverM_data->Scale( 1./sigmaMoverM_data->Integral() );//re-scale to unity to get eff directly
+  std::cout << "out of loop" << std::endl;
   if ( sigmaMoverM_dy != NULL ) sigmaMoverM_dy->Scale( 1./sigmaMoverM_dy->Integral() );//re-scale to unity to get eff directly
-
+  std::cout << "out of loop" << std::endl;
+  
   if( sigmaMoverM_data != NULL && sigmaMoverM_dy != NULL )
     {
       int n_boundary_data = sigmaMoverM_data->FindFixBin(0.0085) - 1;
@@ -460,6 +463,7 @@ int main ( int argc, char* argv[] )
       std::cout << "-------------------------------------------" << std::endl;
     }
   
+  std::cout << "file creation" << std::endl;
   TFile* fh = new TFile("sigmaMoverM_histo.root", "recreate");
   if ( sigmaMoverM_data != NULL ) sigmaMoverM_data->Write("data");
   if ( sigmaMoverM_dy != NULL ) sigmaMoverM_dy->Write("dy");

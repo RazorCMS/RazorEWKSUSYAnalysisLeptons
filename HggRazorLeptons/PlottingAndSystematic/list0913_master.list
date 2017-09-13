@@ -1,10 +1,2 @@
 gammaJet /afs/cern.ch/user/j/jmao/work/public/releases/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/list0912_gammaJets.list
-diphoton /afs/cern.ch/user/j/jmao/work/public/releases/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/list0912_diphoton.list
-qcd /afs/cern.ch/user/j/jmao/work/public/releases/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/list0912_qcd.list
-ggH /afs/cern.ch/user/j/jmao/work/public/releases/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/list0912_ggH.list
-vbfH /afs/cern.ch/user/j/jmao/work/public/releases/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/list0912_vbfH.list
-vH /afs/cern.ch/user/j/jmao/work/public/releases/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/list0912_vH.list
-bbH /afs/cern.ch/user/j/jmao/work/public/releases/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/list0912_bbH.list
-ttH /afs/cern.ch/user/j/jmao/work/public/releases/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/list0912_ttH.list
-data /afs/cern.ch/user/j/jmao/work/public/releases/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/list0912_diphoton.list
-
+data /afs/cern.ch/user/j/jmao/work/public/releases/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/list0912_gammaJets.list
