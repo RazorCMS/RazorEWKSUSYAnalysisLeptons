@@ -16,7 +16,7 @@
 // D e f i n e  B i n n i n g
 //---------------------------
 //H
-int HggRazorClass::n_mgg   = 28;
+int HggRazorClass::n_mgg   = 57;
 float HggRazorClass::mgg_l = 103.;
 float HggRazorClass::mgg_h = 160.;
 
@@ -184,11 +184,13 @@ float lres_k[2] = { 1.0, 1.0};
 
 //DATA
 //GammaGamma
-TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 ) && (box ==5 || box == 6 || box == 7 || box == 8 || box == 9) ";
+TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 ) ";
+//TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 ) && (box ==5 || box == 6 || box == 7 || box == 8 || box == 9) ";
 
 //MC
 //GammaGamma
-TString cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (box ==5 || box == 6 || box == 7 || box == 8 || box == 9) ";
+TString cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 ";
+//TString cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (box ==5 || box == 6 || box == 7 || box == 8 || box == 9) ";
 
 
 //---------------
@@ -315,7 +317,7 @@ int main ( int argc, char* argv[] )
   TH1D* mc2 = new TH1D();
 
   int map_size = mapList.size();
-  const int nprocesses = 9;//mc+data
+  const int nprocesses = 8;//mc+data
   //check nprocesses and map_size consistency
   if( map_size != nprocesses )
     {
@@ -357,7 +359,8 @@ int main ( int argc, char* argv[] )
        
 
       //Diphoton with Signal
-      if ( !(process == Process::data || process == Process::bbH || process == Process::diphoton || process == Process::gammaJet || process ==Process::qcd
+      //if ( !(process == Process::data || process == Process::bbH || process == Process::diphoton || process == Process::gammaJet || process ==Process::qcd
+      if ( !(process == Process::data || process == Process::bbH || process == Process::diphoton || process == Process::gammaJet
 	     || process == Process::ggH  || process == Process::vbfH || process == Process::vH || process == Process::ttH) ) continue;
       //if ( !(process == Process::data || process == Process::gammaJet) ) continue;
       std::cout << "[INFO] PROCESS: " << processName << " ,process #: " << ctr << std::endl;
@@ -497,7 +500,8 @@ int main ( int argc, char* argv[] )
 	    //-----------------------
 	    //Scaling each MC process
 	    //-----------------------
-	    if ( _useKF && (histos[i].process == Process::gammaJet || histos[i].process == Process::qcd|| histos[i].process == Process::diphoton) ) h_s->Scale( k_f );
+	    //if ( _useKF && (histos[i].process == Process::gammaJet || histos[i].process == Process::qcd|| histos[i].process == Process::diphoton) ) h_s->Scale( k_f );
+	    if ( _useKF && (histos[i].process == Process::gammaJet || histos[i].process == Process::diphoton || histos[i].process == Process::ggH || histos[i].process == Process::vbfH || histos[i].process == Process::vH || histos[i].process == Process::bbH || histos[i].process == Process::ttH) ) h_s->Scale( k_f );
 	    /*if ( _useKF && (histos[i].process == Process::gammaJet || histos[i].process == Process::qcd || histos[i].process == Process::diphoton
 			    || histos[i].process == Process::tg || histos[i].process == Process::ttg || histos[i].process == Process::wgg
 			    || histos[i].process == Process::zgg) ) h_s->Scale( k_f );*/
