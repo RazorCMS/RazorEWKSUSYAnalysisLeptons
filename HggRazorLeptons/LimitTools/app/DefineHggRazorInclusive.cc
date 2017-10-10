@@ -119,7 +119,8 @@ int main( int argc, char* argv[] )
   TTree* smhTree = (TTree*)fsmh->Get("HggRazorLeptons");
   assert(smhTree);
 
-  TFile* fs = new TFile("/Users/cmorgoth/Work/data/SusyEWK/MC/TChiWH_HToGG_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_300_1_1pb_weighted.root");
+  //TFile* fs = new TFile("/Users/cmorgoth/Work/data/SusyEWK/MC/TChiWH_HToGG_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_300_1_1pb_weighted.root");
+  TFile* fs = new TFile("/Users/cmorgoth/Work/data/SusyEWK/MC/TChiHZ_HToGG_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_300_1pb_weighted.root");
   assert(fs);
   TTree* sTree = (TTree*)fs->Get("HggRazorLeptons");
   assert(sTree);
