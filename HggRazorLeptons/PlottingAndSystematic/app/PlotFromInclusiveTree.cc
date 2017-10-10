@@ -559,8 +559,8 @@ int main ( int argc, char* argv[] )
 	    //-----------------------
 	    //Scaling each MC process
 	    //-----------------------
-	    //if ( _useKF && (histos[i].process == Process::gammaJet || histos[i].process == Process::qcd|| histos[i].process == Process::diphoton) ) h_s->Scale( k_f );
-	    if ( _useKF && (histos[i].process == Process::gammaJet || histos[i].process == Process::diphoton || histos[i].process == Process::ggH || histos[i].process == Process::vbfH || histos[i].process == Process::vH || histos[i].process == Process::bbH || histos[i].process == Process::ttH) ) h_s->Scale( k_f );
+	    if ( _useKF && (histos[i].process == Process::gammaJet || histos[i].process == Process::qcd|| histos[i].process == Process::diphoton) ) h_s->Scale( k_f );
+	    //if ( _useKF && (histos[i].process == Process::gammaJet || histos[i].process == Process::diphoton || histos[i].process == Process::ggH || histos[i].process == Process::vbfH || histos[i].process == Process::vH || histos[i].process == Process::bbH || histos[i].process == Process::ttH) ) h_s->Scale( k_f );
 	    /*if ( _useKF && (histos[i].process == Process::gammaJet || histos[i].process == Process::qcd || histos[i].process == Process::diphoton
 			    || histos[i].process == Process::tg || histos[i].process == Process::ttg || histos[i].process == Process::wgg
 			    || histos[i].process == Process::zgg) ) h_s->Scale( k_f );*/
