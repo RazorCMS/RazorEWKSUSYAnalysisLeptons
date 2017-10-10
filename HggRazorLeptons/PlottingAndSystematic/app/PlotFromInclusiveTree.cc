@@ -331,10 +331,11 @@ int main ( int argc, char* argv[] )
   double lumi = 0;
   
   if (analysisTag == "Razor2015_76X") lumi = 2300;
-  //if (analysisTag == "Razor2016_80X") lumi = 4000;
   if (analysisTag == "Razor2016_80X") lumi = 35900.;
   
   std::cout << "[INFO]: running inclusive tree mode" << std::endl;
+  std::cout << "[INFO]: lumi = " << lumi/1000. << "1/fb"<< std::endl;
+  std::cout << "[INFO]: k-factor = " << k_f << std::endl;
   int ctr = 0;
   Histos histos[nprocesses];
 
