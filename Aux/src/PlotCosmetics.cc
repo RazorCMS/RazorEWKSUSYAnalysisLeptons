@@ -726,6 +726,15 @@ bool MakeStackPlot( THStack* s, TH1D* data, TH1D* mc, TString var, TString outNa
       pad1->SetLogy();
       pad1->Update();
     }
+  else if ( var == "ptlep" )
+    {
+      ratio->GetXaxis()->SetTitle("p^{l}_{T}");
+      s->GetYaxis()->SetTitle("events");
+      s->SetMaximum( 1e2*s->GetMaximum() );
+      s->SetMinimum( 1e-1 );
+      pad1->SetLogy();
+      pad1->Update();
+    }
   else if ( var == "sigmaMoverM" )
     {
       ratio->GetXaxis()->SetTitle("#sigma_{M}/M");
@@ -1130,6 +1139,11 @@ bool SetHistoStyle( TH1D* h, Process process )
       h->SetFillColor( kYellow - 4 );
       h->SetLineColor( kYellow - 4 );
     }
+   else if ( process == Process::wg )
+    {
+      h->SetFillColor( kYellow - 8 );
+      h->SetLineColor( kYellow - 8 );
+    }
   else if ( process == Process::znunu )
     {
       h->SetFillColor( kAzure - 2 );
@@ -1154,6 +1168,11 @@ bool SetHistoStyle( TH1D* h, Process process )
     {
       h->SetFillColor( kPink - 4 );
       h->SetLineColor( kPink - 4 );
+    }
+  else if ( process == Process::ttgg )
+    {
+      h->SetFillColor( kPink - 8 );
+      h->SetLineColor( kPink - 8 );
     }
   else if ( process == Process::tg )
     {
@@ -1262,6 +1281,11 @@ bool AddLegend( TH1D* h, TLegend* leg, Process process )
       leg->AddEntry( h, "W#gamma#gamma + jets", "f" );
       return true;
     }
+  else if ( process == Process::wg )
+    {
+      leg->AddEntry( h, "W#gamma + jets", "f" );
+      return true;
+    }
   else if ( process == Process::znunu )
     {
       leg->AddEntry( h, "Z(#nu#nu) + jets", "f" );
@@ -1280,6 +1304,11 @@ bool AddLegend( TH1D* h, TLegend* leg, Process process )
   else if ( process == Process::tt )
     {
       leg->AddEntry( h, "t#bar{t} + jets", "f" );
+      return true;
+    }
+  else if ( process == Process::ttgg )
+    {
+      leg->AddEntry( h, "t#bar{t}#gamma#gamma + jets", "f" );
       return true;
     }
   else if ( process == Process::ttg )

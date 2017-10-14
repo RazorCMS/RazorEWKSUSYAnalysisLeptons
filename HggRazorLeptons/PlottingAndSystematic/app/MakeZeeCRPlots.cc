@@ -146,6 +146,11 @@ int HggRazorClass::n_mt = 11;
 float HggRazorClass::mt_l = .0;
 float HggRazorClass::mt_h = 10;
 
+int HggRazorClass::n_ptlep = 20;
+float HggRazorClass::ptlep_l = .0;
+float HggRazorClass::ptlep_h = 400;
+
+
 //C u s t o m MR_RSQ_BINNING
 //--------------------------
 //HighPt

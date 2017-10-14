@@ -39,7 +39,7 @@ int main( int argc, char* argv[] )
 {
   gROOT->Reset();
 
-  TString kf = "1.80";
+  TString kf = "1.00";
   
   //-----------------
   //Selection TString
@@ -61,43 +61,74 @@ int main( int argc, char* argv[] )
       return -1;
     }
   
-  TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1Eta) <1.48 && abs(pho2Eta)<1.48 && (pho1Pt>40||pho2Pt>40)  && pho1Pt> 25. && pho2Pt>25. && MR >= 150. && t1Rsq >= 0.0 && box >= 5";
+  TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1Eta) <1.48 && abs(pho2Eta)<1.48 && (pho1Pt>40||pho2Pt>40)  && pho1Pt> 25. && pho2Pt>25. && MR >= 150. && t1Rsq >= 0.0";
   TString categoryCutString;
   TString massWindowCut;
   if (categoryMode == "highpt")
     {
-      categoryCutString = " && pTGammaGamma >= 110 ";
+      categoryCutString = " && pTGammaGamma > 110 && box > 4";
       massWindowCut     = " && mGammaGamma > 122.96 && mGammaGamma < 127.04";
+      kf = "1.638122742";
     }
   else if (categoryMode == "hzbb")
     {
-      categoryCutString = " && pTGammaGamma < 110 && ( abs(mbbH-125.) < 15. || ( abs(mbbH-125.) >= 15. && abs(mbbZ-91.) < 15. ) )";
+      categoryCutString = " && pTGammaGamma <= 110 && box > 4 && ( abs(mbbH-125.) < 15. || ( abs(mbbH-125.) >= 15. && abs(mbbZ-91.) < 15. ) )";
       massWindowCut     = " && mGammaGamma > 122.5 && mGammaGamma < 127.5";
+      kf = "2.7703660834";
     }
   else if ( categoryMode == "hbb" )
     {
-      categoryCutString = " && pTGammaGamma < 110 && abs(mbbH-125.) < 15.";
+      categoryCutString = " && pTGammaGamma <= 110 &&  box > 4 && abs(mbbH-125.) < 15.";
       massWindowCut     = " && mGammaGamma > 122.5 && mGammaGamma < 127.5";
+      kf = "2.7703660834";
     }
   else if ( categoryMode == "zbb" )
     {
-      categoryCutString = " && pTGammaGamma < 110 && ( abs(mbbH-125.) >= 15. && abs(mbbZ-91.) < 15. ) ";
+      categoryCutString = " && pTGammaGamma <= 110 &&  box > 4 && ( abs(mbbH-125.) >= 15. && abs(mbbZ-91.) < 15. ) ";
       massWindowCut     = " && mGammaGamma > 122.5 && mGammaGamma < 127.5";
+      kf = "2.8419774678";
     }
   else if (categoryMode == "highres")
     {
-      categoryCutString = " && pTGammaGamma < 110 && ( abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 ) && sigmaMoverM < 0.0085";
+      categoryCutString = " && pTGammaGamma <= 110 &&  box > 4 && ( abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 ) && sigmaMoverM < 0.0085";
       massWindowCut     = " && mGammaGamma > 122.98 && mGammaGamma < 127.02";
+      kf = "1.3490409433";
     }
   else if (categoryMode == "lowres")
     {
-      categoryCutString  = " && pTGammaGamma < 110 && ( abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 ) && sigmaMoverM >= 0.0085 ";
+      categoryCutString  = " && pTGammaGamma <= 110 &&  box > 4 && ( abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 ) && sigmaMoverM >= 0.0085 ";
       massWindowCut      = " && mGammaGamma > 120.0 && mGammaGamma < 130.00";
+      kf = "2.694296742";
+    }
+   else if (categoryMode == "onemu-highpt")
+    {
+      categoryCutString  = "  && box == 3 && lep1Pt>20 && MR > 150 && pTGammaGamma > 110. ";
+      massWindowCut      = " && mGammaGamma > 122.96 && mGammaGamma < 127.04";
+      kf = "1.0";
+    }
+   else if (categoryMode == "onemu-lowpt")
+    {
+      categoryCutString  = "  && box == 3 && lep1Pt>20 && MR > 150 && pTGammaGamma <= 110. ";
+      massWindowCut      = " && mGammaGamma > 120.0 && mGammaGamma < 130.00";
+      kf = "1.0";
+    }
+   else if (categoryMode == "oneele-highpt")
+    {
+      categoryCutString  = "  && box == 4 && lep1Pt>25 && MR > 150 && pTGammaGamma > 110. ";
+      massWindowCut      = " && mGammaGamma > 122.96 && mGammaGamma < 127.04";
+      kf = "1.0";
+    }
+   else if (categoryMode == "oneele-lowpt")
+    {
+      categoryCutString  = "  && box == 4 && lep1Pt>25 && MR > 150 && pTGammaGamma <= 110.";
+      massWindowCut      = " && mGammaGamma > 120.0 && mGammaGamma < 130.00";
+      kf = "1.0";
     }
   else if ( categoryMode == "inclusive" )
     {
       categoryCutString = " ";
       massWindowCut     = " && mGammaGamma > 122. && mGammaGamma < 129.0";
+      kf = "1.93951";
     }
   else
     {
@@ -109,7 +140,8 @@ int main( int argc, char* argv[] )
   massWindowCut = cut + massWindowCut;
 
   
-  TFile* fb = new TFile("/Users/cmorgoth/Work/data/SusyEWK/MC/NonRes_1_1pb_weighted.root");
+  TFile* fb = new TFile("/Users/cmorgoth/Work/data/SusyEWK/MC/Leptons/ALL_BKG_OneMuBox_1pb_weighted.root");
+  //TFile* fb = new TFile("/Users/cmorgoth/Work/data/SusyEWK/MC/QCD_BKG_1pb_weighted_RemovedPromptPhotons.root");
   assert(fb);
   TTree* bkgTree = (TTree*)fb->Get("HggRazorLeptons");
   assert(bkgTree);
@@ -119,8 +151,9 @@ int main( int argc, char* argv[] )
   TTree* smhTree = (TTree*)fsmh->Get("HggRazorLeptons");
   assert(smhTree);
 
-  //TFile* fs = new TFile("/Users/cmorgoth/Work/data/SusyEWK/MC/TChiWH_HToGG_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_300_1_1pb_weighted.root");
-  TFile* fs = new TFile("/Users/cmorgoth/Work/data/SusyEWK/MC/TChiHZ_HToGG_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_300_1pb_weighted.root");
+  TFile* fs = new TFile("/Users/cmorgoth/Work/data/SusyEWK/MC/TChiWH_HToGG_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_300_1_1pb_weighted.root");
+  //TFile* fs = new TFile("/Users/cmorgoth/Work/data/SusyEWK/MC/TChiHZ_HToGG_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_300_1pb_weighted.root");
+  //TFile* fs = new TFile("/Users/cmorgoth/Work/data/SusyEWK/MC/Leptons/TChiHH_HToGG_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_300_1pb_weighted.root");
   assert(fs);
   TTree* sTree = (TTree*)fs->Get("HggRazorLeptons");
   assert(sTree);
@@ -684,9 +717,9 @@ int main( int argc, char* argv[] )
   std::cout << "return myVec;\n}\n";
 
 
-  std::cout << "\\begin{table*}[htbH]\n\\begin{center}\n";
-  std::cout << "\\topcaption{" << categoryMode << " category binning. The non-resonant, "
-	    << "SM Higgs, and signal () expected yields for an integrated luminosity correspondint to 2.3~$\\mathrm{fb}^{-1}$ \\label{tab:binning-" << categoryMode << "}}\n";
+  std::cout << "\\begin{table*}[htb]\n\\begin{center}\n";
+  std::cout << "\\caption{" << categoryMode << " category binning. The non-resonant, "
+	    << "SM Higgs, and signal expected yields for an integrated luminosity corresponding to 80~$\\mathrm{fb}^{-1}$ \\label{tab:binning-" << categoryMode << "}}\n";
   std::cout << "\\def\\arraystretch{1.5}\n\\begin{tabular}{|c|c|c|c|}\n\\hline\n";
   std::cout << "$\\mathrm{M_{R}}\\otimes\\mathrm{R^{2}}$ & non-resonant (MC) & SM Higgs & Signal\\\\\n\\hline\n";
   for( auto tmp : myMap )
@@ -701,7 +734,7 @@ int main( int argc, char* argv[] )
       if ( Rsq_high > 1.0 ) Rsq_high  = 1.0;
       if ( MR_high > 9000.0 ) MR_high = 10000.0;
       
-      TString s = Form("%.0f-%.0f\\GeV $\\otimes$ %.3f-%.3f & %.2f & %.2f & %.2f \\\\", MR_low, MR_high, Rsq_low, Rsq_high, tmp.second.b_nr, tmp.second.b_smh, tmp.second.s);
+      TString s = Form("%.0f-%.0f GeV $\\otimes$ %.3f-%.3f & %.2f & %.2f & %.2f \\\\", MR_low, MR_high, Rsq_low, Rsq_high, tmp.second.b_nr, tmp.second.b_smh, tmp.second.s);
       std::cout << s << std::endl;
       /*std::cout << MR_low << "-" << MR_high << "\\GeV $\\otimes$ "
 		<< Rsq_low << "-"  << Rsq_high;

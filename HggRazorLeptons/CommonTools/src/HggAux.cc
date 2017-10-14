@@ -62,6 +62,7 @@ bool Histos::AssignHisto( HistoTypes htype, TH1F h )
   if ( htype == HistoTypes::njets ) njets = h;
   if ( htype == HistoTypes::met ) met = h;
   if ( htype == HistoTypes::mt ) mt = h;
+  if ( htype == HistoTypes::ptlep ) ptlep = h;
   if ( htype == HistoTypes::unrollHighPt ) unrollHighPt = h;
   if ( htype == HistoTypes::unrollHighRes ) unrollHighRes = h;
   return true;
@@ -101,6 +102,7 @@ TH1F Histos::GetHisto( HistoTypes htype )
   if ( htype == HistoTypes::njets ) return njets;
   if ( htype == HistoTypes::met ) return met;
   if ( htype == HistoTypes::mt ) return mt;
+  if ( htype == HistoTypes::ptlep ) return ptlep;
   if ( htype == HistoTypes::unrollHighPt ) return unrollHighPt;
   if ( htype == HistoTypes::unrollHighRes ) return unrollHighRes;
   return h;
@@ -139,6 +141,7 @@ std::string GetHistoTypesString( HistoTypes htype )
   if ( htype == HistoTypes::njets ) return "njets";
   if ( htype == HistoTypes::met ) return "met";
   if ( htype == HistoTypes::mt ) return "mt";
+  if ( htype == HistoTypes::ptlep ) return "ptlep";
   if ( htype == HistoTypes::unrollHighPt ) return "unrollHighPt";
   if ( htype == HistoTypes::unrollHighRes ) return "unrollHighRes";
   
@@ -225,6 +228,10 @@ std::string GetProcessString( Process process )
     {
       return "w";
     }
+   else if ( process == Process::wg )
+     {
+       return "wg";
+     }
    else if ( process == Process::wgg )
      {
        return "wgg";

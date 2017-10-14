@@ -432,6 +432,7 @@ void HggRazorSystematics::Loop()
 	  ISRCorrValue = PtISRCorrection[ISRPtHist->GetXaxis()->FindFixBin(ptISR)-1];
 	}
       }
+      //ISRCorrValue = 1.0;
 
       float commonW = 0;
       if (_analysisTag == "Razor2015_76X")

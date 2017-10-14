@@ -53,7 +53,7 @@ public:
   //MET and Lepton
   bool InitMET( );
   bool InitMT( );
-  
+  bool InitLepPt( );
   
   bool InitNjets( );
   bool InitMrRsqHisto( );
@@ -258,7 +258,14 @@ private:
   static float mt_l;
   static float mt_h;
   TH1F* h_mt;
-  
+
+  //----------
+  //Leptons
+  //----------
+  static int   n_ptlep;
+  static float ptlep_l;
+  static float ptlep_h;
+  TH1F* h_ptlep;
 
   //2D Histos
   TH2F* h_mr_rsq;

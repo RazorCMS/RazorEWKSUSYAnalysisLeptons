@@ -71,6 +71,7 @@ HggRazorClass::HggRazorClass( TTree* tree, TString processName, TString boxName,
   //met+mt
   InitMET();
   InitMT();	     
+  InitLepPt();
 };
 
 HggRazorClass::~HggRazorClass()
@@ -422,6 +423,19 @@ bool HggRazorClass::InitMT( )
   return true;
 };
 
+//MT
+bool HggRazorClass::InitLepPt( )
+{
+  if ( n_ptlep == 0 || ptlep_l == ptlep_h )
+    {
+      std::cerr << "[ERROR]: Lepton Pt histogram parameters not initialized" << std::endl;
+      return false;
+    }
+  if ( _debug ) std::cout << "[DEBUG]: Initialized Lepton Pt histogram" << std::endl;
+  h_ptlep = new TH1F( this->processName + "_" + this->boxName + "_ptlep", "ptlep", n_ptlep, ptlep_l, ptlep_h);
+  return true;
+};
+
 //2D Histos
 bool HggRazorClass::InitMrRsqHisto( )
 {
@@ -476,7 +490,8 @@ void HggRazorClass::Loop()
   //SigmaMoverM Reweighting 
   //---------------------------------------
   //TFile* fsmom = new TFile("/Users/cmorgoth/Work/git/RazorEWKSUSYAnalysis/HggRazor/PlottingAndSystematic/data/SigmaMoverM_ZToHScaleFactor.root");
-  TFile* fsmom = new TFile("/afs/cern.ch/user/j/jmao/work/public/releases/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/data/SigmaMoverM_ZToHScaleFactor.root");
+  //TFile* fsmom = new TFile("/afs/cern.ch/user/j/jmao/work/public/releases/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/data/SigmaMoverM_ZToHScaleFactor.root");
+  TFile* fsmom = new TFile("/Users/cmorgoth/git/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/SigmaMoverM_ZToHScaleFactor.root");
   TH1F* hSigmaMoverM_reweight = (TH1F*)fsmom->Get("SigmaMoverM_ZToHScaleFactor");
   if ( hSigmaMoverM_reweight == NULL )
     {
@@ -521,8 +536,8 @@ void HggRazorClass::Loop()
       bool isFake = false;
       bool prompt_prompt = false;
       bool prompt_fake = false;
-      if ( !((abs(pho1MotherID) >= 1 && abs(pho1MotherID) <= 6) || pho1MotherID == 21 || pho1MotherID == 2212) ) pho1_isFake = true;
-      if ( !((abs(pho2MotherID) >= 1 && abs(pho2MotherID) <= 6) || pho2MotherID == 21 || pho2MotherID == 2212) ) pho2_isFake = true;
+      if ( !((abs(pho1MotherID) >= 1 && abs(pho1MotherID) <= 6) || pho1MotherID == 21 || pho1MotherID == 2212 || abs(pho1MotherID) == 11 || abs(pho1MotherID) == 13 || abs(pho1MotherID) == 15) ) pho1_isFake = true;
+      if ( !((abs(pho2MotherID) >= 1 && abs(pho2MotherID) <= 6) || pho2MotherID == 21 || pho2MotherID == 2212) || abs(pho1MotherID) == 11 || abs(pho1MotherID) == 13 || abs(pho1MotherID) == 15) pho2_isFake = true;
       if ( pho1_isFake && pho2_isFake ) isFakeFake = true;
       if ( pho1_isFake || pho2_isFake ) isFake = true;
       if ( !pho1_isFake && !pho2_isFake ) prompt_prompt = true;
@@ -544,6 +559,13 @@ void HggRazorClass::Loop()
 	  continue;
 	}
 
+      //remove events which are not fake from WG and TTG
+      if ( prompt_prompt && (this->processName == "wg" || this->processName == "ttg") )
+	{
+	  //std::cout << "[INFO]: avoding prompt-fake and prompt-prompt in qcd sample" << std::endl;
+	  total_rm += w;
+	  continue;
+	}
       
       h_mgg->Fill( mGammaGamma, w );
       h_ptgg->Fill( pTGammaGamma, w );
@@ -581,6 +603,8 @@ void HggRazorClass::Loop()
       h_met->Fill( t1MET, w );
       //mt
       h_mt->Fill( lep1MT, w );
+      //ptlep
+      h_ptlep->Fill( lep1Pt, w );
       if ( pTGammaGamma > 110. ) h_unroll_highPt->Fill( GetHighPtGB(MR, t1Rsq), w);
       if ( pTGammaGamma < 110. ) h_unroll_highRes->Fill( GetHighResGB(MR, t1Rsq), w);
       if ( h_mr_rsq_c != NULL ) h_mr_rsq_c->Fill( MR, Rsq, w );
@@ -982,6 +1006,7 @@ TH1F HggRazorClass::GetHisto( HistoTypes htype )
   if ( htype == HistoTypes::njets ) return *h_njets;
   if ( htype == HistoTypes::met ) return *h_met;
   if ( htype == HistoTypes::mt ) return *h_mt;
+  if ( htype == HistoTypes::ptlep ) return *h_ptlep;
   
   if ( htype == HistoTypes::unrollHighPt ) return *h_unroll_highPt;
   if ( htype == HistoTypes::unrollHighRes ) return *h_unroll_highRes;

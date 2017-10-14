@@ -101,15 +101,6 @@ int main( int argc, char* argv[] )
       return -1;
     }
 
-  //-----------------
-  //Signal Type
-  //-----------------
-  std::string signalType = ParseCommandLine( argc, argv, "-signalType=" );
-  if ( signalType == "" )
-    {
-      std::cerr << "[ERROR]: please provide the signalType. Use --signalType=<FullSim,FastSim>" << std::endl;
-      return -1;
-    } 
   
   //-----------------
   //pTGammaGamma cut
@@ -130,6 +121,21 @@ int main( int argc, char* argv[] )
       return -1;
     } 
   
+
+  //-----------------
+  //EWK SUSY Signals
+  //-----------------
+  bool isEWKSUSYSignal = false;
+  std::string isEWKSUSYSignalString = ParseCommandLine( argc, argv, "-EWKSUSYSignal=" );
+  if ( isEWKSUSYSignalString == "" )
+    {
+      std::cerr << "[ERROR]: please specify if signal is EWK SUSY Signal. Use --EWKSUSYSignal=<0,1>" << std::endl;
+      return -1;
+    } 
+  if (isEWKSUSYSignalString == "1" || isEWKSUSYSignalString == "true" ) isEWKSUSYSignal = true;
+
+
+
   //----------------------
   //SigmaMoverM correction
   //----------------------
@@ -183,10 +189,15 @@ int main( int argc, char* argv[] )
   else if (categoryMode == "highptlowres") categoryCutString = " && pTGammaGamma >= 110 && sigmaMoverM >= 0.0085";
 
   TString triggerCut = " && ( HLTDecision[82] || HLTDecision[83] || HLTDecision[93] ) ";
-  // TString metFilterCut = " && (Flag_HBHENoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1)";
   TString metFilterCut = " && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1)";
-  //TString triggerCut = "";
-  //TString metFilterCut = "";
+  
+  //For fastsim signals, turn off trigger and met filters
+  if (isEWKSUSYSignal) 
+    {
+      triggerCut = "";
+      metFilterCut = "";
+    }
+  
 
 
   if ( analysisTag == "Razor2015_76X" ) 
@@ -195,13 +206,7 @@ int main( int argc, char* argv[] )
     } 
   else if ( analysisTag == "Razor2016_80X" ) 
     {
-      if ( signalType == "FullSim" ) cut = cut + categoryCutString + triggerCut + metFilterCut;//FullSim
-      else if ( signalType == "FastSim" ) cut = cut + categoryCutString;//FastSim
-      else
-	{
-	  std::cerr << "[ERROR]: please provide a valid signalType: FullSim, FastSim" << std::endl;
-	  return -1;
-	}
+      cut = cut + categoryCutString + triggerCut + metFilterCut;//FullSim
     } 
   else 
     {
@@ -277,7 +282,9 @@ int main( int argc, char* argv[] )
   TH2Poly* misstagUpS   = new TH2Poly("misstagUpS", "", 150, 10000, 0, 1 );//signal
   TH2Poly* misstagDownS = new TH2Poly("misstagDownS", "", 150, 10000, 0, 1 );//signal
   
-  
+  TH2Poly* genMetS = new TH2Poly("genMet_Signal", "", 150, 10000, 0, 1 );//signal
+  TH2Poly* pileupS = new TH2Poly("pileup_Signal", "", 150, 10000, 0, 1 );//signal
+
   TH2Poly* pdf[60];
   TH2Poly* pdfS[60];
   for ( int i = 0; i < 60; i++ )
@@ -342,6 +349,9 @@ int main( int argc, char* argv[] )
       misstagDownS->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
       //pdf
       for( int i = 0; i < 60; i++ ) pdfS[i]->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
+      //fastsim systematic
+      genMetS->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
+      pileupS->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
     }
     
   std::string process, rootFileName;
@@ -358,7 +368,7 @@ int main( int argc, char* argv[] )
       //------------------------
       //Getting TTree and Histos
       //------------------------
-      TTree* tree = (TTree*)fin->Get("HggRazor");
+      TTree* tree = (TTree*)fin->Get("HggRazorLeptons");
       assert( tree );
       TH1F* NEvents = (TH1F*)fin->Get("NEvents");
       if ( process != "signal" ) assert( NEvents );
@@ -368,8 +378,13 @@ int main( int argc, char* argv[] )
       if ( process != "signal" ) assert( SumPdfWeights );     
       TH1F* ISRHist = (TH1F*)fin->Get("NISRJets");
       if ( process == "signal" ) assert( ISRHist );
-
-      TString tmpName = Form("tmp_%d.root", rand());
+      TH1F* ISRPtHist = (TH1F*)fin->Get("PtISR");
+      if ( isEWKSUSYSignal && process == "signal" ) assert( ISRPtHist );
+      TH1F* NPVHist = (TH1F*)fin->Get("NPV");
+      if ( isEWKSUSYSignal && process == "signal" ) assert( NPVHist );
+      
+      
+      TString tmpName = Form("%s_tmp_%d.root", outputFile.c_str(), rand());
       TFile* tmp = new TFile( tmpName , "RECREATE");
       TTree* cutTree = tree->CopyTree( cut );
       assert( cutTree );
@@ -378,7 +393,7 @@ int main( int argc, char* argv[] )
       //---------------------------
       //Create HggSystematic object
       //---------------------------
-      HggRazorSystematics* hggSys = new HggRazorSystematics( cutTree, currentProcess, binCategory, analysisTag, _debug, _debug );
+      HggRazorSystematics* hggSys = new HggRazorSystematics( cutTree, currentProcess, binCategory, analysisTag, _debug, isEWKSUSYSignal, _debug );
       hggSys->SetLumi(lumi);
       //hggSys->PrintBinning();
       //hggSys->SetBinningMap( binningMap );
@@ -389,6 +404,10 @@ int main( int argc, char* argv[] )
       hggSys->SetFacScaleWeightsHisto( SumScaleWeights );
       hggSys->SetPdfWeightsHisto( SumPdfWeights );
       hggSys->SetISRHisto( ISRHist );
+      hggSys->SetNPVHisto( NPVHist );
+      hggSys->LoadNPVTarget("/Users/cmorgoth/git/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/NPVTarget_2016.root");
+      if ( isEWKSUSYSignal ) hggSys->SetISRPtHisto( ISRPtHist );
+      
       hggSys->Loop();
       for ( auto tmp: myVectBinning )
 	{
@@ -437,6 +456,10 @@ int main( int argc, char* argv[] )
 		{
 		  pdfS[ipdf]->SetBinContent( bin, hggSys->GetPdfSystematic( ipdf, tmp[0], tmp[1] ) );
 		}
+	      
+	      //FastSim
+	      genMetS->SetBinContent( bin, hggSys->GetGenMetSystematic( tmp[0], tmp[1] ) );
+	      pileupS->SetBinContent( bin, hggSys->GetNominalError( tmp[0], tmp[1] ) );
 	    }
 	  else
 	    {
@@ -478,32 +501,33 @@ int main( int argc, char* argv[] )
        int bin   = nominal->FindBin( tmp[0]+10, tmp[1]+0.0001 );
        float nom = nominal->GetBinContent( bin );
        float nomS = nominalS->GetBinContent( bin );
-       //std::cout << "nomS: " << nomS << std::endl;
+       std::cout << "nomS: " << nomS << std::endl;
+       std::cout << "nomB: " << nom << std::endl;
        float totalFractionalUncertaintySqr = 0;
 
        //ISR systematic
-       ISRUpS->SetBinContent( bin, ISRUpS->GetBinContent(bin)/nomS );
-       ISRDownS->SetBinContent( bin, ISRDownS->GetBinContent(bin)/nomS );
+       ISRUpS->SetBinContent( bin, (nomS > 0) ? ISRUpS->GetBinContent(bin)/nomS: 0 );
+       ISRDownS->SetBinContent( bin, (nomS > 0) ? ISRDownS->GetBinContent(bin)/nomS: 0 );
 
        //Fac
-       facScaleUpS->SetBinContent( bin, facScaleUpS->GetBinContent(bin)/nomS );
-       facScaleDownS->SetBinContent( bin, facScaleDownS->GetBinContent(bin)/nomS );
+       facScaleUpS->SetBinContent( bin, (nomS > 0) ? facScaleUpS->GetBinContent(bin)/nomS : 0);
+       facScaleDownS->SetBinContent( bin, (nomS > 0) ? facScaleDownS->GetBinContent(bin)/nomS : 0 );
        //Ren
-       renScaleUpS->SetBinContent( bin, renScaleUpS->GetBinContent(bin)/nomS );
-       renScaleDownS->SetBinContent( bin, renScaleDownS->GetBinContent(bin)/nomS );
+       renScaleUpS->SetBinContent( bin, (nomS > 0) ? renScaleUpS->GetBinContent(bin)/nomS : 0 );
+       renScaleDownS->SetBinContent( bin, (nomS > 0) ? renScaleDownS->GetBinContent(bin)/nomS : 0 );
        //facRen
-       facRenScaleUpS->SetBinContent( bin, facRenScaleUpS->GetBinContent(bin)/nomS );
-       facRenScaleDownS->SetBinContent( bin, facRenScaleDownS->GetBinContent(bin)/nomS );
+       facRenScaleUpS->SetBinContent( bin, (nomS > 0) ? facRenScaleUpS->GetBinContent(bin)/nomS : 0 );
+       facRenScaleDownS->SetBinContent( bin, (nomS > 0) ? facRenScaleDownS->GetBinContent(bin)/nomS : 0 );
        //JES
-       JesUpS->SetBinContent( bin, JesUpS->GetBinContent( bin )/nomS );
-       JesDownS->SetBinContent( bin, JesDownS->GetBinContent( bin )/nomS );
+       JesUpS->SetBinContent( bin, (nomS > 0) ? JesUpS->GetBinContent( bin )/nomS : 0 );
+       JesDownS->SetBinContent( bin, (nomS > 0) ? JesDownS->GetBinContent( bin )/nomS : 0 );
 
        //btag
-       btagUpS->SetBinContent( bin, btagUpS->GetBinContent( bin )/nomS );
-       btagDownS->SetBinContent( bin, btagDownS->GetBinContent( bin )/nomS );
+       btagUpS->SetBinContent( bin, (nomS > 0) ? btagUpS->GetBinContent( bin )/nomS : 0 );
+       btagDownS->SetBinContent( bin, (nomS > 0) ? btagDownS->GetBinContent( bin )/nomS : 0 );
        //misstag
-       misstagUpS->SetBinContent( bin, misstagUpS->GetBinContent( bin )/nomS );
-       misstagDownS->SetBinContent( bin, misstagDownS->GetBinContent( bin )/nomS );
+       misstagUpS->SetBinContent( bin, (nomS > 0) ? misstagUpS->GetBinContent( bin )/nomS : 0 );
+       misstagDownS->SetBinContent( bin, (nomS > 0) ? misstagDownS->GetBinContent( bin )/nomS : 0 );
 
        outf << tmp[4] << "\t" << categoryMode << "\t" << tmp[0] << "\t" << tmp[2] << " \t" << tmp[1] << "\t" << tmp[3] << "\t"
 	    << nominal->GetBinContent( bin ) << "\t"
@@ -545,10 +569,39 @@ int main( int argc, char* argv[] )
        
        for( int ipdf = 0; ipdf < 60; ipdf++ )
 	 {
-	   if ( ipdf < 59 ) outf << pdfS[ipdf]->GetBinContent( bin )/nomS << "\t";
-	   else outf << pdfS[ipdf]->GetBinContent( bin )/nomS << "\n";
+	   if ( ipdf < 59 ) outf << ((nomS > 0) ? pdfS[ipdf]->GetBinContent( bin )/nomS : 0) << "\t";
+	   else outf << ((nomS > 0) ? pdfS[ipdf]->GetBinContent( bin )/nomS : 0) << "\t";
 	 }
       
+       //Normalizing FastSIm
+       if ( (nomS > 0) ) {
+	 if (genMetS->GetBinContent( bin )/nomS <= -1) {
+	   genMetS->SetBinContent( bin, -0.99);
+	 } else {
+	   genMetS->SetBinContent( bin, (nomS > 0) ? genMetS->GetBinContent( bin )/nomS : 0 );
+	 }
+	 if (pileupS->GetBinContent( bin )/nomS <= -1) {
+	   pileupS->SetBinContent( bin, -0.99);
+	 } else {
+	   pileupS->SetBinContent( bin, (nomS > 0) ? pileupS->GetBinContent( bin )/nomS : 0 );
+	 }
+       } else {
+	 genMetS->SetBinContent( bin, 0);
+	 pileupS->SetBinContent( bin, 0 );
+       }
+
+       
+       if ( isEWKSUSYSignal ) 
+	 {
+	   outf << genMetS->GetBinContent( bin ) << "\t";
+	   outf << pileupS->GetBinContent( bin ) << "\t";
+	 } 
+       else 
+	 {
+	   outf << "0.0" << "\t";
+	   outf << "0.0" << "\t";
+	 }
+       
        std::cout << "Bin : " << bin << " " << tmp[0] << " " << tmp[1] << " " << tmp[2] << " " << tmp[3] << " : "
 	    << nom << " +/- " << 100*sqrt(totalFractionalUncertaintySqr) << "%\n";
  

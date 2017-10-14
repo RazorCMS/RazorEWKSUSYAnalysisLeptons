@@ -31,7 +31,7 @@ TARGET12 = GetSigmaMoverM_Correction
 TARGET13 = GetHggRazorSystematicsQuadratureFaster
 TARGET14 = GetHggRazorPull
 TARGET15 = GetHggLeptonRazorSMH_BkgTable 
-
+TARGET16 = copyTree
 
 SRC = app/PlotCustomMrRsq.cc $(CommonTools)/src/HggAux.cc $(Aux)/src/CommandLineInput.cc $(Aux)/src/TChainTools.cc $(Aux)/src/PlotCosmetics.cc
 SRC2 = app/PlotFromTree.cc $(CommonTools)/src/HggTree.cc $(Selection)/src/HggRazorClass.cc $(CommonTools)/src/HggAux.cc $(Aux)/src/CommandLineInput.cc $(Aux)/src/TChainTools.cc $(Aux)/src/PlotCosmetics.cc
@@ -50,7 +50,7 @@ SRC12 = app/GetSigmaMoverM_Correction.cc $(CommonTools)/src/HggTree.cc $(Selecti
 SRC13 = app/GetHggRazorSystematicsQuadratureFaster.cc $(CommonTools)/src/HggRazorSystematics.cc $(CommonTools)/src/HggTree.cc $(CommonTools)/src/HggAux.cc $(Aux)/src/CommandLineInput.cc
 SRC14 = app/GetHggRazorPullTable.cc $(CommonTools)/src/HggRazorSystematics.cc $(CommonTools)/src/HggTree.cc $(CommonTools)/src/HggAux.cc $(Aux)/src/CommandLineInput.cc $(FitTools)/src/DefinePdfs.cc
 SRC15 = app/GetHggLeptonRazorSMH_BkgTable.cc $(CommonTools)/src/HggRazorSystematics.cc $(CommonTools)/src/HggTree.cc $(CommonTools)/src/HggAux.cc $(Aux)/src/CommandLineInput.cc $(FitTools)/src/DefinePdfs.cc
-
+SRC16 = app/copyTree.cc
 
 OBJ  = $(SRC:.cc=.o)
 	OBJ2 = $(SRC2:.cc=.o)
@@ -69,17 +69,18 @@ OBJ9 = $(SRC9:.cc=.o)
 OBJ13 = $(SRC13:.cc=.o)
 	OBJ14 = $(SRC14:.cc=.o)
 OBJ15 = $(SRC15:.cc=.o)
+OBJ16 = $(SRC16:.cc=.o)
 
-all : $(TARGET) $(TARGET2) $(TARGET3) $(TARGET12) $(TARGET11) $(TARGET10) $(TARGET4) $(TARGET5) $(TARGET6) $(TARGET7) $(TARGET8) $(TARGETA) $(TARGETB) $(TARGET9) $(TARGET13) $(TARGET14) $(TARGET15)
+all : $(TARGET) $(TARGET2) $(TARGET3) $(TARGET12) $(TARGET11) $(TARGET10) $(TARGET4) $(TARGET5) $(TARGET6) $(TARGET7) $(TARGET8) $(TARGETA) $(TARGETB) $(TARGET9) $(TARGET13) $(TARGET14) $(TARGET15) $(TARGET16)
 
 #comp : $(TARGETA) $(TARGETB) $(TARGET9)
 comp : $(TARGET9)
 
 $(TARGET) : $(OBJ)
-		$(LD) $(CPPFLAGS) -o $(TARGET) $(OBJ) $(LDFLAGS)
-			@echo $@
-				@echo $<
-					@echo $^
+	$(LD) $(CPPFLAGS) -o $(TARGET) $(OBJ) $(LDFLAGS)
+	@echo $@
+	@echo $<
+	@echo $^
 
 $(TARGET2) : $(OBJ2)
 		$(LD) $(CPPFLAGS) -o $(TARGET2) $(OBJ2) $(LDFLAGS)
@@ -166,9 +167,16 @@ $(TARGET15) : $(OBJ15)
 				@echo $<
 					@echo $^
 
+
+$(TARGET16) : $(OBJ16)
+	$(LD) $(CPPFLAGS) -o $(TARGET16) $(OBJ16) $(LDFLAGS)
+	@echo $@
+	@echo $<
+	@echo $^
+
 %.o : %.cc
 		$(CXX) $(CPPFLAGS) -o $@ -c $<
 			@echo $@
 				@echo $<
 clean :
-	rm -f *.o app/*.o src/*.o $(Selection)/src/*.o $(CommonTools)/src/*.o $(Aux)/src/*.o $(TARGET) $(TARGET2) $(TARGET3) $(TARGET10) $(TARGET4) $(TARGET5) $(TARGET6) $(TARGET7) $(TARGET8) $(TARGET9) $(TARGETA) $(TARGETB) $(TARGET11) $(TARGET12) $(TARGET13) $(TARGET14) $(TARGET15) *~
+	rm -f *.o app/*.o src/*.o $(Selection)/src/*.o $(CommonTools)/src/*.o $(Aux)/src/*.o $(TARGET) $(TARGET2) $(TARGET3) $(TARGET10) $(TARGET4) $(TARGET5) $(TARGET6) $(TARGET7) $(TARGET8) $(TARGET9) $(TARGETA) $(TARGETB) $(TARGET11) $(TARGET12) $(TARGET13) $(TARGET14) $(TARGET15) $(TARGET16) *~
