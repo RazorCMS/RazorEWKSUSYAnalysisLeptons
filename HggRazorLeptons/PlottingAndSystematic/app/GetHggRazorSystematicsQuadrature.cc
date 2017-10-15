@@ -146,6 +146,7 @@ int main( int argc, char* argv[] )
   //Load Binning
   //-----------------
   std::vector<Bin> binVector;
+  //std::cout << binDefinitionFilename << std::endl;
   std::ifstream binDefFile( binDefinitionFilename.c_str(), std::fstream::in );
   if ( binDefFile.is_open() ) {
     float x1, x2, y1, y2;
@@ -170,23 +171,22 @@ int main( int argc, char* argv[] )
 
 
   TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1Eta) <1.48 && abs(pho2Eta)<1.48 && (pho1Pt>40||pho2Pt>40)  && pho1Pt> 25. && pho2Pt>25.";
-  if (usePtGammaGamma == "yes") {
-      cut = cut + " && pTGammaGamma > 20 ";
-  }
 
+  //--------------------------
+  //Category CUT Strings
+  //--------------------------
   TString categoryCutString;
-  if (categoryMode == "highpt") categoryCutString = " && pTGammaGamma >= 110 ";
-  else if (categoryMode == "hzbb") categoryCutString = " && pTGammaGamma < 110 && ( abs(mbbH_L-125.) < 15. || ( abs(mbbH_L-125.) >= 15. && abs(mbbZ_L-91.) < 15 ) )";
-  else if (categoryMode == "highres") categoryCutString = " && pTGammaGamma < 110 && abs(mbbH_L-125.) >= 15 && abs(mbbZ_L-91.) >= 15 && sigmaMoverM < 0.0085";
-  else if (categoryMode == "lowres") categoryCutString  = " && pTGammaGamma < 110 && abs(mbbH_L-125.) >= 15 && abs(mbbZ_L-91.) >= 15 && sigmaMoverM >= 0.0085 ";
-  else if (categoryMode == "inclusive") categoryCutString = "";
-  // combined highres / lowres box
-  else if (categoryMode == "highreslowres") categoryCutString = " && pTGammaGamma < 110 && abs(mbbH_L-125.) >= 15 && abs(mbbZ_L-91.) >= 15";
-  else if (categoryMode == "highpthighres") categoryCutString = " && pTGammaGamma >= 110 && sigmaMoverM < 0.0085";
-  else if (categoryMode == "highptlowres") categoryCutString = " && pTGammaGamma >= 110 && sigmaMoverM >= 0.0085";
-  else if (categoryMode == "inclusiveElectron") categoryCutString = " && box == 3 ";
-  else if (categoryMode == "inclusiveMuon") categoryCutString = " && box == 2";
-  else if (categoryMode == "twoLeptons") categoryCutString = " && (box == 0 || box == 1)";
+  if (categoryMode == "highpt") categoryCutString          = " && pTGammaGamma >= 110 && box > 4 ";
+  else if (categoryMode == "hbb") categoryCutString        = " && pTGammaGamma < 110 && abs(mbbH-125.) < 15. && box > 4";
+  else if (categoryMode == "zbb") categoryCutString        = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15. && abs(mbbZ-91.) < 15. && box > 4";
+  else if (categoryMode == "highres") categoryCutString    = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM < 0.0085 && box > 4";
+  else if (categoryMode == "lowres") categoryCutString     = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM >= 0.0085 && box > 4";
+  else if (categoryMode == "muhighpt") categoryCutString   = " && pTGammaGamma >= 110 && box == 3 && lep1Pt > 20. ";
+  else if (categoryMode == "mulowpt") categoryCutString    = " && pTGammaGamma < 110 && box == 3 && lep1Pt > 20. ";
+  else if (categoryMode == "elehighpt") categoryCutString  = " && pTGammaGamma >= 110 && box == 4 && lep1Pt > 25. ";
+  else if (categoryMode == "elelowpt") categoryCutString   = " && pTGammaGamma < 110 && box == 4 && lep1Pt > 25. ";
+  else if (categoryMode == "twoleptons") categoryCutString = " && (box == 0 || box == 1 || box == 2)";
+  else if (categoryMode == "inclusive") categoryCutString  = "";
 
   TString triggerCut = " && ( HLTDecision[82] || HLTDecision[83] || HLTDecision[93] ) ";
   TString metFilterCut = " && (Flag_HBHENoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1)";
@@ -240,12 +240,14 @@ int main( int argc, char* argv[] )
 */
   myVectBinning = SetBinning(binVector, binCategory);
 
+
+  /*
   if (!(binCategory == "inclusiveElectron" || binCategory == "inclusiveMuon" || binCategory == "twoLeptons"))
      {
        std::cerr << "[ERROR]: category is not <inclusiveElectron/inclusiveMuon/twoLeptons>; quitting" << std::endl;
        return -1;
      } 
-
+  */
   TH2Poly* nominal  = new TH2Poly("nominal_SMH", "", 0, 10000, 0, 1 );
   TH2Poly* nominalS = new TH2Poly("nominal_Signal", "", 0, 10000, 0, 1 );
 
@@ -387,7 +389,7 @@ int main( int argc, char* argv[] )
       hggSys->SetPdfWeightsHisto( SumPdfWeights );
       hggSys->SetISRHisto( ISRHist );
       hggSys->SetNPVHisto( NPVHist );
-      hggSys->LoadNPVTarget("root://eoscms:///eos/cms/store/group/phys_susy/razor/Run2Analysis/ScaleFactors/PileupWeights/NPVTarget_2016.root");
+      hggSys->LoadNPVTarget("/Users/cmorgoth/git/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/NPVTarget_2016.root");
       if ( isEWKSUSYSignal ) hggSys->SetISRPtHisto( ISRPtHist );
       hggSys->Loop();
       for ( auto tmp: myVectBinning )
