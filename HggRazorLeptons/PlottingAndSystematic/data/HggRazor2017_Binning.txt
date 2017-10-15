@@ -34,4 +34,4 @@
 33	150	10000	0	0.055	elelowpt	singleExp
 34	150	250	0.055	0.125	elelowpt	singleExp
 35	250	10000	0.055	0.055	elelowpt	singleExp
-36      0	10000   0   	1	twolepton	singleExp
+36      0	10000   0   	1	twoleptons	singleExp
