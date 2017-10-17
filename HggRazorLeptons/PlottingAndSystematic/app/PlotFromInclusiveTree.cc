@@ -274,11 +274,6 @@ TString mggCut = "1";
 
 int main ( int argc, char* argv[] )
 {
-  
-  HggRazorClass::n_mgg   = 57;
-  HggRazorClass::mgg_l = 103.;
-  HggRazorClass::mgg_h = 160.;
-  
   std::cout << "[INFO]: Initializing program" << std::endl;
   std::cout << "[INFO]: Hgg Branching Fraction = " << HggRazorClass::GetHggBF() << std::endl;
   
@@ -289,6 +284,13 @@ int main ( int argc, char* argv[] )
     {
       std::cerr << "[ERROR]: please provide an input file using --inputFile=<path_to_file>" << std::endl;
       return -1;
+    }
+  
+  std::string inputType = ParseCommandLine( argc, argv, "-inputType=" );
+  if (  inputType == "" )
+    {
+      std::cerr << "[WARNING]: please provide an input type using --inputType=<diphoton/leptons/Zee>" << std::endl;
+      inputType = "diphoton";
     }
   
   std::string analysisTag = ParseCommandLine( argc, argv, "-analysisTag=" );
@@ -345,8 +347,8 @@ int main ( int argc, char* argv[] )
   //T r i g g e r   C u t 
   //---------------------
   
-  TString triggerCut_80X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";//diphoton triggers
-  TString triggerCut_76X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";
+  //TString triggerCut_80X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";//diphoton triggers
+  //TString triggerCut_76X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";
   
   //TString triggerCut_80X = "&& (  HLTDecision[27] || HLTDecision[44] || HLTDecision[45] || HLTDecision[217] )";//dielectron triggers
   //TString triggerCut_76X = "&& (  HLTDecision[27] || HLTDecision[44] || HLTDecision[45] || HLTDecision[217] )";
@@ -361,13 +363,89 @@ int main ( int argc, char* argv[] )
   //-------------------------------------------
   //Define tree cuts based on category;
   //-------------------------------------------
-  //data
-  //GammaGamma
-  TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 )";
-  //MC
-  //GammaGamma
-  TString cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1";
-  
+  TString cut; 
+  TString cut_mc; 
+
+  TString triggerCut_80X;
+  TString triggerCut_76X; 
+
+  int nprocesses;
+
+  if ( inputType == "diphoton" )
+  {
+          //data
+          //GammaGamma
+          cut = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 )";
+          //MC
+          //GammaGamma
+          cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1";
+
+          //---------------------
+          //T r i g g e r   C u t 
+          //---------------------
+
+          triggerCut_80X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";//diphoton triggers
+          triggerCut_76X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";
+
+          // D e f i n e  B i n n i n g
+          //---------------------------
+          //H 
+          //HggRazorClass::n_mgg = 57;
+          //HggRazorClass::mgg_l = 103.;
+          //HggRazorClass::mgg_h = 160.;
+
+          nprocesses = 8;//mc+data
+  }
+  else if ( inputType == "leptons" )
+  {
+          //data
+          //GammaGamma
+          cut = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 )";
+          //MC
+          //GammaGamma
+          cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1";
+
+          //---------------------
+          //T r i g g e r   C u t 
+          //---------------------
+
+          triggerCut_80X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";//diphoton triggers
+          triggerCut_76X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";
+
+          // D e f i n e  B i n n i n g
+          //---------------------------
+          //H 
+          //HggRazorClass::n_mgg = 57;
+          //HggRazorClass::mgg_l = 103.;
+          //HggRazorClass::mgg_h = 160.;
+
+          nprocesses = 14;//mc+data
+  }
+  else if ( inputType == "Zee" )
+  {
+          //Data
+          cut = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 75 && mGammaGamma < 120 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 ) ";
+          //MC
+          cut_mc = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 75 && mGammaGamma < 120 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 ";
+
+          //---------------------
+          //T r i g g e r   C u t 
+          //---------------------
+
+          triggerCut_80X = "&& (  HLTDecision[84] )";
+          triggerCut_76X = "&& (  HLTDecision[84] )";
+
+          // D e f i n e  B i n n i n g
+          //---------------------------
+          //Z
+          HggRazorClass::n_mgg = 60;
+          HggRazorClass::mgg_l = 60.;
+          HggRazorClass::mgg_h = 120.;
+
+          nprocesses = 2;//mc+data
+  }
+
+
   if ( category == "inclusive" )
     {
       cut    = cut + "";
@@ -441,7 +519,8 @@ int main ( int argc, char* argv[] )
   TH1D* mc2 = new TH1D();
 
   int map_size = mapList.size();
-  const int nprocesses = 14;//mc+data
+  //const int nprocesses = 2;//mc+data
+  //const int nprocesses = 14;//mc+data
   //check nprocesses and map_size consistency
   if( map_size != nprocesses )
     {
@@ -491,16 +570,20 @@ int main ( int argc, char* argv[] )
     {
       std::string processName = GetProcessString( process );
       //std::cout << "[INFO] PROCESS: " << processName << " ,process #: " << ctr << std::endl;
-      //DY control region
-      //if ( !(process == Process::data || process == Process::dy) ) continue;
+      if ( ( inputType == "diphoton" ) || ( inputType == "leptons" ))
+      {
+              //Diphoton
+              if ( !(process == Process::data || process == Process::diphoton  || process == Process::gammaJet //|| process == Process::qcd
+                                      || process == Process::ggH  || process == Process::vbfH || process == Process::vH || process == Process::ttH || process == Process::bbH
+                                      || process == Process::tg || process == Process::ttg || process == Process::ttgg || process == Process::wg || process == Process::wgg || process == Process::zgg)
+                 ) continue;
+      }
+      else if ( inputType == "Zee" )
+      {
+              //DY control region
+              if ( !(process == Process::data || process == Process::dy) ) continue;
+      }
 
-      //Diphoton
-      
-      if ( !(process == Process::data || process == Process::diphoton  || process == Process::gammaJet /*|| process == Process::qcd*/
-	     || process == Process::ggH  || process == Process::vbfH || process == Process::vH || process == Process::ttH || process == Process::bbH
-	     || process == Process::tg || process == Process::ttg || process == Process::ttgg || process == Process::wg || process == Process::wgg || process == Process::zgg)
-	   ) continue;
-      
 
       //Diphoton with Signal
       /*
@@ -649,7 +732,9 @@ int main ( int argc, char* argv[] )
 	    if ( _useKF && (histos[i].process == Process::gammaJet || histos[i].process == Process::qcd|| histos[i].process == Process::diphoton) ) h_s->Scale( k_f );
 
 	    if ( _useKF &&  (histos[i].process == Process::wg || histos[i].process == Process::wgg || histos[i].process == Process::zgg) ) h_s->Scale( k_f2 );
-	    
+	   
+            if ( _useKF && (histos[i].process == Process::dy) ) h_s->Scale( k_f );
+
 	    //if ( _useKF && (histos[i].process == Process::gammaJet || histos[i].process == Process::diphoton || histos[i].process == Process::ggH || histos[i].process == Process::vbfH || histos[i].process == Process::vH || histos[i].process == Process::bbH || histos[i].process == Process::ttH) ) h_s->Scale( k_f );
 	    /*if ( _useKF && (histos[i].process == Process::gammaJet || histos[i].process == Process::qcd || histos[i].process == Process::diphoton
 	      || histos[i].process == Process::tg || histos[i].process == Process::ttg || histos[i].process == Process::wgg
