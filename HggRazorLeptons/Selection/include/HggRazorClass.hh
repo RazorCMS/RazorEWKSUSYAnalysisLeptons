@@ -75,8 +75,15 @@ public:
   float GetHighPtGB( double mr, double r2 );
   float GetHighResGB( double mr, double r2 );
   static float GetHggBF( );
-private:
+  
+public:
+  
+  static int   n_mgg;
+  static float mgg_l;
+  static float mgg_h;
 
+private:
+  
   static constexpr float hggBF = 2.28e-3;
   
   bool _debug;
@@ -84,13 +91,11 @@ private:
   TString processName;
   TString boxName;
   
-  // D e f i n e   B i n n i n g
-  //----------------------------
-  static int   n_mgg;
-  static float mgg_l;
-  static float mgg_h;
+  //Definition of binning variables is public
   TH1F* h_mgg;
   
+  // D e f i n e   B i n n i n g
+  //----------------------------
   static int   n_ptgg;
   static float ptgg_l;
   static float ptgg_h;

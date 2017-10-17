@@ -274,6 +274,11 @@ TString mggCut = "1";
 
 int main ( int argc, char* argv[] )
 {
+  
+  HggRazorClass::n_mgg   = 57;
+  HggRazorClass::mgg_l = 103.;
+  HggRazorClass::mgg_h = 160.;
+  
   std::cout << "[INFO]: Initializing program" << std::endl;
   std::cout << "[INFO]: Hgg Branching Fraction = " << HggRazorClass::GetHggBF() << std::endl;
   
