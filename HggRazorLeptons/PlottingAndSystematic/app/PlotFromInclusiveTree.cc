@@ -296,7 +296,7 @@ int main ( int argc, char* argv[] )
   std::string analysisTag = ParseCommandLine( argc, argv, "-analysisTag=" );
   if ( analysisTag == "" )
     {
-      std::cerr << "[ERROR]: please provide the analysisTag. Use --analysisTag=<Razor2015_76X,Razor2016_80X>" << std::endl;
+      std::cerr << "[ERROR]: please provide the analysisTag. Use --analysisTag=<Razor2015_76X,Razor2016_80X,Razor2017_PromptReco>" << std::endl;
       return -1;
     } 
 
@@ -312,7 +312,7 @@ int main ( int argc, char* argv[] )
   if (  category == "" )
     {
       std::cout << "[WARNING]: please provide a valid category, use --category=<inclusive/highpt/hbb/zbb/highres/lowres/onemu/oneele>" << std::endl;
-      treeType = "inclusive";
+      category = "inclusive";
     }
 
   //provides shape comparison
@@ -366,6 +366,7 @@ int main ( int argc, char* argv[] )
   TString cut; 
   TString cut_mc; 
 
+  TString triggerCut_2017;
   TString triggerCut_80X;
   TString triggerCut_76X; 
 
@@ -384,6 +385,7 @@ int main ( int argc, char* argv[] )
           //T r i g g e r   C u t 
           //---------------------
 
+          triggerCut_2017 = "&& (HLTDecision[33] || HLTDecision[54] || HLTDecision[55] || HLTDecision[56] || HLTDecision[59]) ";//diphoton triggers
           triggerCut_80X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";//diphoton triggers
           triggerCut_76X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";
 
@@ -409,6 +411,7 @@ int main ( int argc, char* argv[] )
           //T r i g g e r   C u t 
           //---------------------
 
+          triggerCut_2017 = "&& (HLTDecision[33] || HLTDecision[54] || HLTDecision[55] || HLTDecision[56] || HLTDecision[59]) ";//diphoton triggers
           triggerCut_80X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";//diphoton triggers
           triggerCut_76X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";
 
@@ -432,6 +435,7 @@ int main ( int argc, char* argv[] )
           //T r i g g e r   C u t 
           //---------------------
 
+          triggerCut_2017 = "&& (  HLTDecision[54] )";
           triggerCut_80X = "&& (  HLTDecision[84] )";
           triggerCut_76X = "&& (  HLTDecision[84] )";
 
@@ -444,6 +448,11 @@ int main ( int argc, char* argv[] )
 
           nprocesses = 2;//mc+data
   }
+  std::cout << "[INFO]: nprocesses = " << nprocesses << std::endl;
+          //Z
+          //HggRazorClass::n_mgg = 60;
+          //HggRazorClass::mgg_l = 60.;
+          //HggRazorClass::mgg_h = 120.;
 
 
   if ( category == "inclusive" )
@@ -532,13 +541,13 @@ int main ( int argc, char* argv[] )
   //double k_f = 1.62*1.05;//Difference in data/mc normalization
   //double k_f = 1.3291653769;
   //double k_f = 1.2509;//test
-  //double k_f = 2.0014889911;//MORIOND HggRazor
+  double k_f = 2.0014889911;//MORIOND HggRazor
 
   //double k_f  = 4.16008;
   //double k_f2 = 0.362879;
 
 
-  double k_f  = 3.46974;
+  //double k_f  = 3.46974;
   double k_f2 = 0.362879;
   
   //double k_f = 1.3490409433;
@@ -556,6 +565,8 @@ int main ( int argc, char* argv[] )
   
   if (analysisTag == "Razor2015_76X") lumi = 2300;
   if (analysisTag == "Razor2016_80X") lumi = 35900.;
+  if (analysisTag == "Razor2017_PromptReco") lumi = 16428.;
+  //if (analysisTag == "Razor2017_PromptReco") lumi = 24918.;
   
   std::cout << "[INFO]: running inclusive tree mode" << std::endl;
   std::cout << "[INFO]: lumi = " << lumi/1000. << "1/fb"<< std::endl;
@@ -570,7 +581,14 @@ int main ( int argc, char* argv[] )
     {
       std::string processName = GetProcessString( process );
       //std::cout << "[INFO] PROCESS: " << processName << " ,process #: " << ctr << std::endl;
-      if ( ( inputType == "diphoton" ) || ( inputType == "leptons" ))
+      if ( inputType == "diphoton" )
+      {
+              //Diphoton
+              if ( !(process == Process::data || process == Process::diphoton  || process == Process::gammaJet //|| process == Process::qcd
+                                      || process == Process::ggH  || process == Process::vbfH || process == Process::vH || process == Process::ttH || process == Process::bbH)
+                 ) continue;
+      }
+      else if ( inputType == "leptons" )
       {
               //Diphoton
               if ( !(process == Process::data || process == Process::diphoton  || process == Process::gammaJet //|| process == Process::qcd
@@ -613,6 +631,7 @@ int main ( int argc, char* argv[] )
       if ( process == Process::data )
 	{
 	  TString myCut = cut;
+          if (analysisTag == "Razor2017_PromptReco") myCut = cut+triggerCut_2017;
 	  if (analysisTag == "Razor2016_80X") myCut = cut+triggerCut_80X;
 	  if (analysisTag == "Razor2015_76X") myCut = cut+triggerCut_76X;
 	  std::cout << "CUT--> " << myCut << std::endl; 
@@ -621,6 +640,7 @@ int main ( int argc, char* argv[] )
       else
 	{
 	  TString myCut = cut;
+          if (analysisTag == "Razor2017_PromptReco") myCut = cut_mc+triggerCut_80X;
 	  if (analysisTag == "Razor2016_80X") myCut = cut_mc+triggerCut_80X;
 	  if (analysisTag == "Razor2015_76X") myCut = cut_mc+triggerCut_76X;
 	  std::cout << "CUT--> " << myCut << std::endl; 
