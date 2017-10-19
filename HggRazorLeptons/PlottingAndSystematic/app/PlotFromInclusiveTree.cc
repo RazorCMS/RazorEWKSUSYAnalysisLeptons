@@ -183,87 +183,6 @@ float hpt_k[2]  = { 1.0, 1.0};
 float hres_k[2] = { 1.0, 1.0};
 float lres_k[2] = { 1.0, 1.0};
 
-//-----------------------------------
-//A p p l y   B a s e l i n e   C u t
-//-----------------------------------
-/*
-//DATA
-//GammaGamma
-
-TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 )";
-
-//MC
-//GammaGamma
-TString cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1  ";
-*/
-/*
-//highpt
-
-//Data
-TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 ) && MR>150 && pTGammaGamma>110. && box>4 ";
-
-//MC
-TString cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && MR>150 && pTGammaGamma>110. && box>4 ";
-*/
-
-
-/*
-//hbb
-
-//Data
-TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 ) && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)<15 && box>4 ";
-
-//MC
-TString cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)<15 && box>4";
-*/
-
-/*
-//Zbb
-//Data
-TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 ) && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)<15 && box>4 ";
-
-//MC
-TString cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)<15 && box>4 ";
-*/
-
-/*
-//highres
-//Data
-TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 ) && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)>=15 && sigmaMoverM<0.0085 && box>4 ";
-
-//MC
-TString cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)>=15 && sigmaMoverM<0.0085 && box>4 ";
-*/
-
-/*
-//lowres
-
-//Data
-TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 ) && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)>=15 && sigmaMoverM>=0.0085 && box>4 ";
-
-//MC
-TString cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)>=15 && sigmaMoverM>=0.0085 && box>4 ";
-*/
-
-//---------------
-//Zee control region
-//---------------
-//Data
-//TString cut = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 75 && mGammaGamma < 120 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 ) && MR > 150. && pTGammaGamma < 110 && abs(mbbH_L-125.)>=15 && abs(mbbZ_L-91.)>=15";
-
-//MC
-//TString cut_mc = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 75 && mGammaGamma < 120 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 && MR > 150. && pTGammaGamma < 110 && abs(mbbH_L-125.)>=15 && abs(mbbZ_L-91.)>=15";
-
-/*
-//Data
-TString cut = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 75 && mGammaGamma < 120 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 ) && MR > 150. && pTGammaGamma < 110 && abs(mbbH_L-125.)>=15 && abs(mbbZ_L-91.)>=15 && sigmaMoverM >= 0.0085";
-
-//MC
-TString cut_mc = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 75 && mGammaGamma < 120 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 && MR > 150. && pTGammaGamma < 110 && abs(mbbH_L-125.)>=15 && abs(mbbZ_L-91.)>=15 && sigmaMoverM >= 0.0085";
-*/
-
-
-
 
 //--------------------------------
 //D i p h o t o n  M a s s   C u t 
@@ -373,88 +292,74 @@ int main ( int argc, char* argv[] )
   int nprocesses;
 
   if ( inputType == "diphoton" )
-  {
-          //data
-          //GammaGamma
-          cut = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 )";
-          //MC
-          //GammaGamma
-          cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1";
-
-          //---------------------
-          //T r i g g e r   C u t 
-          //---------------------
-
-          triggerCut_2017 = "&& (HLTDecision[33] || HLTDecision[54] || HLTDecision[55] || HLTDecision[56] || HLTDecision[59]) ";//diphoton triggers
-          triggerCut_80X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";//diphoton triggers
-          triggerCut_76X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";
-
-          // D e f i n e  B i n n i n g
-          //---------------------------
-          //H 
-          //HggRazorClass::n_mgg = 57;
-          //HggRazorClass::mgg_l = 103.;
-          //HggRazorClass::mgg_h = 160.;
-
-          nprocesses = 8;//mc+data
-  }
+    {
+      //data
+      //GammaGamma
+      cut = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 )";
+      if( analysisTag == "Razor2017_PromptReco" )
+	{
+	  cut = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1";
+	}
+      //MC
+      //GammaGamma
+      cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1";
+      
+      //---------------------
+      //T r i g g e r   C u t 
+      //---------------------
+      
+      //triggerCut_2017 = "&& (HLTDecision[33] || HLTDecision[54] || HLTDecision[55] || HLTDecision[56] || HLTDecision[59]) ";//diphoton triggers
+      triggerCut_2017 = "&& 1";
+      triggerCut_80X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";//diphoton triggers
+      triggerCut_76X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";
+      
+      nprocesses = 8;//mc+data
+    }
   else if ( inputType == "leptons" )
-  {
-          //data
-          //GammaGamma
-          cut = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 )";
-          //MC
-          //GammaGamma
-          cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1";
-
-          //---------------------
-          //T r i g g e r   C u t 
-          //---------------------
-
-          triggerCut_2017 = "&& (HLTDecision[33] || HLTDecision[54] || HLTDecision[55] || HLTDecision[56] || HLTDecision[59]) ";//diphoton triggers
-          triggerCut_80X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";//diphoton triggers
-          triggerCut_76X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";
-
-          // D e f i n e  B i n n i n g
-          //---------------------------
-          //H 
-          //HggRazorClass::n_mgg = 57;
-          //HggRazorClass::mgg_l = 103.;
-          //HggRazorClass::mgg_h = 160.;
-
-          nprocesses = 14;//mc+data
-  }
+    {
+      //data
+      //GammaGamma
+      cut = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 )";
+      //MC
+      //GammaGamma
+      cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1";
+      
+      //---------------------
+      //T r i g g e r   C u t 
+      //---------------------
+      
+      triggerCut_2017 = "&& (HLTDecision[33] || HLTDecision[54] || HLTDecision[55] || HLTDecision[56] || HLTDecision[59]) ";//diphoton triggers
+      triggerCut_80X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";//diphoton triggers
+      triggerCut_76X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";
+      
+      nprocesses = 14;//mc+data
+    }
   else if ( inputType == "Zee" )
-  {
-          //Data
-          cut = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 75 && mGammaGamma < 120 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 ) ";
-          //MC
-          cut_mc = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 75 && mGammaGamma < 120 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 ";
-
-          //---------------------
-          //T r i g g e r   C u t 
-          //---------------------
-
-          triggerCut_2017 = "&& (  HLTDecision[54] )";
-          triggerCut_80X = "&& (  HLTDecision[84] )";
-          triggerCut_76X = "&& (  HLTDecision[84] )";
-
-          // D e f i n e  B i n n i n g
-          //---------------------------
-          //Z
-          HggRazorClass::n_mgg = 60;
-          HggRazorClass::mgg_l = 60.;
-          HggRazorClass::mgg_h = 120.;
-
-          nprocesses = 2;//mc+data
-  }
+    {
+      //Data
+      cut = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 75 && mGammaGamma < 120 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 ) ";
+      //MC
+      cut_mc = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 75 && mGammaGamma < 120 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 ";
+      
+      //---------------------
+      //T r i g g e r   C u t 
+      //---------------------
+      
+      triggerCut_2017 = "&& (  HLTDecision[54] )";
+      triggerCut_80X = "&& (  HLTDecision[84] )";
+      triggerCut_76X = "&& (  HLTDecision[84] )";
+      
+      // D e f i n e  B i n n i n g
+      //---------------------------
+      //Z
+      HggRazorClass::n_mgg = 60;
+      HggRazorClass::mgg_l = 60.;
+      HggRazorClass::mgg_h = 120.;
+      
+      nprocesses = 2;//mc+data
+    }
   std::cout << "[INFO]: nprocesses = " << nprocesses << std::endl;
-          //Z
-          //HggRazorClass::n_mgg = 60;
-          //HggRazorClass::mgg_l = 60.;
-          //HggRazorClass::mgg_h = 120.;
-
-
+  
   if ( category == "inclusive" )
     {
       cut    = cut + "";
@@ -495,10 +400,7 @@ int main ( int argc, char* argv[] )
       cut    = cut + " && box == 4 && lep1Pt>25 && !(mGammaGamma > 121. && mGammaGamma < 129.) && MR > 150";
       cut_mc = cut_mc + " && box == 4 && lep1Pt>25 && !(mGammaGamma > 121. && mGammaGamma < 129.) && MR > 150";
     }
-
-
-
-
+ 
   
   std::cout << "=================================" << std::endl;
   std::cout << "===========set parameters========" << std::endl;
@@ -537,30 +439,12 @@ int main ( int argc, char* argv[] )
       exit( EXIT_FAILURE );
     }
   const int nplots = 4;
-  // double k_f = 1.78*1.05;//Difference in data/mc normalization
-  //double k_f = 1.62*1.05;//Difference in data/mc normalization
-  //double k_f = 1.3291653769;
-  //double k_f = 1.2509;//test
+  
   double k_f = 2.0014889911;//MORIOND HggRazor
-
   //double k_f  = 4.16008;
   //double k_f2 = 0.362879;
-
-
   //double k_f  = 3.46974;
   double k_f2 = 0.362879;
-  
-  //double k_f = 1.3490409433;
-  //double k_f = 1.0;
-  //double k_f = 3.97;
-  //double k_f = 1.6229861908;//highpt
-  //double k_f = 2.5092891956;//hbb
-  //double k_f = 2.3464806682;//zbb
-  //double k_f = 0.6069650444;//highpt
-  //double k_f = 0.9664948454;//hbb
-  //double k_f = 1.0387200549;//zbb
-  //double k_f = 0.6399529051;//highres
-  //double k_f = 1.4101878662;//lowres
   double lumi = 0;
   
   if (analysisTag == "Razor2015_76X") lumi = 2300;
@@ -582,32 +466,27 @@ int main ( int argc, char* argv[] )
       std::string processName = GetProcessString( process );
       //std::cout << "[INFO] PROCESS: " << processName << " ,process #: " << ctr << std::endl;
       if ( inputType == "diphoton" )
-      {
-              //Diphoton
-              if ( !(process == Process::data || process == Process::diphoton  || process == Process::gammaJet //|| process == Process::qcd
-                                      || process == Process::ggH  || process == Process::vbfH || process == Process::vH || process == Process::ttH || process == Process::bbH)
-                 ) continue;
-      }
+	{
+	  //Diphoton
+	  if ( !(process == Process::data || process == Process::diphoton  || process == Process::gammaJet //|| process == Process::qcd
+		 || process == Process::ggH  || process == Process::vbfH || process == Process::vH || process == Process::ttH || process == Process::bbH)
+	       ) continue;
+	}
       else if ( inputType == "leptons" )
-      {
-              //Diphoton
-              if ( !(process == Process::data || process == Process::diphoton  || process == Process::gammaJet //|| process == Process::qcd
-                                      || process == Process::ggH  || process == Process::vbfH || process == Process::vH || process == Process::ttH || process == Process::bbH
-                                      || process == Process::tg || process == Process::ttg || process == Process::ttgg || process == Process::wg || process == Process::wgg || process == Process::zgg)
-                 ) continue;
-      }
+	{
+	  //Diphoton+leptons
+	  if ( !(process == Process::data || process == Process::diphoton  || process == Process::gammaJet //|| process == Process::qcd
+		 || process == Process::ggH  || process == Process::vbfH || process == Process::vH || process == Process::ttH || process == Process::bbH
+		 || process == Process::tg || process == Process::ttg || process == Process::ttgg
+		 || process == Process::wg || process == Process::wgg || process == Process::zgg)
+	       ) continue;
+	}
       else if ( inputType == "Zee" )
-      {
-              //DY control region
-              if ( !(process == Process::data || process == Process::dy) ) continue;
-      }
-
-
-      //Diphoton with Signal
-      /*
-      if ( !(process == Process::data || process == Process::bbH || process == Process::diphoton || process == Process::gammaJet
-	     || process == Process::ggH  || process == Process::vbfH || process == Process::vH || process == Process::ttH) ) continue;
-      */
+	{
+	  //DY control region
+	  if ( !(process == Process::data || process == Process::dy) ) continue;
+	}
+      
       std::cout << "[INFO] PROCESS: " << processName << " ,process #: " << ctr << std::endl;
       
       //-----------------------------
