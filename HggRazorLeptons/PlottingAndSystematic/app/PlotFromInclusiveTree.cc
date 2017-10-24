@@ -334,27 +334,32 @@ int main ( int argc, char* argv[] )
       
       nprocesses = 14;//mc+data
     }
-  else if ( inputType == "Zee" )
+  else if ( inputType == "Zee" || inputType == "zee" )
     {
       //Data
-      cut = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 75 && mGammaGamma < 120 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 ) ";
+      cut = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 76 && mGammaGamma < 106 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 ) ";
+      if( analysisTag == "Razor2017_PromptReco" )
+        {
+	  cut = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 76 && mGammaGamma < 106 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 ";
+	}
       //MC
-      cut_mc = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 75 && mGammaGamma < 120 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 ";
+      cut_mc = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 76 && mGammaGamma < 106 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 ";
       
       //---------------------
       //T r i g g e r   C u t 
       //---------------------
       
-      triggerCut_2017 = "&& (  HLTDecision[54] )";
+      //triggerCut_2017 = "&& (  HLTDecision[54] )";
+      triggerCut_2017 = " && 1";
       triggerCut_80X = "&& (  HLTDecision[84] )";
       triggerCut_76X = "&& (  HLTDecision[84] )";
       
       // D e f i n e  B i n n i n g
       //---------------------------
       //Z
-      HggRazorClass::n_mgg = 60;
-      HggRazorClass::mgg_l = 60.;
-      HggRazorClass::mgg_h = 120.;
+      HggRazorClass::n_mgg = 30;
+      HggRazorClass::mgg_l = 76.;
+      HggRazorClass::mgg_h = 106.;
       
       nprocesses = 2;//mc+data
     }
@@ -481,7 +486,7 @@ int main ( int argc, char* argv[] )
 		 || process == Process::wg || process == Process::wgg || process == Process::zgg)
 	       ) continue;
 	}
-      else if ( inputType == "Zee" )
+      else if ( inputType == "Zee" || inputType == "zee" )
 	{
 	  //DY control region
 	  if ( !(process == Process::data || process == Process::dy) ) continue;
