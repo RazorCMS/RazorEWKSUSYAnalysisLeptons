@@ -178,15 +178,17 @@ int main( int argc, char* argv[] )
   }
 
   TString categoryCutString;
-  if (categoryMode == "highpt") categoryCutString = " && pTGammaGamma >= 110 ";
-  else if (categoryMode == "hzbb") categoryCutString = " && pTGammaGamma < 110 && ( abs(mbbH_L-125.) < 15. || ( abs(mbbH_L-125.) >= 15. && abs(mbbZ_L-91.) < 15 ) )";
-  else if (categoryMode == "highres") categoryCutString = " && pTGammaGamma < 110 && abs(mbbH_L-125.) >= 15 && abs(mbbZ_L-91.) >= 15 && sigmaMoverM < 0.0085";
-  else if (categoryMode == "lowres") categoryCutString  = " && pTGammaGamma < 110 && abs(mbbH_L-125.) >= 15 && abs(mbbZ_L-91.) >= 15 && sigmaMoverM >= 0.0085 ";
-  else if (categoryMode == "inclusive") categoryCutString = "";
-  // combined highres / lowres box
-  else if (categoryMode == "highreslowres") categoryCutString = " && pTGammaGamma < 110 && abs(mbbH_L-125.) >= 15 && abs(mbbZ_L-91.) >= 15";
-  else if (categoryMode == "highpthighres") categoryCutString = " && pTGammaGamma >= 110 && sigmaMoverM < 0.0085";
-  else if (categoryMode == "highptlowres") categoryCutString = " && pTGammaGamma >= 110 && sigmaMoverM >= 0.0085";
+  if (categoryMode == "highpt") categoryCutString          = " && pTGammaGamma >= 110 && box > 4 ";
+  else if (categoryMode == "hbb") categoryCutString        = " && pTGammaGamma < 110 && abs(mbbH-125.) < 15. && box > 4";
+  else if (categoryMode == "zbb") categoryCutString        = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15. && abs(mbbZ-91.) < 15. && box > 4";
+  else if (categoryMode == "highres") categoryCutString    = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM < 0.0085 && box > 4";
+  else if (categoryMode == "lowres") categoryCutString     = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM >= 0.0085 && box > 4";
+  else if (categoryMode == "muhighpt") categoryCutString   = " && pTGammaGamma >= 110 && box == 3 && lep1Pt > 20. ";
+  else if (categoryMode == "mulowpt") categoryCutString    = " && pTGammaGamma < 110 && box == 3 && lep1Pt > 20. ";
+  else if (categoryMode == "elehighpt") categoryCutString  = " && pTGammaGamma >= 110 && box == 4 && lep1Pt > 25. ";
+  else if (categoryMode == "elelowpt") categoryCutString   = " && pTGammaGamma < 110 && box == 4 && lep1Pt > 25. ";
+  else if (categoryMode == "twoleptons") categoryCutString = " && (box == 0 || box == 1 || box == 2)";
+  else if (categoryMode == "inclusive") categoryCutString  = "";
 
   TString triggerCut = " && ( HLTDecision[82] || HLTDecision[83] || HLTDecision[93] ) ";
   TString metFilterCut = " && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1)";
@@ -239,10 +241,11 @@ int main( int argc, char* argv[] )
 
   myVectBinning = SetBinning(binVector, binCategory);
 
-  if (!(binCategory == "highpt" || binCategory == "hzbb" 
-	|| binCategory == "highres"|| binCategory == "lowres"))
+  if (!(binCategory == "highpt" || binCategory == "hbb" || binCategory == "zbb" || binCategory == "highres"|| binCategory == "lowres"
+	|| binCategory == "muhighpt" || binCategory == "mulowpt" || binCategory == "elehighpt" || binCategory == "elelowpt"
+	|| binCategory == "twoleptons") )
      {
-       std::cerr << "[ERROR]: category is not <highpt/hzbb/highres/lowres>; quitting" << std::endl;
+       std::cerr << "[ERROR]: category is not <highpt/hbb/zbb/highres/lowres/muhighpt/mulowpt/elehighpt/elelowpt/twoleptons>; quitting" << std::endl;
        return -1;
      } 
 
@@ -297,10 +300,16 @@ int main( int argc, char* argv[] )
   //Getting SMH root file with yields
   //---------------------------------
   TFile* fSMH;
-  if (categoryMode == "highpt") fSMH = new TFile("data/SMH_Moriond_FinalHistos/fullSys_highpt.root", "read");
-  else if (categoryMode == "hzbb") fSMH = new TFile("data/SMH_Moriond_FinalHistos/fullSys_hzbb.root", "read");
-  else if (categoryMode == "highres") fSMH = new TFile("data/SMH_Moriond_FinalHistos/fullSys_highres.root", "read");
-  else if (categoryMode == "lowres") fSMH = new TFile("data/SMH_Moriond_FinalHistos/fullSys_lowres.root", "read");
+  if (categoryMode == "highpt") fSMH = new TFile("data/SMH_Histos_2017/fullSys_highpt.root", "read");
+  else if (categoryMode == "hbb") fSMH = new TFile("data/SMH_Histos_2017/fullSys_hbb.root", "read");
+  else if (categoryMode == "zbb") fSMH = new TFile("data/SMH_Histos_2017/fullSys_zbb.root", "read");
+  else if (categoryMode == "highres") fSMH = new TFile("data/SMH_Histos_2017/fullSys_highres.root", "read");
+  else if (categoryMode == "lowres") fSMH = new TFile("data/SMH_Histos_2017/fullSys_lowres.root", "read");
+  else if (categoryMode == "muhighpt") fSMH = new TFile("data/SMH_Histos_2017/fullSys_muhighpt.root", "read");
+  else if (categoryMode == "mulowpt") fSMH = new TFile("data/SMH_Histos_2017/fullSys_mulowpt.root", "read");
+  else if (categoryMode == "elehighpt") fSMH = new TFile("data/SMH_Histos_2017/fullSys_elehighpt.root", "read");
+  else if (categoryMode == "elelowpt") fSMH = new TFile("data/SMH_Histos_2017/fullSys_elelowpt.root", "read");
+  else if (categoryMode == "twoleptons") fSMH = new TFile("data/SMH_Histos_2017/fullSys_twoleptons.root", "read");
 
   assert(fSMH);
   //-------------------
