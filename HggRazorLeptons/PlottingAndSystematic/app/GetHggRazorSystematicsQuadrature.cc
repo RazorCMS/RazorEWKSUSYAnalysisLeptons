@@ -389,7 +389,7 @@ int main( int argc, char* argv[] )
       hggSys->SetPdfWeightsHisto( SumPdfWeights );
       hggSys->SetISRHisto( ISRHist );
       hggSys->SetNPVHisto( NPVHist );
-      hggSys->LoadNPVTarget("/Users/cmorgoth/git/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/NPVTarget_2016.root");
+      hggSys->LoadNPVTarget("/Users/cmorgoth/git/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/data/PileUpDistribution/NPVTarget_2016.root");
       if ( isEWKSUSYSignal ) hggSys->SetISRPtHisto( ISRPtHist );
       hggSys->Loop();
       for ( auto tmp: myVectBinning )
