@@ -603,12 +603,12 @@ int main( int argc, char* argv[] )
        if ( isEWKSUSYSignal ) 
 	 {
 	   outf << genMetS->GetBinContent( bin ) << "\t";
-	   outf << pileupS->GetBinContent( bin ) << "\t";
+	   outf << pileupS->GetBinContent( bin ) << "\n";
 	 } 
        else 
 	 {
 	   outf << "0.0" << "\t";
-	   outf << "0.0" << "\t";
+	   outf << "0.0" << "\n";
 	 }
        
        std::cout << "Bin : " << bin << " " << tmp[0] << " " << tmp[1] << " " << tmp[2] << " " << tmp[3] << " : "

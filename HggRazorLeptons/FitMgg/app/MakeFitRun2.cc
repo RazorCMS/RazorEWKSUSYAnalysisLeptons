@@ -448,13 +448,12 @@ int main( int argc, char* argv[])
   TString cutMETfilters = "";
   TString cutTrigger = "";
 
-  TString cutMETfiltersData = " && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 )";
-  //TString cutMETfiltersData = " && (Flag_HBHENoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1)";
-  TString cutTriggerData = " && ( HLTDecision[82] == 1 || HLTDecision[83] || HLTDecision[93] )";
+  //TString cutMETfiltersData = " && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 )";  
+  //TString cutTriggerData = " && ( HLTDecision[82] == 1 || HLTDecision[83] || HLTDecision[93] )";
   
-  //TString cutTriggerData = " && ( HLTDecision[82] == 1 || HLTDecision[83] || HLTDecision[93] || HLTDecision[87] )";
-  //TString cutMETfiltersData = " && 1";
-  //TString cutTriggerData = " && 1";
+  
+  TString cutMETfiltersData = " && 1";
+  TString cutTriggerData = " && 1";
   
   
   //assymetric cut on photon PT
