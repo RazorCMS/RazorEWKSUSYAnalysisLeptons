@@ -507,21 +507,17 @@ int main( int argc, char* argv[])
     }
   else
     {
-      if (categoryMode == "highpt") categoryCutString = " && pTGammaGamma >= 110 ";
-      else if (categoryMode == "hbb") categoryCutString = " && pTGammaGamma < 110 && abs(mbbH_L-125.) < 15";
-      else if (categoryMode == "zbb") categoryCutString = " && pTGammaGamma < 110 && ( abs(mbbZ_L-91.) < 15 && abs(mbbH_L-125.) >= 15 )";
-      else if (categoryMode == "hzbb") categoryCutString = " && pTGammaGamma < 110 && ( abs(mbbH_L-125.) < 15 || ( abs(mbbZ_L-91.) < 15 && abs(mbbH_L-125.) >= 15 ) )";
-      else if (categoryMode == "highres") categoryCutString = " && pTGammaGamma < 110 && abs(mbbH_L-125.)>=15 && abs(mbbZ_L-91.)>=15 && sigmaMoverM < 0.0085";
-      else if (categoryMode == "lowres") categoryCutString = " && pTGammaGamma < 110  && abs(mbbH_L-125.)>=15 && abs(mbbZ_L-91.)>=15 && sigmaMoverM >= 0.0085";
-      else if (categoryMode == "highresInclusive") categoryCutString = " && sigmaMoverM < 0.0085";
-      else if (categoryMode == "lowresInclusive") categoryCutString = " && sigmaMoverM >= 0.0085";
-      else if (categoryMode == "highreslowres") categoryCutString = " && pTGammaGamma < 110 && abs(mbbH_L-125.)>=15 && abs(mbbZ_L-91.)>=15";
-      else if (categoryMode == "highpthighres") categoryCutString = " && pTGammaGamma >= 110 && sigmaMoverM < 0.0085";
-      else if (categoryMode == "highptlowres") categoryCutString = " && pTGammaGamma >= 110 && sigmaMoverM >= 0.0085";
-      else if (categoryMode == "inclusive") categoryCutString = "";
-      else if (categoryMode == "inclusiveElectron") categoryCutString = " && box == 3 ";
-      else if (categoryMode == "inclusiveMuon") categoryCutString = " && box == 2";
-      else if (categoryMode == "twoLeptons") categoryCutString = " && (box == 0 || box == 1)";
+      if (categoryMode == "highpt") categoryCutString          = " && pTGammaGamma >= 110 && box > 4 ";
+      else if (categoryMode == "hbb") categoryCutString        = " && pTGammaGamma < 110 && abs(mbbH-125.) < 15. && box > 4";
+      else if (categoryMode == "zbb") categoryCutString        = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15. && abs(mbbZ-91.) < 15. && box > 4";
+      else if (categoryMode == "highres") categoryCutString    = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM < 0.0085 && box > 4";
+      else if (categoryMode == "lowres") categoryCutString     = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM >= 0.0085 && box > 4";
+      else if (categoryMode == "muhighpt") categoryCutString   = " && pTGammaGamma >= 110 && box == 3 && lep1Pt > 15. ";
+      else if (categoryMode == "mulowpt") categoryCutString    = " && pTGammaGamma < 110 && box == 3 && lep1Pt > 15. ";
+      else if (categoryMode == "elehighpt") categoryCutString  = " && pTGammaGamma >= 110 && box == 4 && lep1Pt > 20. ";
+      else if (categoryMode == "elelowpt") categoryCutString   = " && pTGammaGamma < 110 && box == 4 && lep1Pt > 20. ";
+      else if (categoryMode == "twoleptons") categoryCutString = " && (box == 0 || box == 1 || box == 2)";
+      else if (categoryMode == "inclusive") categoryCutString  = "";
     }
   //---------------------------------------------
   // A l e x ' s   T r e e   F o r m at   C a s e
