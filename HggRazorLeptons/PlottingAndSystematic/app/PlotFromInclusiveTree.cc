@@ -308,12 +308,54 @@ int main ( int argc, char* argv[] )
       //T r i g g e r   C u t 
       //---------------------
       
-      //triggerCut_2017 = "&& (HLTDecision[33] || HLTDecision[54] || HLTDecision[55] || HLTDecision[56] || HLTDecision[59]) ";//diphoton triggers
-      triggerCut_2017 = "&& 1";
+      triggerCut_2017 = "&& ( HLTDecision[54] || HLTDecision[55] ) ";//diphoton triggers
+      //triggerCut_2017 = "&& 1";
       triggerCut_80X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";//diphoton triggers
       triggerCut_76X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";
       
       nprocesses = 8;//mc+data
+  
+      if ( category == "inclusive" )
+      {
+              cut    = cut + "";
+              cut_mc = cut_mc + "";
+      }
+      else if ( category == "highpt" )
+      {
+              cut    = cut + " && MR>150 && pTGammaGamma>110. && box>4";
+              cut_mc = cut_mc + " && MR>150 && pTGammaGamma>110. && box>4";
+      }
+      else if ( category == "hbb" )
+      {
+              cut    = cut + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)<15 && box>4";
+              cut_mc = cut_mc + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)<15 && box>4";
+      }
+      else if ( category == "zbb" )
+      {
+              cut    = cut + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)<15 && box>4";
+              cut_mc = cut_mc + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)<15 && box>4";
+      }
+      else if ( category == "highres" )
+      {
+              cut    = cut + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)>=15 && sigmaMoverM<0.0085 && box > 4";
+              cut_mc = cut_mc + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)>=15 && sigmaMoverM<0.0085 && box > 4";
+      }
+      else if ( category == "lowres" )
+      {
+          cut    = cut + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)>=15 && sigmaMoverM>=0.0085 && box > 4";
+          cut_mc = cut_mc + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)>=15 && sigmaMoverM>=0.0085 && box > 4";
+      }
+      else if ( category == "onemu" )
+      {
+              cut    = cut + " && box == 3 && lep1Pt>20 && !(mGammaGamma > 121. && mGammaGamma < 129.) && MR > 150";
+              cut_mc = cut_mc + " && box == 3 && lep1Pt>20 && !(mGammaGamma > 121. && mGammaGamma < 129.) && MR > 150";
+      }
+      else if ( category == "oneele" )
+      {
+              cut    = cut + " && box == 4 && lep1Pt>25 && !(mGammaGamma > 121. && mGammaGamma < 129.) && MR > 150";
+              cut_mc = cut_mc + " && box == 4 && lep1Pt>25 && !(mGammaGamma > 121. && mGammaGamma < 129.) && MR > 150";
+      }
+ 
     }
   else if ( inputType == "leptons" )
     {
@@ -333,6 +375,48 @@ int main ( int argc, char* argv[] )
       triggerCut_76X = "&& (HLTDecision[82] || HLTDecision[83] || HLTDecision[93]) ";
       
       nprocesses = 14;//mc+data
+  
+      if ( category == "inclusive" )
+      {
+              cut    = cut + "";
+              cut_mc = cut_mc + "";
+      }
+      else if ( category == "highpt" )
+      {
+              cut    = cut + " && MR>150 && pTGammaGamma>110. && box>4";
+              cut_mc = cut_mc + " && MR>150 && pTGammaGamma>110. && box>4";
+      }
+      else if ( category == "hbb" )
+      {
+              cut    = cut + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)<15 && box>4";
+              cut_mc = cut_mc + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)<15 && box>4";
+      }
+      else if ( category == "zbb" )
+      {
+              cut    = cut + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)<15 && box>4";
+              cut_mc = cut_mc + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)<15 && box>4";
+      }
+      else if ( category == "highres" )
+      {
+              cut    = cut + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)>=15 && sigmaMoverM<0.0085 && box > 4";
+              cut_mc = cut_mc + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)>=15 && sigmaMoverM<0.0085 && box > 4";
+      }
+      else if ( category == "lowres" )
+      {
+          cut    = cut + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)>=15 && sigmaMoverM>=0.0085 && box > 4";
+          cut_mc = cut_mc + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)>=15 && sigmaMoverM>=0.0085 && box > 4";
+      }
+      else if ( category == "onemu" )
+      {
+              cut    = cut + " && box == 3 && lep1Pt>20 && !(mGammaGamma > 121. && mGammaGamma < 129.) && MR > 150";
+              cut_mc = cut_mc + " && box == 3 && lep1Pt>20 && !(mGammaGamma > 121. && mGammaGamma < 129.) && MR > 150";
+      }
+      else if ( category == "oneele" )
+      {
+              cut    = cut + " && box == 4 && lep1Pt>25 && !(mGammaGamma > 121. && mGammaGamma < 129.) && MR > 150";
+              cut_mc = cut_mc + " && box == 4 && lep1Pt>25 && !(mGammaGamma > 121. && mGammaGamma < 129.) && MR > 150";
+      }
+ 
     }
   else if ( inputType == "Zee" || inputType == "zee" )
     {
@@ -349,8 +433,8 @@ int main ( int argc, char* argv[] )
       //T r i g g e r   C u t 
       //---------------------
       
-      //triggerCut_2017 = "&& (  HLTDecision[54] )";
-      triggerCut_2017 = " && 1";
+      triggerCut_2017 = "&& (  HLTDecision[22] || HLTDecision[23] || HLTDecision[24]  )";
+      //triggerCut_2017 = " && 1";
       triggerCut_80X = "&& (  HLTDecision[84] )";
       triggerCut_76X = "&& (  HLTDecision[84] )";
       
@@ -362,50 +446,50 @@ int main ( int argc, char* argv[] )
       HggRazorClass::mgg_h = 106.;
       
       nprocesses = 2;//mc+data
+  
+      if ( category == "inclusive" )
+      {
+              cut    = cut + "";
+              cut_mc = cut_mc + "";
+      }
+      else if ( category == "highpt" )
+      {
+              cut    = cut + " && MR>150 && pTGammaGamma>110. ";
+              cut_mc = cut_mc + " && MR>150 && pTGammaGamma>110. ";
+      }
+      else if ( category == "hbb" )
+      {
+              cut    = cut + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)<15 ";
+              cut_mc = cut_mc + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)<15 ";
+      }
+      else if ( category == "zbb" )
+      {
+              cut    = cut + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)<15 ";
+              cut_mc = cut_mc + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)<15 ";
+      }
+      else if ( category == "highres" )
+      {
+              cut    = cut + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)>=15 && sigmaMoverM<0.0085 ";
+              cut_mc = cut_mc + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)>=15 && sigmaMoverM<0.0085 ";
+      }
+      else if ( category == "lowres" )
+      {
+          cut    = cut + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)>=15 && sigmaMoverM>=0.0085 ";
+          cut_mc = cut_mc + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)>=15 && sigmaMoverM>=0.0085 ";
+      }
+      else if ( category == "onemu" )
+      {
+              cut    = cut + " && box == 3 && lep1Pt>20 && !(mGammaGamma > 121. && mGammaGamma < 129.) && MR > 150";
+              cut_mc = cut_mc + " && box == 3 && lep1Pt>20 && !(mGammaGamma > 121. && mGammaGamma < 129.) && MR > 150";
+      }
+      else if ( category == "oneele" )
+      {
+              cut    = cut + " && box == 4 && lep1Pt>25 && !(mGammaGamma > 121. && mGammaGamma < 129.) && MR > 150";
+              cut_mc = cut_mc + " && box == 4 && lep1Pt>25 && !(mGammaGamma > 121. && mGammaGamma < 129.) && MR > 150";
+      }
+ 
     }
   std::cout << "[INFO]: nprocesses = " << nprocesses << std::endl;
-  
-  if ( category == "inclusive" )
-    {
-      cut    = cut + "";
-      cut_mc = cut_mc + "";
-    }
-  else if ( category == "highpt" )
-    {
-      cut    = cut + " && MR>150 && pTGammaGamma>110. && box>4";
-      cut_mc = cut_mc + " && MR>150 && pTGammaGamma>110. && box>4";
-    }
-  else if ( category == "hbb" )
-    {
-      cut    = cut + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)<15 && box>4";
-      cut_mc = cut_mc + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)<15 && box>4";
-    }
-  else if ( category == "zbb" )
-    {
-      cut    = cut + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)<15 && box>4";
-      cut_mc = cut_mc + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)<15 && box>4";
-    }
-  else if ( category == "highres" )
-    {
-      cut    = cut + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)>=15 && sigmaMoverM<0.0085 && box > 4";
-      cut_mc = cut_mc + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)>=15 && sigmaMoverM<0.0085 && box > 4";
-    }
-  else if ( category == "lowres" )
-    {
-      cut    = cut + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)>=15 && sigmaMoverM>=0.0085 && box > 4";
-      cut_mc = cut_mc + " && MR > 150. && pTGammaGamma < 110 && abs(mbbH-125.)>=15 && abs(mbbZ-91.)>=15 && sigmaMoverM>=0.0085 && box > 4";
-    }
-  else if ( category == "onemu" )
-    {
-      cut    = cut + " && box == 3 && lep1Pt>20 && !(mGammaGamma > 121. && mGammaGamma < 129.) && MR > 150";
-      cut_mc = cut_mc + " && box == 3 && lep1Pt>20 && !(mGammaGamma > 121. && mGammaGamma < 129.) && MR > 150";
-    }
-  else if ( category == "oneele" )
-    {
-      cut    = cut + " && box == 4 && lep1Pt>25 && !(mGammaGamma > 121. && mGammaGamma < 129.) && MR > 150";
-      cut_mc = cut_mc + " && box == 4 && lep1Pt>25 && !(mGammaGamma > 121. && mGammaGamma < 129.) && MR > 150";
-    }
- 
   
   std::cout << "=================================" << std::endl;
   std::cout << "===========set parameters========" << std::endl;
@@ -454,7 +538,8 @@ int main ( int argc, char* argv[] )
   
   if (analysisTag == "Razor2015_76X") lumi = 2300;
   if (analysisTag == "Razor2016_80X") lumi = 35900.;
-  if (analysisTag == "Razor2017_PromptReco") lumi = 16428.;
+  if (analysisTag == "Razor2017_PromptReco") lumi = 29025.;
+  //if (analysisTag == "Razor2017_PromptReco") lumi = 16428.;
   //if (analysisTag == "Razor2017_PromptReco") lumi = 24918.;
   
   std::cout << "[INFO]: running inclusive tree mode" << std::endl;
