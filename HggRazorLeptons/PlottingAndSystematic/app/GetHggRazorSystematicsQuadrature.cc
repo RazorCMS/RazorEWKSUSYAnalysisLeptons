@@ -181,10 +181,10 @@ int main( int argc, char* argv[] )
   else if (categoryMode == "zbb") categoryCutString        = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15. && abs(mbbZ-91.) < 15. && box > 4";
   else if (categoryMode == "highres") categoryCutString    = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM < 0.0085 && box > 4";
   else if (categoryMode == "lowres") categoryCutString     = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM >= 0.0085 && box > 4";
-  else if (categoryMode == "muhighpt") categoryCutString   = " && pTGammaGamma >= 110 && box == 3 && lep1Pt > 20. ";
-  else if (categoryMode == "mulowpt") categoryCutString    = " && pTGammaGamma < 110 && box == 3 && lep1Pt > 20. ";
-  else if (categoryMode == "elehighpt") categoryCutString  = " && pTGammaGamma >= 110 && box == 4 && lep1Pt > 25. ";
-  else if (categoryMode == "elelowpt") categoryCutString   = " && pTGammaGamma < 110 && box == 4 && lep1Pt > 25. ";
+  else if (categoryMode == "muhighpt") categoryCutString   = " && pTGammaGamma >= 110 && box == 3 && lep1Pt > 15. ";
+  else if (categoryMode == "mulowpt") categoryCutString    = " && pTGammaGamma < 110 && box == 3 && lep1Pt > 15. ";
+  else if (categoryMode == "elehighpt") categoryCutString  = " && pTGammaGamma >= 110 && box == 4 && lep1Pt > 20. ";
+  else if (categoryMode == "elelowpt") categoryCutString   = " && pTGammaGamma < 110 && box == 4 && lep1Pt > 20. ";
   else if (categoryMode == "twoleptons") categoryCutString = " && (box == 0 || box == 1 || box == 2)";
   else if (categoryMode == "inclusive") categoryCutString  = "";
 
@@ -389,7 +389,7 @@ int main( int argc, char* argv[] )
       hggSys->SetPdfWeightsHisto( SumPdfWeights );
       hggSys->SetISRHisto( ISRHist );
       hggSys->SetNPVHisto( NPVHist );
-      hggSys->LoadNPVTarget("/Users/cmorgoth/git/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/NPVTarget_2016.root");
+      hggSys->LoadNPVTarget("/Users/cmorgoth/git/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/data/PileUpDistribution/NPVTarget_2016.root");
       if ( isEWKSUSYSignal ) hggSys->SetISRPtHisto( ISRPtHist );
       hggSys->Loop();
       for ( auto tmp: myVectBinning )

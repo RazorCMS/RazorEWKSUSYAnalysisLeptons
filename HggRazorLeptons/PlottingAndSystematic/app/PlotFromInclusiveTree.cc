@@ -546,7 +546,8 @@ int main ( int argc, char* argv[] )
   std::cout << "[INFO]: lumi = " << lumi/1000. << "1/fb"<< std::endl;
   std::cout << "[INFO]: k-factor = " << k_f << std::endl;
   int ctr = 0;
-  Histos histos[nprocesses];
+  const int nprocess_copy = 20;
+  Histos histos[nprocess_copy];
 
   TH1F* sigmaMoverM_data = NULL;
   TH1F* sigmaMoverM_dy = NULL;

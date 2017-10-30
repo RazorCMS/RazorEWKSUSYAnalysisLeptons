@@ -1,6 +1,0 @@
-ggH	/Users/cmorgoth/Work/data/HggRazor/HggRazor_GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_1pb_weighted.root
-signal	/Users/cmorgoth/Work/data/HggRazor/HggRazor_SMS-T2bH_mSbottom-300_mLSP-1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_1pb_weighted.root
-vbfH	/Users/cmorgoth/Work/data/HggRazor/HggRazor_VBFHToGG_M125_13TeV_amcatnlo_pythia8_1pb_weighted.root
-vH	/Users/cmorgoth/Work/data/HggRazor/HggRazor_VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_1pb_weighted.root
-bbH	/Users/cmorgoth/Work/data/HggRazor/HggRazor_bbHToGG_M-125_4FS_13TeV_amcatnlo_1pb_weighted.root
-ttH	/Users/cmorgoth/Work/data/HggRazor/HggRazor_ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_v2_1pb_weighted.root
