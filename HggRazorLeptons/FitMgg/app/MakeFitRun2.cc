@@ -448,17 +448,14 @@ int main( int argc, char* argv[])
   TString cutMETfilters = "";
   TString cutTrigger = "";
 
-  //TString cutMETfiltersData = " && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 )";  
-  //TString cutTriggerData = " && ( HLTDecision[82] == 1 || HLTDecision[83] || HLTDecision[93] )";
+  TString cutMETfiltersData = " && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 )";  
+  TString cutTriggerData = " && ( HLTDecision[82] == 1 || HLTDecision[83] || HLTDecision[93] )";
   
   
-  TString cutMETfiltersData = " && 1";
-  TString cutTriggerData = " && 1";
+  //TString cutMETfiltersData = " && 1";
+  //TString cutTriggerData = " && 1";
   
   
-  //assymetric cut on photon PT
-  //TString cut = "mGammaGamma >103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1Eta) <1.48 && abs(pho2Eta)<1.48 && (pho1Pt>40||pho2Pt>40)  && pho1Pt> 40. && pho2Pt>40.";
-  //TString cutMETfilters = "&& (Flag_HBHENoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1)";
   if ( _highMassMode )
     {
       //EBEB
@@ -578,7 +575,6 @@ int main( int argc, char* argv[])
       outName = Form("test_out_%d",rand());
       //fout = new TFile( Form("test_out_%d.root",rand()), "recreate" );
       fout = new TFile(outName+".root" , "recreate" );
-
     }
   else
     {
