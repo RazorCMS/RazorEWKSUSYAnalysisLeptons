@@ -215,7 +215,7 @@ int main ( int argc, char* argv[] )
   std::string analysisTag = ParseCommandLine( argc, argv, "-analysisTag=" );
   if ( analysisTag == "" )
     {
-      std::cerr << "[ERROR]: please provide the analysisTag. Use --analysisTag=<Razor2015_76X,Razor2016_80X,Razor2017_PromptReco>" << std::endl;
+      std::cerr << "[ERROR]: please provide the analysisTag. Use --analysisTag=<Razor2015_76X,Razor2016_80X,Razor2017_92X>" << std::endl;
       return -1;
     } 
 
@@ -296,15 +296,20 @@ int main ( int argc, char* argv[] )
       //data
       //GammaGamma
       cut = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 )";
-      if( analysisTag == "Razor2017_PromptReco" )
-	{
-	  cut = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1";
-	}
       //MC
       //GammaGamma
-      cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1";
+      //cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1";
+      cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/pTGammaGamma>1./3. || pho2Pt/pTGammaGamma>1./3.) && pho1Pt/pTGammaGamma>1./4. && pho2Pt/pTGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5";
       
       //---------------------
+      if( analysisTag == "Razor2017_92X" )
+	{
+	  //cut = "mGammaGamma > 103. && mGammaGamma < 160. && abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && pho1passEleVeto == 1 && pho2passEleVeto == 1 && pho1passIso == 1 && pho2passIso == 1";
+          cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/pTGammaGamma>1./3. || pho2Pt/pTGammaGamma>1./3.) && pho1Pt/pTGammaGamma>1./4. && pho2Pt/pTGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5";
+         //MC
+         //GammaGamma
+         cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/pTGammaGamma>1./3. || pho2Pt/pTGammaGamma>1./3.) && pho1Pt/pTGammaGamma>1./4. && pho2Pt/pTGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5";
+	}
       //T r i g g e r   C u t 
       //---------------------
       
@@ -422,12 +427,16 @@ int main ( int argc, char* argv[] )
     {
       //Data
       cut = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 76 && mGammaGamma < 106 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 ) ";
-      if( analysisTag == "Razor2017_PromptReco" )
-        {
-	  cut = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 76 && mGammaGamma < 106 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 ";
-	}
       //MC
       cut_mc = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 76 && mGammaGamma < 106 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 ";
+      if( analysisTag == "Razor2017_92X" )
+        {
+          //Data
+	  //cut = "abs( pho1SC_Eta ) < 1.4442 && abs( pho2SC_Eta ) < 1.4442 && ( pho1Pt > 40. || pho2Pt > 40. ) && pho1Pt > 25. && pho2Pt> 25. && mGammaGamma > 76 && mGammaGamma < 106 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && pho1passIso == 1 && pho2passIso == 1 ";
+          cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/pTGammaGamma>1./3. || pho2Pt/pTGammaGamma>1./3.) && pho1Pt/pTGammaGamma>1./4. && pho2Pt/pTGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5";
+          //MC
+          cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/pTGammaGamma>1./3. || pho2Pt/pTGammaGamma>1./3.) && pho1Pt/pTGammaGamma>1./4. && pho2Pt/pTGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5";
+	}
       
       //---------------------
       //T r i g g e r   C u t 
@@ -538,9 +547,10 @@ int main ( int argc, char* argv[] )
   
   if (analysisTag == "Razor2015_76X") lumi = 2300;
   if (analysisTag == "Razor2016_80X") lumi = 35900.;
-  if (analysisTag == "Razor2017_PromptReco") lumi = 29025.;
-  //if (analysisTag == "Razor2017_PromptReco") lumi = 16428.;
-  //if (analysisTag == "Razor2017_PromptReco") lumi = 24918.;
+  //if (analysisTag == "Razor2017_92X") lumi = 29025.;
+  if (analysisTag == "Razor2017_92X") lumi = 41153.;
+  //if (analysisTag == "Razor2017_92X") lumi = 16428.;
+  //if (analysisTag == "Razor2017_92X") lumi = 24918.;
   
   std::cout << "[INFO]: running inclusive tree mode" << std::endl;
   std::cout << "[INFO]: lumi = " << lumi/1000. << "1/fb"<< std::endl;
@@ -601,7 +611,7 @@ int main ( int argc, char* argv[] )
       if ( process == Process::data )
 	{
 	  TString myCut = cut;
-          if (analysisTag == "Razor2017_PromptReco") myCut = cut+triggerCut_2017;
+          if (analysisTag == "Razor2017_92X") myCut = cut+triggerCut_2017;
 	  if (analysisTag == "Razor2016_80X") myCut = cut+triggerCut_80X;
 	  if (analysisTag == "Razor2015_76X") myCut = cut+triggerCut_76X;
 	  std::cout << "CUT--> " << myCut << std::endl; 
@@ -610,7 +620,7 @@ int main ( int argc, char* argv[] )
       else
 	{
 	  TString myCut = cut;
-          if (analysisTag == "Razor2017_PromptReco") myCut = cut_mc+triggerCut_80X;
+          if (analysisTag == "Razor2017_92X") myCut = cut_mc+triggerCut_80X;
 	  if (analysisTag == "Razor2016_80X") myCut = cut_mc+triggerCut_80X;
 	  if (analysisTag == "Razor2015_76X") myCut = cut_mc+triggerCut_76X;
 	  std::cout << "CUT--> " << myCut << std::endl; 
