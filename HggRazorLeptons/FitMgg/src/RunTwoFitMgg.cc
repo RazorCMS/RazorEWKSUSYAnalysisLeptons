@@ -1983,13 +1983,13 @@ RooWorkspace* MakeDataCard( TTree* treeData, TTree* treeSignal, TTree* treeSMH, 
 	  else if ( isys == 70 ) 
 	    {
 	      if (signal_sys.at(isys) != 1.0) {
-		ofs << "Signal_FastsimMet" << "\t\t\tlnN\t\t" << signal_sys.at(isys) << "\t\t-\t\t-\n";
+		//ofs << "Signal_FastsimMet" << "\t\t\tlnN\t\t" << signal_sys.at(isys) << "\t\t-\t\t-\n";
 	      }
 	    }
 	  else if ( isys == 71 ) 
 	    {
 	      if (signal_sys.at(isys) != 1.0) {
-		ofs << "Signal_FastsimPileup" << "\t\t\tlnN\t\t" << signal_sys.at(isys) << "\t\t-\t\t-\n";
+		//ofs << "Signal_FastsimPileup" << "\t\t\tlnN\t\t" << signal_sys.at(isys) << "\t\t-\t\t-\n";
 	      }
 	    } 
 	  else {
@@ -2774,13 +2774,13 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
 	  else if ( isys == 70 ) 
 	    {
 	      if (signal_sys.at(isys) != 1.0) {
-		ofs << "Signal_FastsimMet" << "\t\t\tlnN\t\t" << signal_sys.at(isys) << "\t\t-\t\t-\n";
+		//ofs << "Signal_FastsimMet" << "\t\t\tlnN\t\t" << signal_sys.at(isys) << "\t\t-\t\t-\n";
 	      }
 	    }
 	  else if ( isys == 71 ) 
 	    {
 	      if (signal_sys.at(isys) != 1.0) {
-		ofs << "Signal_FastsimPileup" << "\t\t\tlnN\t\t" << signal_sys.at(isys) << "\t\t-\t\t-\n";
+		//ofs << "Signal_FastsimPileup" << "\t\t\tlnN\t\t" << signal_sys.at(isys) << "\t\t-\t\t-\n";
 	      }
 	    } 
 	  else {

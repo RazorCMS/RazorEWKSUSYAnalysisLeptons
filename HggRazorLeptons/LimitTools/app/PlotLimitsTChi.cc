@@ -127,7 +127,7 @@ int main( int argc, char** argv )
 	  TTree* tree = (TTree*)fin->Get("limit");
 	  double limit;
 	  Limit tmpLimit;
-	  double limitSF = 5.0;
+	  double limitSF = 1.0;
 	  tree->SetBranchAddress( "limit", &limit );
 	  tree->GetEntry(0);
 	  tmpLimit.exp0p025 = limit*limitSF*xsecMap[_mass].first;

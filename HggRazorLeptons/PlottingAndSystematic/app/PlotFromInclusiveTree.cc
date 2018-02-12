@@ -304,10 +304,16 @@ int main ( int argc, char* argv[] )
       //---------------------
       if( analysisTag == "Razor2017_92X" )
 	{
+         cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt>40. || pho2Pt>40.) && pho1Pt>25. && pho2Pt>25. ";
+         //MC
+         //GammaGamma
+         cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt>40. || pho2Pt>40.) && pho1Pt>25. && pho2Pt>25. ";
+         /*
           cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho2Pt/mGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5";
          //MC
          //GammaGamma
          cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho2Pt/mGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5";
+         */
 	}
       //T r i g g e r   C u t 
       //---------------------
@@ -443,9 +449,15 @@ int main ( int argc, char* argv[] )
       if( analysisTag == "Razor2017_92X" )
         {
           //Data
+          cut = "mGammaGamma > 76. && mGammaGamma < 106. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt>40. || pho2Pt>40.) && pho1Pt>25. && pho2Pt>25. ";
+          //MC
+          cut_mc = "mGammaGamma > 76. && mGammaGamma < 106. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt>40. || pho2Pt>40.) && pho1Pt>25. && pho2Pt>25. ";
+          /*
+          //Data
           cut = "mGammaGamma > 76. && mGammaGamma < 106. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho2Pt/mGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5";
           //MC
           cut_mc = "mGammaGamma > 76. && mGammaGamma < 106. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho2Pt/mGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5";
+          */
 	}
       
       //---------------------

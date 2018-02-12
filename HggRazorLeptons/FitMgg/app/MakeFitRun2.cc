@@ -448,12 +448,12 @@ int main( int argc, char* argv[])
   TString cutMETfilters = "";
   TString cutTrigger = "";
 
-  TString cutMETfiltersData = " && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 )";  
-  TString cutTriggerData = " && ( HLTDecision[82] == 1 || HLTDecision[83] || HLTDecision[93] )";
+  //TString cutMETfiltersData = " && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 )";  
+  //TString cutTriggerData = " && ( HLTDecision[82] == 1 || HLTDecision[83] || HLTDecision[93] )";
   
   
-  //TString cutMETfiltersData = " && 1";
-  //TString cutTriggerData = " && 1";
+  TString cutMETfiltersData = " && 1";
+  TString cutTriggerData = " && 1";
   
   
   if ( _highMassMode )
@@ -504,11 +504,20 @@ int main( int argc, char* argv[])
     }
   else
     {
-      if (categoryMode == "highpt") categoryCutString          = " && pTGammaGamma >= 110 && box > 4 ";
+      //if (categoryMode == "highpt") categoryCutString          = " && pTGammaGamma >= 110 && box > 4 && n_Jets>=2 ";
+      //if (categoryMode == "highpt") categoryCutString          = " && pTGammaGamma >= 110 && box > 4 && n_Jets==1 ";
+      //if (categoryMode == "highpt") categoryCutString          = " && pTGammaGamma >= 110 && box > 4 && nLooseBTaggedJets>=1 ";
+      if (categoryMode == "highpt") categoryCutString          = " && pTGammaGamma >= 110 && box > 4 && nLooseBTaggedJets==0";
       else if (categoryMode == "hbb") categoryCutString        = " && pTGammaGamma < 110 && abs(mbbH-125.) < 15. && box > 4";
       else if (categoryMode == "zbb") categoryCutString        = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15. && abs(mbbZ-91.) < 15. && box > 4";
-      else if (categoryMode == "highres") categoryCutString    = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM < 0.0085 && box > 4";
-      else if (categoryMode == "lowres") categoryCutString     = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM >= 0.0085 && box > 4";
+      //else if (categoryMode == "highres") categoryCutString    = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM < 0.0085 && box > 4 && n_Jets>=2 ";
+      //else if (categoryMode == "highres") categoryCutString    = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM < 0.0085 && box > 4 && n_Jets==1 ";
+      //else if (categoryMode == "highres") categoryCutString    = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM < 0.0085 && box > 4 && nLooseBTaggedJets>=1 ";
+      else if (categoryMode == "highres") categoryCutString    = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM < 0.0085 && box > 4 && nLooseBTaggedJets==0 ";
+      //else if (categoryMode == "lowres") categoryCutString     = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM >= 0.0085 && box > 4 && n_Jets>=2 ";
+      //else if (categoryMode == "lowres") categoryCutString     = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM >= 0.0085 && box > 4 && n_Jets==1 ";
+      //else if (categoryMode == "lowres") categoryCutString     = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM >= 0.0085 && box > 4 && nLooseBTaggedJets>=1 ";
+      else if (categoryMode == "lowres") categoryCutString     = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM >= 0.0085 && box > 4 && nLooseBTaggedJets==0 ";
       else if (categoryMode == "muhighpt") categoryCutString   = " && pTGammaGamma >= 110 && box == 3 && lep1Pt > 15. ";
       else if (categoryMode == "mulowpt") categoryCutString    = " && pTGammaGamma < 110 && box == 3 && lep1Pt > 15. ";
       else if (categoryMode == "elehighpt") categoryCutString  = " && pTGammaGamma >= 110 && box == 4 && lep1Pt > 20. ";

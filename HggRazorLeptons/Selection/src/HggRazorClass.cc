@@ -490,8 +490,8 @@ void HggRazorClass::Loop()
   //SigmaMoverM Reweighting 
   //---------------------------------------
   //TFile* fsmom = new TFile("/Users/cmorgoth/Work/git/RazorEWKSUSYAnalysis/HggRazor/PlottingAndSystematic/data/SigmaMoverM_ZToHScaleFactor.root");
-  //TFile* fsmom = new TFile("/afs/cern.ch/user/j/jmao/work/public/releases/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/data/SigmaMoverM_ZToHScaleFactor.root");
-  TFile* fsmom = new TFile("/Users/cmorgoth/git/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/SigmaMoverM_ZToHScaleFactor.root");
+  TFile* fsmom = new TFile("/afs/cern.ch/user/j/jmao/work/public/releases/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/data/SigmaMoverM_ZToHScaleFactor.root");
+  //TFile* fsmom = new TFile("/Users/cmorgoth/git/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/SigmaMoverM_ZToHScaleFactor.root");
   TH1F* hSigmaMoverM_reweight = (TH1F*)fsmom->Get("SigmaMoverM_ZToHScaleFactor");
   if ( hSigmaMoverM_reweight == NULL )
     {

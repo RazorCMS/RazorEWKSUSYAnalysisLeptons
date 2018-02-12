@@ -7,6 +7,7 @@
 //ROOT INCLUDES
 #include <TFile.h>
 #include <TROOT.h>
+#include <TH2Poly.h>
 //#include <RooArgSet.h>
 //LOCAL INCLUDES
 #include "HggAux.hh"
@@ -176,11 +177,20 @@ int main( int argc, char* argv[] )
   //Category CUT Strings
   //--------------------------
   TString categoryCutString;
-  if (categoryMode == "highpt") categoryCutString          = " && pTGammaGamma >= 110 && box > 4 ";
+  //if (categoryMode == "highpt") categoryCutString          = " && pTGammaGamma >= 110 && box > 4 && n_Jets>=2";
+  if (categoryMode == "highpt") categoryCutString          = " && pTGammaGamma >= 110 && box > 4 && n_Jets==1";
+  //if (categoryMode == "highpt") categoryCutString          = " && pTGammaGamma >= 110 && box > 4 && nLooseBTaggedJets>=1";
+  //if (categoryMode == "highpt") categoryCutString          = " && pTGammaGamma >= 110 && box > 4 && nLooseBTaggedJets==0";
   else if (categoryMode == "hbb") categoryCutString        = " && pTGammaGamma < 110 && abs(mbbH-125.) < 15. && box > 4";
   else if (categoryMode == "zbb") categoryCutString        = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15. && abs(mbbZ-91.) < 15. && box > 4";
-  else if (categoryMode == "highres") categoryCutString    = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM < 0.0085 && box > 4";
-  else if (categoryMode == "lowres") categoryCutString     = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM >= 0.0085 && box > 4";
+  //else if (categoryMode == "highres") categoryCutString    = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM < 0.0085 && box > 4 && n_Jets>=2";
+  else if (categoryMode == "highres") categoryCutString    = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM < 0.0085 && box > 4 && n_Jets==1";
+  //else if (categoryMode == "highres") categoryCutString    = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM < 0.0085 && box > 4 && nLooseBTaggedJets>=1";
+  //else if (categoryMode == "highres") categoryCutString    = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM < 0.0085 && box > 4 && nLooseBTaggedJets==0";
+  //else if (categoryMode == "lowres") categoryCutString     = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM >= 0.0085 && box > 4 && n_Jets>=2";
+  else if (categoryMode == "lowres") categoryCutString     = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM >= 0.0085 && box > 4 && n_Jets==1";
+  //else if (categoryMode == "lowres") categoryCutString     = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM >= 0.0085 && box > 4 && nLooseBTaggedJets>=1";
+  else if (categoryMode == "lowres") categoryCutString     = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM >= 0.0085 && box > 4 && nLooseBTaggedJets==0";
   else if (categoryMode == "muhighpt") categoryCutString   = " && pTGammaGamma >= 110 && box == 3 && lep1Pt > 15. ";
   else if (categoryMode == "mulowpt") categoryCutString    = " && pTGammaGamma < 110 && box == 3 && lep1Pt > 15. ";
   else if (categoryMode == "elehighpt") categoryCutString  = " && pTGammaGamma >= 110 && box == 4 && lep1Pt > 20. ";
@@ -239,6 +249,7 @@ int main( int argc, char* argv[] )
   }
 */
   myVectBinning = SetBinning(binVector, binCategory);
+  std::cout << "[INFO]: set binning \n"<< std::endl;
 
 
   /*
@@ -389,7 +400,7 @@ int main( int argc, char* argv[] )
       hggSys->SetPdfWeightsHisto( SumPdfWeights );
       hggSys->SetISRHisto( ISRHist );
       hggSys->SetNPVHisto( NPVHist );
-      hggSys->LoadNPVTarget("/Users/cmorgoth/git/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/data/PileUpDistribution/NPVTarget_2016.root");
+      hggSys->LoadNPVTarget("/afs/cern.ch/user/j/jmao/work/public/releases/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/data/PileUpDistribution/NPVTarget_2016.root");
       if ( isEWKSUSYSignal ) hggSys->SetISRPtHisto( ISRPtHist );
       hggSys->Loop();
       for ( auto tmp: myVectBinning )
