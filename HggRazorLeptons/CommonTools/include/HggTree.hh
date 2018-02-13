@@ -159,9 +159,14 @@ public :
    Float_t         jet_Pt[50];   //[n_Jets]
    Float_t         jet_Eta[50];   //[n_Jets]
    Float_t         jet_Phi[50];   //[n_Jets]
-   Bool_t          jetIsCSVL[50];   //[n_Jets]
-   Bool_t          jetIsCSVM[50];   //[n_Jets]
-   Bool_t          jetIsCSVT[50];   //[n_Jets]
+   Int_t           n_BJets;
+   Float_t         bjet_E[50];   //[n_BJets]
+   Float_t         bjet_Pt[50];   //[n_BJets]
+   Float_t         bjet_Eta[50];   //[n_BJets]
+   Float_t         bjet_Phi[50];   //[n_BJets]
+   Bool_t          bjetIsCSVL[50];   //[n_BJets]
+   Bool_t          bjetIsCSVM[50];   //[n_BJets]
+   Bool_t          bjetIsCSVT[50];   //[n_BJets]
    Int_t           n_Jets_JESUp;
    Int_t           n_Jets_JESDown;
    Bool_t          HLTDecision[300];
@@ -314,9 +319,14 @@ public :
    TBranch        *b_jet_Pt;   //!
    TBranch        *b_jet_Eta;   //!
    TBranch        *b_jet_Phi;   //!
-   TBranch        *b_jetIsCSVL;   //!
-   TBranch        *b_jetIsCSVM;   //!
-   TBranch        *b_jetIsCSVT;   //!
+   TBranch        *b_n_BJets;   //!
+   TBranch        *b_bjet_E;   //!
+   TBranch        *b_bjet_Pt;   //!
+   TBranch        *b_bjet_Eta;   //!
+   TBranch        *b_bjet_Phi;   //!
+   TBranch        *b_bjetIsCSVL;   //!
+   TBranch        *b_bjetIsCSVM;   //!
+   TBranch        *b_bjetIsCSVT;   //!
    TBranch        *b_n_Jets_JESUp;   //!
    TBranch        *b_n_Jets_JESDown;   //!
    TBranch        *b_HLTDecision;   //!
@@ -542,9 +552,14 @@ void HggTree::Init(TTree *tree)
    fChain->SetBranchAddress("jet_Pt", jet_Pt, &b_jet_Pt);
    fChain->SetBranchAddress("jet_Eta", jet_Eta, &b_jet_Eta);
    fChain->SetBranchAddress("jet_Phi", jet_Phi, &b_jet_Phi);
-   fChain->SetBranchAddress("jetIsCSVL", jetIsCSVL, &b_jetIsCSVL);
-   fChain->SetBranchAddress("jetIsCSVM", jetIsCSVM, &b_jetIsCSVM);
-   fChain->SetBranchAddress("jetIsCSVT", jetIsCSVT, &b_jetIsCSVT);
+   fChain->SetBranchAddress("n_BJets", &n_BJets, &b_n_BJets);
+   fChain->SetBranchAddress("bjet_E", bjet_E, &b_bjet_E);
+   fChain->SetBranchAddress("bjet_Pt", bjet_Pt, &b_bjet_Pt);
+   fChain->SetBranchAddress("bjet_Eta", bjet_Eta, &b_bjet_Eta);
+   fChain->SetBranchAddress("bjet_Phi", bjet_Phi, &b_bjet_Phi);
+   fChain->SetBranchAddress("bjetIsCSVL", bjetIsCSVL, &b_bjetIsCSVL);
+   fChain->SetBranchAddress("bjetIsCSVM", bjetIsCSVM, &b_bjetIsCSVM);
+   fChain->SetBranchAddress("bjetIsCSVT", bjetIsCSVT, &b_bjetIsCSVT);
    fChain->SetBranchAddress("n_Jets_JESUp", &n_Jets_JESUp, &b_n_Jets_JESUp);
    fChain->SetBranchAddress("n_Jets_JESDown", &n_Jets_JESDown, &b_n_Jets_JESDown);
    fChain->SetBranchAddress("HLTDecision", HLTDecision, &b_HLTDecision);
