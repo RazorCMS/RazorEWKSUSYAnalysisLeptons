@@ -448,16 +448,17 @@ int main ( int argc, char* argv[] )
       cut_mc = "mGammaGamma > 76. && mGammaGamma < 106. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho2Pt/mGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5";
       if( analysisTag == "Razor2017_92X" )
         {
+         /*
           //Data
           cut = "mGammaGamma > 76. && mGammaGamma < 106. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt>40. || pho2Pt>40.) && pho1Pt>25. && pho2Pt>25. ";
           //MC
           cut_mc = "mGammaGamma > 76. && mGammaGamma < 106. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt>40. || pho2Pt>40.) && pho1Pt>25. && pho2Pt>25. ";
-          /*
+          */
           //Data
           cut = "mGammaGamma > 76. && mGammaGamma < 106. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho2Pt/mGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5";
           //MC
           cut_mc = "mGammaGamma > 76. && mGammaGamma < 106. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 0 && pho2passEleVeto == 0 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho2Pt/mGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5";
-          */
+          
 	}
       
       //---------------------
@@ -472,7 +473,7 @@ int main ( int argc, char* argv[] )
       // D e f i n e  B i n n i n g
       //---------------------------
       //Z
-      HggRazorClass::n_mgg = 30;
+      HggRazorClass::n_mgg = 60;
       HggRazorClass::mgg_l = 76.;
       HggRazorClass::mgg_h = 106.;
       
@@ -633,7 +634,7 @@ int main ( int argc, char* argv[] )
       if ( process == Process::data )
 	{
 	  TString myCut = cut;
-          if (analysisTag == "Razor2017_92X") myCut = cut+triggerCut_2017;
+          //if (analysisTag == "Razor2017_92X") myCut = cut+triggerCut_2017;
 	  if (analysisTag == "Razor2016_80X") myCut = cut+triggerCut_80X;
 	  if (analysisTag == "Razor2015_76X") myCut = cut+triggerCut_76X;
 	  std::cout << "CUT--> " << myCut << std::endl; 
@@ -642,7 +643,7 @@ int main ( int argc, char* argv[] )
       else
 	{
 	  TString myCut = cut;
-          if (analysisTag == "Razor2017_92X") myCut = cut_mc+triggerCut_80X;
+          //if (analysisTag == "Razor2017_92X") myCut = cut_mc+triggerCut_80X;
 	  if (analysisTag == "Razor2016_80X") myCut = cut_mc+triggerCut_80X;
 	  if (analysisTag == "Razor2015_76X") myCut = cut_mc+triggerCut_76X;
 	  std::cout << "CUT--> " << myCut << std::endl; 
@@ -659,8 +660,8 @@ int main ( int argc, char* argv[] )
       //------------------------------------------------
       //C r e a t in g   S e l e c t i o n   O b j e c t
       //------------------------------------------------
-      //hggclass = new HggRazorClass( cutTree, processName, "INCLUSIVE", true, true );
-      hggclass = new HggRazorClass( cutTree, processName, "INCLUSIVE", false, false );
+      hggclass = new HggRazorClass( cutTree, processName, "INCLUSIVE", true, true );
+      //hggclass = new HggRazorClass( cutTree, processName, "INCLUSIVE", false, false );
       hggclass->InitMrRsqCustomHisto( N_HighRes, MR_HighRes, N_HighRes, Rsq_HighRes );
       //Creating Histos
       hggclass->Loop();

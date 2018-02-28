@@ -414,8 +414,22 @@ void HggRazorSystematics::Loop()
 
       //std::cout << "here"
       //require diphoton trigger
+      TString DiphotonTrigger;
+      if (_analysisTag == "Razor2016_80X")
+	{
+	  DiphotonTrigger = "(HLTDecision[82]||HLTDecision[83]||HLTDecision[93])";
+	}
+      else if (_analysisTag == "Razor2017_92X")
+	{
+	  DiphotonTrigger = "(HLTDecision[54]||HLTDecision[55])";
+	}
+      else
+	{
+	  DiphotonTrigger = "1";
+	}
+
       if (!(_useISRPtCorrection && this->processName == "signal")) {
-	if (!(HLTDecision[82] || HLTDecision[83] || HLTDecision[93])) continue;//Ommit for FastSim
+	if (!DiphotonTrigger) continue;//Ommit for FastSim
       }
 
       //require MET filters, Omit for FastSim
@@ -442,9 +456,21 @@ void HggRazorSystematics::Loop()
       else if (_analysisTag == "Razor2016_80X")
 	{
 	  if (_useISRPtCorrection && this->processName == "signal") {
-	    commonW = this->Lumi*weight*btagCorrFactor*triggerEffSFWeight*photonEffSF*triggerEffWeight*ISRCorrValue;//FastSim
+	    //commonW = this->Lumi*weight*btagCorrFactor*triggerEffSFWeight*photonEffSF*triggerEffWeight*ISRCorrValue;//FastSim
+	    commonW = this->Lumi*weight*btagCorrFactor*triggerEffSFWeight*photonEffSF*triggerEffWeight;//FastSim
 	  } else {
-	    commonW = this->Lumi*weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF*ISRCorrValue;//FullSim
+	    //commonW = this->Lumi*weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF*ISRCorrValue;//FullSim
+	    commonW = this->Lumi*weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF;//FullSim
+	  }
+	}
+      else if (_analysisTag == "Razor2017_92X")
+	{
+	  if (_useISRPtCorrection && this->processName == "signal") {
+	    //commonW = this->Lumi*weight*btagCorrFactor*triggerEffSFWeight*photonEffSF*triggerEffWeight*ISRCorrValue;//FastSim
+	    commonW = this->Lumi*weight*btagCorrFactor*triggerEffSFWeight*photonEffSF*triggerEffWeight;//FastSim
+	  } else {
+	    //commonW = this->Lumi*weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF*ISRCorrValue;//FullSim
+	    commonW = this->Lumi*weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF;//FullSim
 	  }
 	}
       else
@@ -785,13 +811,13 @@ bool HggRazorSystematics::SetPdfWeightsHisto( TH1F* histo )
   this->SumPdfWeights = new TH1F( *histo );
   return true;
 };
-
+/*
 float HggRazorSystematics::GetNominalYield( float mr, float rsq )
 {
   int bin = h2p->FindBin( mr+10, rsq+0.0001 );
 
   double nominal = h2p->GetBinContent( bin );
-
+  
   //For Fastsim samples in Spring16, we do not have the proper pileup distribution to do reweighting
   //Therefore we need to do some extrapolation 
   if ((_useISRPtCorrection && this->processName == "signal")) {
@@ -828,19 +854,30 @@ float HggRazorSystematics::GetNominalYield( float mr, float rsq )
       //std::cout << "npv = " << npv << " : " << tmpweight << " : " << Yield << " +/- " << YieldErr << "\n";
       averageYield += tmpweight * Yield;
       averageYieldErr += tmpweight * YieldErr;
+      //std::cout << "added  : " << tmpweight*Yield  << " +/- " << tmpweight*YieldErr << "\n";
+      //std::cout << "value  : " << averageYield  << " +/- " << averageYieldErr << "\n";
     }
-    nominal  = averageYield;
+    //nominal  = averageYield;
     //std::cout << "Average yield: " << averageYield << " +/- " << averageYieldErr << "\n";
 
-    // TCanvas cv("cv","cv", 800,800);
-    // graph->Draw();
-    // cv.SaveAs(Form("plot%d.gif",bin));
+     TCanvas cv("cv","cv", 800,800);
+     graph->Draw();
+     cv.SaveAs(Form("plot%d.gif",bin));
     
     delete graph;
 
   }
   
   return nominal;
+};
+*/
+
+float HggRazorSystematics::GetNominalYield( float mr, float rsq )
+{
+         int bin = h2p->FindBin( mr+10, rsq+0.0001 );
+          double nominal = h2p->GetBinContent( bin );
+          std::cout << "nominal: " << nominal << std::endl;
+          return nominal;
 };
 
 float HggRazorSystematics::GetNominalError( float mr, float rsq )

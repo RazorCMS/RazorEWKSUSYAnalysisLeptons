@@ -98,7 +98,7 @@ int main( int argc, char* argv[] )
   std::string analysisTag = ParseCommandLine( argc, argv, "-analysisTag=" );
   if ( analysisTag == "" )
     {
-      std::cerr << "[ERROR]: please provide the analysisTag. Use --analysisTag=<Razor2015_76X,Razor2016_80X>" << std::endl;
+      std::cerr << "[ERROR]: please provide the analysisTag. Use --analysisTag=<Razor2015_76X,Razor2016_80X,Razor2017_92X>" << std::endl;
       return -1;
     } 
   
@@ -170,26 +170,28 @@ int main( int argc, char* argv[] )
     std::cout << "Unable to open binning lookup table" << std::endl;
   }
 
-
-  TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1Eta) <1.48 && abs(pho2Eta)<1.48 && (pho1Pt>40||pho2Pt>40)  && pho1Pt> 25. && pho2Pt>25.";
+  TString cut;
+  TString triggerCut;
+  if ( analysisTag == "Razor2016_80X" ) 
+    {
+      cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1Eta) <1.48 && abs(pho2Eta)<1.48 && (pho1Pt>40||pho2Pt>40)  && pho1Pt> 25. && pho2Pt>25.";
+      triggerCut = " && ( HLTDecision[82] || HLTDecision[83] || HLTDecision[93] ) ";
+    } 
+  else if ( analysisTag == "Razor2017_92X" ) 
+    {
+      cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho2Pt/mGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5";
+      triggerCut = " && ( HLTDecision[54] || HLTDecision[55] ) ";
+    } 
 
   //--------------------------
   //Category CUT Strings
   //--------------------------
   TString categoryCutString;
-  //if (categoryMode == "highpt") categoryCutString          = " && pTGammaGamma >= 110 && box > 4 && n_Jets>=2";
-  if (categoryMode == "highpt") categoryCutString          = " && pTGammaGamma >= 110 && box > 4 && n_Jets==1";
-  //if (categoryMode == "highpt") categoryCutString          = " && pTGammaGamma >= 110 && box > 4 && nLooseBTaggedJets>=1";
-  //if (categoryMode == "highpt") categoryCutString          = " && pTGammaGamma >= 110 && box > 4 && nLooseBTaggedJets==0";
+  if (categoryMode == "highpt") categoryCutString          = " && pTGammaGamma >= 110 && box > 4 ";
   else if (categoryMode == "hbb") categoryCutString        = " && pTGammaGamma < 110 && abs(mbbH-125.) < 15. && box > 4";
   else if (categoryMode == "zbb") categoryCutString        = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15. && abs(mbbZ-91.) < 15. && box > 4";
-  //else if (categoryMode == "highres") categoryCutString    = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM < 0.0085 && box > 4 && n_Jets>=2";
-  else if (categoryMode == "highres") categoryCutString    = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM < 0.0085 && box > 4 && n_Jets==1";
-  //else if (categoryMode == "highres") categoryCutString    = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM < 0.0085 && box > 4 && nLooseBTaggedJets>=1";
-  //else if (categoryMode == "highres") categoryCutString    = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM < 0.0085 && box > 4 && nLooseBTaggedJets==0";
-  //else if (categoryMode == "lowres") categoryCutString     = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM >= 0.0085 && box > 4 && n_Jets>=2";
-  else if (categoryMode == "lowres") categoryCutString     = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM >= 0.0085 && box > 4 && n_Jets==1";
-  //else if (categoryMode == "lowres") categoryCutString     = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM >= 0.0085 && box > 4 && nLooseBTaggedJets>=1";
+  else if (categoryMode == "highres") categoryCutString    = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM < 0.0085 && box > 4 ";
+  else if (categoryMode == "lowres") categoryCutString     = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM >= 0.0085 && box > 4 ";
   else if (categoryMode == "lowres") categoryCutString     = " && pTGammaGamma < 110 && abs(mbbH-125.) >= 15 && abs(mbbZ-91.) >= 15 && sigmaMoverM >= 0.0085 && box > 4 && nLooseBTaggedJets==0";
   else if (categoryMode == "muhighpt") categoryCutString   = " && pTGammaGamma >= 110 && box == 3 && lep1Pt > 15. ";
   else if (categoryMode == "mulowpt") categoryCutString    = " && pTGammaGamma < 110 && box == 3 && lep1Pt > 15. ";
@@ -198,11 +200,8 @@ int main( int argc, char* argv[] )
   else if (categoryMode == "twoleptons") categoryCutString = " && (box == 0 || box == 1 || box == 2)";
   else if (categoryMode == "inclusive") categoryCutString  = "";
 
-  TString triggerCut = " && ( HLTDecision[82] || HLTDecision[83] || HLTDecision[93] ) ";
   TString metFilterCut = " && (Flag_HBHENoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1)";
   //TString metFilterCut = " && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1)";
-  //TString triggerCut = "";
-  //TString metFilterCut = "";
 
   //For fastsim signals, turn off trigger and met filters
   if (isEWKSUSYSignal) {
@@ -217,6 +216,10 @@ int main( int argc, char* argv[] )
   else if ( analysisTag == "Razor2016_80X" ) 
     {
       cut = cut + categoryCutString + triggerCut + metFilterCut;
+    } 
+  else if ( analysisTag == "Razor2017_92X" ) 
+    {
+      cut = cut + categoryCutString + triggerCut ;
     } 
   else 
     {
