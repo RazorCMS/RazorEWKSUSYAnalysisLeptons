@@ -509,13 +509,14 @@ int main( int argc, char* argv[])
       else if (categoryMode == "hbb") categoryCutString = " && box==6";
       else if (categoryMode == "zbb") categoryCutString = " && box==7 ";
       else if (categoryMode == "highres") categoryCutString = " && box==8 ";
-      else if (categoryMode == "lowres") categoryCutString = " && box==9) ";
+      else if (categoryMode == "lowres") categoryCutString = " && box==9 ";
       else if (categoryMode == "muhighpt") categoryCutString   = " && pTGammaGamma >= 110 && box == 3 && lep1Pt > 15. ";
       else if (categoryMode == "mulowpt") categoryCutString    = " && pTGammaGamma < 110 && box == 3 && lep1Pt > 15. ";
       else if (categoryMode == "elehighpt") categoryCutString  = " && pTGammaGamma >= 110 && box == 4 && lep1Pt > 20. ";
       else if (categoryMode == "elelowpt") categoryCutString   = " && pTGammaGamma < 110 && box == 4 && lep1Pt > 20. ";
       else if (categoryMode == "twoleptons") categoryCutString = " && (box == 0 || box == 1 || box == 2)";
       else if (categoryMode == "inclusive") categoryCutString  = "";
+      else if (categoryMode == "ele") categoryCutString  = " && box==4 && lep1Pt>20. && MR>150.";
     }
   //---------------------------------------------
   // A l e x ' s   T r e e   F o r m at   C a s e
