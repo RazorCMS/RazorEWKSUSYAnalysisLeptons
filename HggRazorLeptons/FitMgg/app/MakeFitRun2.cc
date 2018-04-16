@@ -505,11 +505,15 @@ int main( int argc, char* argv[])
     }
   else
     {
-      if (categoryMode == "highpt") categoryCutString = " && box==5 ";
-      else if (categoryMode == "hbb") categoryCutString = " && box==6";
-      else if (categoryMode == "zbb") categoryCutString = " && box==7 ";
-      else if (categoryMode == "highres") categoryCutString = " && box==8 ";
-      else if (categoryMode == "lowres") categoryCutString = " && box==9 ";
+      if (categoryMode == "highpt") categoryCutString          = " && box==5 ";
+      else if (categoryMode == "hbb") categoryCutString        = " && box==6";
+      else if (categoryMode == "hbbhighpt") categoryCutString  = " && pTGammaGamma >= 110 && box==6";
+      else if (categoryMode == "hbblowpt") categoryCutString   = " && pTGammaGamma < 110 && box==6";
+      else if (categoryMode == "zbb") categoryCutString        = " && box==7";
+      else if (categoryMode == "zbbhighpt") categoryCutString  = " && pTGammaGamma >= 110 && box==7";
+      else if (categoryMode == "zbblowpt") categoryCutString   = " && pTGammaGamma < 110 && box==7";
+      else if (categoryMode == "highres") categoryCutString    = " && box==8 ";
+      else if (categoryMode == "lowres") categoryCutString     = " && box==9 ";
       else if (categoryMode == "muhighpt") categoryCutString   = " && pTGammaGamma >= 110 && box == 3 && lep1Pt > 15. ";
       else if (categoryMode == "mulowpt") categoryCutString    = " && pTGammaGamma < 110 && box == 3 && lep1Pt > 15. ";
       else if (categoryMode == "elehighpt") categoryCutString  = " && pTGammaGamma >= 110 && box == 4 && lep1Pt > 20. ";
@@ -663,6 +667,7 @@ int main( int argc, char* argv[])
       //w_aic[0] = MakeSideBandFitAIC_2( tree->CopyTree( cut ), forceSigma, constrainMu, forceMu, mggName, aic[0], aic_2[0], aic_3[0], "singleExp" );
       //if( aic_map.find("singleExp") == aic_map.end() ) aic_map.insert( std::pair<std::string, double>("singleExp",aic[0]));
 
+      std::cout<< "AIC2 fit mode " << std::endl;
     
       w_aic[0] = MakeSideBandFitAIC_2( tree->CopyTree( cut ), forceSigma, constrainMu, forceMu, mggName, aic[0], aic_2[0], aic_3[0], fitStatus_1[0],fitStatus_2[0], fitStatus_3[0],fitStatus_4[0] , "doubleExp");
       w_aic[1] = MakeSideBandFitAIC_2( tree->CopyTree( cut ), forceSigma, constrainMu, forceMu, mggName, aic[1], aic_2[1], aic_3[1], fitStatus_1[1],fitStatus_2[1], fitStatus_3[1],fitStatus_4[1] , "singleExp");

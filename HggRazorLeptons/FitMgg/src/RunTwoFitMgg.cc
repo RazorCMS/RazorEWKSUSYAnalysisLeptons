@@ -1912,7 +1912,7 @@ RooWorkspace* MakeDataCard( TTree* treeData, TTree* treeSignal, TTree* treeSMH, 
 	{
 	  if ( isys == 0 )
 	    {
-	      ofs << "SMH_JES\t\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "/" << smh_sys.at(isys) << "\t\t-\n";
+	      //ofs << "SMH_JES\t\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "/" << smh_sys.at(isys) << "\t\t-\n";
 	    }
 	  else if ( isys == 2 )
 	    {
@@ -1951,7 +1951,7 @@ RooWorkspace* MakeDataCard( TTree* treeData, TTree* treeSignal, TTree* treeSMH, 
 	{
 	  if ( isys == 0 )
 	    {
-	      ofs << "Signal_JES\t\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\t\t-\n";
+	      //ofs << "Signal_JES\t\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\t\t-\n";
 	    }
 	  else if ( isys == 2 )
 	    {
@@ -2033,7 +2033,7 @@ RooWorkspace* MakeDataCard( TTree* treeData, TTree* treeSignal, TTree* treeSMH, 
 	{
 	  if ( isys == 0 )
 	    {
-	      ofs << "Signal_JES\t\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\n";
+	      //ofs << "Signal_JES\t\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\n";
 	    }
 	  else if ( isys == 2 )
 	    {
@@ -2482,8 +2482,8 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
   //---------------------------------
   RooPlot *fmgg3 = mgg.frame();
   dataSMH.plotOn(fmgg3);
-  ws->pdf( tagSMH )->plotOn(fmgg3, RooFit::LineColor(kRed), RooFit::Range("Full"), RooFit::NormRange("Full"));
-  //ws->pdf( tagSMH )->plotOn(fmgg3, RooFit::LineColor(kBlue), RooFit::LineStyle(kDashed), RooFit::Range("low,high"),RooFit::NormRange("low,high"));
+  //ws->pdf( tagSMH )->plotOn(fmgg3, RooFit::LineColor(kRed), RooFit::Range("Full"), RooFit::NormRange("Full"));
+  ws->pdf( tagSMH )->plotOn(fmgg3, RooFit::LineColor(kBlue), RooFit::LineStyle(kDashed), RooFit::Range("low,high"),RooFit::NormRange("low,high"));
   fmgg3->Draw();
   c->SaveAs( "HggRazorDataCards/" + sModel + "/smhFit_bin" + binNumber + ".pdf" );
   fmgg3->SetName( "SMHFitPlot" );
@@ -2703,7 +2703,7 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
 	{
 	  if ( isys == 0 )
 	    {
-	      ofs << "SMH_JES\t\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "/" << smh_sys.at(isys) << "\t\t-\n";
+	      //ofs << "SMH_JES\t\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "/" << smh_sys.at(isys) << "\t\t-\n";
 	    }
 	  else if ( isys == 2 )
 	    {
@@ -2742,7 +2742,7 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
 	{
 	  if ( isys == 0 )
 	    {
-	      ofs << "Signal_JES\t\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\t\t-\n";
+	      //ofs << "Signal_JES\t\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\t\t-\n";
 	    }
 	  else if ( isys == 2 )
 	    {
@@ -2824,7 +2824,7 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
 	{
 	  if ( isys == 0 )
 	    {
-	      ofs << "Signal_JES\t\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\n";
+	      //ofs << "Signal_JES\t\t\t\tlnN\t\t" << signal_sys.at(isys+1) << "/" << signal_sys.at(isys) << "\t\t-\n";
 	    }
 	  else if ( isys == 2 )
 	    {
@@ -3765,7 +3765,7 @@ RooWorkspace* DoBiasTestSignal( TTree* tree, TString mggName, TString f1, TStrin
   RooAbsReal* f1Integral_sb = ws->pdf( tag1 )->createIntegral(mgg, RooFit::NormSet(mgg), RooFit::Range("low,high") );
   double f1Int_sb = f1Integral_sb->getVal();
   int npoints = (int)n_sideband/f1Int_sb;//re-scaling sideband to total bkg events (N_sideband/NORMALIZE_INTEGRAL_SIDEBAND)
-  npoints = 2*npoints;
+  //npoints = 2*npoints;
   //npoints = 350;//only use this to set the number of toys bkg;
 
   std::cout << "npoints: " << npoints << std::endl;
@@ -4328,6 +4328,36 @@ RooWorkspace* MakeSideBandFitAIC_2( TTree* tree, float forceSigma, bool constrai
 //print out the status here.... 
    fitStatus_3 = r2->status();
    fitStatus_4 = r2->covQual();
+
+   int max_loop_AIC = 100; 
+   while(fitStatus_3!=0 && max_loop_AIC>0)
+   {
+  std::cout << "[INFO]: function name : " << ffName << std::endl;
+  std::cout << "[INFO]: loop number : " << 101-max_loop_AIC << std::endl;
+           m.minimize("Minuit2", "Migrad");
+           bres = m.save();
+           fitStatus_1 = bres->status();
+           fitStatus_2 = bres->covQual();
+  std::cout << "[INFO]: fit Sataus 1 : " << fitStatus_1 << std::endl;
+  std::cout << "[INFO]: fit Sataus 2 : " << fitStatus_2 << std::endl;
+           if(fitStatus_1==0) break;
+
+           m.minimize("Minuit2", "Hesse");
+           r2 = m.save();
+           fitStatus_3 = r2->status();
+           fitStatus_4 = r2->covQual();
+  std::cout << "[INFO]: fit Sataus 3 : " << fitStatus_3 << std::endl;
+  std::cout << "[INFO]: fit Sataus 4 : " << fitStatus_4 << std::endl;
+           if(fitStatus_3==0) break;
+
+           max_loop_AIC --;
+   }
+
+   if(fitStatus_3==0)
+   {
+           fitStatus_1 = fitStatus_3;
+           fitStatus_2 = fitStatus_4;
+   }
   
   std::cout << "===================" << std::endl;
   std::cout << "[INFO]: LEAVING FIT" << std::endl;
