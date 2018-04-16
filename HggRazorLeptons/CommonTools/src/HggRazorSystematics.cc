@@ -456,21 +456,21 @@ void HggRazorSystematics::Loop()
       else if (_analysisTag == "Razor2016_80X")
 	{
 	  if (_useISRPtCorrection && this->processName == "signal") {
-	    //commonW = this->Lumi*weight*btagCorrFactor*triggerEffSFWeight*photonEffSF*triggerEffWeight*ISRCorrValue;//FastSim
-	    commonW = this->Lumi*weight*btagCorrFactor*triggerEffSFWeight*photonEffSF*triggerEffWeight;//FastSim
+	    commonW = this->Lumi*weight*btagCorrFactor*triggerEffSFWeight*photonEffSF*triggerEffWeight*ISRCorrValue;//FastSim
+	    //commonW = this->Lumi*weight*btagCorrFactor*triggerEffSFWeight*photonEffSF*triggerEffWeight;//FastSim
 	  } else {
-	    //commonW = this->Lumi*weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF*ISRCorrValue;//FullSim
-	    commonW = this->Lumi*weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF;//FullSim
+	    commonW = this->Lumi*weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF*ISRCorrValue;//FullSim
+	    //commonW = this->Lumi*weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF;//FullSim
 	  }
 	}
       else if (_analysisTag == "Razor2017_92X")
 	{
 	  if (_useISRPtCorrection && this->processName == "signal") {
-	    //commonW = this->Lumi*weight*btagCorrFactor*triggerEffSFWeight*photonEffSF*triggerEffWeight*ISRCorrValue;//FastSim
-	    commonW = this->Lumi*weight*btagCorrFactor*triggerEffSFWeight*photonEffSF*triggerEffWeight;//FastSim
+	    commonW = this->Lumi*weight*btagCorrFactor*triggerEffSFWeight*photonEffSF*triggerEffWeight*ISRCorrValue;//FastSim
+	    //commonW = this->Lumi*weight*btagCorrFactor*triggerEffSFWeight*photonEffSF*triggerEffWeight;//FastSim
 	  } else {
-	    //commonW = this->Lumi*weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF*ISRCorrValue;//FullSim
-	    commonW = this->Lumi*weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF;//FullSim
+	    commonW = this->Lumi*weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF*ISRCorrValue;//FullSim
+	    //commonW = this->Lumi*weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF;//FullSim
 	  }
 	}
       else

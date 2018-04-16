@@ -190,7 +190,11 @@ int main( int argc, char* argv[] )
   TString categoryCutString;
   if (categoryMode == "highpt") categoryCutString          = " && box==5 ";
   else if (categoryMode == "hbb") categoryCutString        = " && box==6";
+  else if (categoryMode == "hbbhighpt") categoryCutString  = " && pTGammaGamma >= 110 && box==6";
+  else if (categoryMode == "hbblowpt") categoryCutString   = " && pTGammaGamma < 110 && box==6";
   else if (categoryMode == "zbb") categoryCutString        = " && box==7";
+  else if (categoryMode == "zbbhighpt") categoryCutString  = " && pTGammaGamma >= 110 && box==7";
+  else if (categoryMode == "zbblowpt") categoryCutString   = " && pTGammaGamma < 110 && box==7";
   else if (categoryMode == "highres") categoryCutString    = " && box==8 ";
   else if (categoryMode == "lowres") categoryCutString     = " && box==9 ";
   else if (categoryMode == "muhighpt") categoryCutString   = " && pTGammaGamma >= 110 && box == 3 && lep1Pt > 15. ";
@@ -199,6 +203,7 @@ int main( int argc, char* argv[] )
   else if (categoryMode == "elelowpt") categoryCutString   = " && pTGammaGamma < 110 && box == 4 && lep1Pt > 20. ";
   else if (categoryMode == "twoleptons") categoryCutString = " && (box == 0 || box == 1 || box == 2)";
   else if (categoryMode == "inclusive") categoryCutString  = "";
+  else if (categoryMode == "ele") categoryCutString        = "&& box == 4 && lep1Pt > 20. ";
   
   TString metFilterCut = " && (Flag_HBHENoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1)";
   //TString metFilterCut = " && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1)";
