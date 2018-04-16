@@ -132,7 +132,8 @@ void PrintAICTable(std::string category, std::string LowMRcut,std::string HighMR
 		max_AIC_weight = aic_weight_map[tmp.second];
 		isMaxAIC = false;
 	}
-	if(aic_weight_map[tmp.second] > 0.1*max_AIC_weight)
+	//if(aic_weight_map[tmp.second] > 0.1*max_AIC_weight)
+	if(aic_weight_map[tmp.second] > 0.1)
 	{
 		  fprintf(m_outfile_4,"%s & %2d & %6.2f & %6.2f  \\\\ \n",func_name[tmp.second].c_str(), num_par[tmp.second], delta_aic_map[tmp.second], aic_weight_map[tmp.second]);
 	}	
@@ -168,7 +169,8 @@ void PrintAICTable(std::string category, std::string LowMRcut,std::string HighMR
 		max_AIC_weight = aic_weight_map[tmp.second];
 		isMaxAIC = false;
 	}
-	if(aic_weight_map[tmp.second] > 0.1*max_AIC_weight)
+	//if(aic_weight_map[tmp.second] > 0.1*max_AIC_weight)
+	if(aic_weight_map[tmp.second] > 0.1)
 	{
 		  fprintf(m_outfile_5,"\\rowcolor[rgb]{0.31,0.78,0.47}  \n");
 		  fprintf(m_outfile_5,"%s & %2d & %6.2f & %6.2f  \\\\ \n",func_name[tmp.second].c_str(), num_par[tmp.second], delta_aic_map[tmp.second], aic_weight_map[tmp.second]);
@@ -212,7 +214,8 @@ void PrintAICTable(std::string category, std::string LowMRcut,std::string HighMR
 		max_AIC_weight = aic_weight_map[tmp.second];
 		isMaxAIC = false;
 	}
-	if(aic_weight_map[tmp.second] > 0.1*max_AIC_weight)
+	//if(aic_weight_map[tmp.second] > 0.1*max_AIC_weight)
+	if(aic_weight_map[tmp.second] > 0.1)
 	{
 		  fprintf(m_outfile_6,"\\rowcolor[rgb]{0.31,0.78,0.47}  \n");
 		  fprintf(m_outfile_6,"%s & %2d & %6.2f & %6.2f & %2.0f, %2.0f, %2.0f, %2.0f \\\\ \n",func_name[tmp.second].c_str(), num_par[tmp.second], delta_aic_map[tmp.second], aic_weight_map[tmp.second], fitStatus_1_map[tmp.second], fitStatus_2_map[tmp.second], fitStatus_3_map[tmp.second], fitStatus_4_map[tmp.second]);

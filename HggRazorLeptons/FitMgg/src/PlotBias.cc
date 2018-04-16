@@ -41,7 +41,7 @@ const float topMargin    = 0.07;
 const float bottomMargin = 0.12;
 */
 
-const float lumi = 26.4;
+const float lumi = 77.7;
 //Axis
 const float axisTitleSize = 0.06;
 const float axisTitleOffset = .8;
@@ -63,7 +63,7 @@ const float bottomMargin = 0.12;
 //CMS STANDARD
 TString CMSText = "CMS";
 TString extraText   = "Preliminary";
-TString lumiText = "26.4 fb^{-1} (13 TeV)";
+TString lumiText = "77.7 fb^{-1} (13 TeV)";
 
 float lumix = 0.955;
 float lumiy = 0.945;
@@ -481,6 +481,7 @@ for (int i=0;i<v_func_name.size();i++)
 
 double FitBias(double* mu_bias_err, TString fname = "", TString f1 = "dumm1", TString f2 = "dummy2", std::string outDir = "bias_plots", bool _status = false , std::string fitFunc = "singleGaus")
 {
+
   TFile* f = new TFile( fname , "READ" );
 
   TCanvas* c = new TCanvas( "c", "c", 2119, 33, 800, 700 );
@@ -540,6 +541,7 @@ double FitBias(double* mu_bias_err, TString fname = "", TString f1 = "dumm1", TS
   */
   //TF1* myF = new TF1("myF", "[0]*exp( -(x-[1])*(x-[1])/(2*[2]*[2]) ) + [4]*exp( -(x-[5])*(x-[5])/(2*[3]*[3]) )", -1., 1.5);
   double mu_value[3] = {0.0};
+  double mu_value_err[3] = {0.0};
   double sigma_value[3] = {0.0};
   double alpha_value = 0.0;
   double n_value = 0.0;
@@ -793,11 +795,13 @@ myF_SG->SetLineWidth( 3 );
   if(fitFunc == "doublecrystalBall" )
  {
   tex2.DrawLatex( 0.89, 0.88, "X_{peak} = " + _mu + " %");
-  tex2.DrawLatex( 0.89, 0.80, "   #mu_{1} = " + _mean1_DCB + " %");
-  tex2.DrawLatex( 0.89, 0.72, "   #sigma_{1} = " + _sigma1_DCB + " %");
-  tex2.DrawLatex( 0.89, 0.64, "#mu_{2} = " + _mean2_DCB + " %");
-  tex2.DrawLatex( 0.89, 0.56, "#sigma_{2} = " + _sigma2_DCB + " %");
-  tex2.DrawLatex( 0.89, 0.48, "#alpha = " + _alpha_DCB );
+  //tex2.DrawLatex( 0.89, 0.80, "err_{1} = " + _err1 + " %");
+  tex2.DrawLatex( 0.89, 0.72, "   #mu_{1} = " + _mean1_DCB + " %");
+  tex2.DrawLatex( 0.89, 0.64, "   #sigma_{1} = " + _sigma1_DCB + " %");
+  tex2.DrawLatex( 0.89, 0.56, "#mu_{2} = " + _mean2_DCB + " %");
+  tex2.DrawLatex( 0.89, 0.48, "#sigma_{2} = " + _sigma2_DCB + " %");
+  tex2.DrawLatex( 0.89, 0.40, "#alpha = " + _alpha_DCB );
+  //tex2.DrawLatex( 0.89, 0.32, "w1 = " + _w1_DCB );
   //tex2.DrawLatex( 0.89, 0.40, "#omega_{1} = " + _w1_DCB);
  }
 

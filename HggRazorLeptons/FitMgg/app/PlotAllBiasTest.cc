@@ -187,9 +187,11 @@ int main( int argc, char* argv[])
 		if ( mean_err_map.find( tmp_p ) == mean_err_map.end() )
 		 {
 		   mean_err_map[tmp_p] = mean_err;
+	       std::cout << "mean_err_map--> " << mean_err_map[tmp_p] << std::endl;
 		 }
 
 	       std::cout << "mean--> " << mean << std::endl;
+	       std::cout << "mean_err--> " << mean_err << std::endl;
 	    }
 	  else if ( mode == "tableFitErr" )
 	    {
