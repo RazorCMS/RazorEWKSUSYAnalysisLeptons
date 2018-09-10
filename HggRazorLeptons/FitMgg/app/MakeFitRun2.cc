@@ -443,6 +443,7 @@ int main( int argc, char* argv[])
   
   //TString cut = "mGammaGamma >103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1Eta) <1.48 && abs(pho2Eta)<1.48 && (pho1Pt>40||pho2Pt>40)  && pho1Pt> 25. && pho2Pt>25.";
   TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho2Pt/mGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5";
+  TString cut_mc = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho2Pt/mGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5";
   if ( usePtGammaGamma == "yes" ) {
       cut = cut + " && pTGammaGamma > 20 ";
   }
@@ -514,8 +515,8 @@ int main( int argc, char* argv[])
       else if (categoryMode == "zbblowpt") categoryCutString   = " && pTGammaGamma < 110 && box==7";
       else if (categoryMode == "highres") categoryCutString    = " && box==8 ";
       else if (categoryMode == "lowres") categoryCutString     = " && box==9 ";
-      else if (categoryMode == "muhighpt") categoryCutString   = " && pTGammaGamma >= 110 && box == 3 && lep1Pt > 15. ";
-      else if (categoryMode == "mulowpt") categoryCutString    = " && pTGammaGamma < 110 && box == 3 && lep1Pt > 15. ";
+      else if (categoryMode == "muhighpt") categoryCutString   = " && pTGammaGamma >= 110 && box == 3 && lep1Pt > 20. ";
+      else if (categoryMode == "mulowpt") categoryCutString    = " && pTGammaGamma < 110 && box == 3 && lep1Pt > 20. ";
       else if (categoryMode == "elehighpt") categoryCutString  = " && pTGammaGamma >= 110 && box == 4 && lep1Pt > 20. ";
       else if (categoryMode == "elelowpt") categoryCutString   = " && pTGammaGamma < 110 && box == 4 && lep1Pt > 20. ";
       else if (categoryMode == "twoleptons") categoryCutString = " && (box == 0 || box == 1 || box == 2)";
@@ -549,6 +550,15 @@ int main( int argc, char* argv[])
   //---
   //AIC
   //---
+  RooWorkspace* w_aic[7];
+  double aic[7];
+  double aic_2[7];
+  double aic_3[7];
+  double fitStatus_1[7];
+  double fitStatus_2[7];
+  double fitStatus_3[7];
+  double fitStatus_4[7];
+/*
   RooWorkspace* w_aic[8];
   double aic[8];
   double aic_2[8];
@@ -557,6 +567,7 @@ int main( int argc, char* argv[])
   double fitStatus_2[8];
   double fitStatus_3[8];
   double fitStatus_4[8];
+  */
   std::map< std::string, double > aic_map;
   std::map< std::string, double > aic_map_2;
   std::map< std::string, double > aic_map_3;
@@ -640,7 +651,7 @@ int main( int argc, char* argv[])
 	  std::cout << "================================================================================" << std::endl;
 	  std::cout << "[INFO]: cut for DATA--> " << cut+cutMETfiltersData+cutTriggerData << std::endl;
 	  std::cout << "================================================================================" << std::endl;
-	  w_sb = MakeDataCardExpected( tree->CopyTree( cut+cutMETfiltersData+cutTriggerData ), treeSignal->CopyTree( cut ), treeSMH->CopyTree( cut ), mggName, _SMH_Yield, SMH_CL, 
+	  w_sb = MakeDataCardExpected( tree->CopyTree( cut+cutMETfiltersData+cutTriggerData ), treeSignal->CopyTree( cut_mc ), treeSMH->CopyTree( cut_mc ), mggName, _SMH_Yield, SMH_CL, 
                                         _Signal_Yield, Signal_CL, binNumber, categoryMode, _highMassMode, _sModel, f1, _signalOnly );
 	}
       std::cout << "finish MakeDataCardExpected" << std::endl;
@@ -659,8 +670,8 @@ int main( int argc, char* argv[])
       if( aic_map.find("poly2") == aic_map.end() ) aic_map.insert( std::pair<std::string, double>("poly2",aic[4]));
       w_aic[5] = MakeSideBandFitAIC( tree->CopyTree( cut ), forceSigma, constrainMu, forceMu, mggName, aic[5], "poly3" );
       if( aic_map.find("poly3") == aic_map.end() ) aic_map.insert( std::pair<std::string, double>("poly3",aic[5]));
-      w_aic[6] = MakeSideBandFitAIC( tree->CopyTree( cut ), forceSigma, constrainMu, forceMu, mggName, aic[6], "modExp" );
-      if( aic_map.find("modExp") == aic_map.end() ) aic_map.insert( std::pair<std::string, double>("modExp",aic[6]));
+      //w_aic[6] = MakeSideBandFitAIC( tree->CopyTree( cut ), forceSigma, constrainMu, forceMu, mggName, aic[6], "modExp" );
+      //if( aic_map.find("modExp") == aic_map.end() ) aic_map.insert( std::pair<std::string, double>("modExp",aic[6]));
     }
   else if(fitMode == "AIC2")
     {
@@ -675,12 +686,14 @@ int main( int argc, char* argv[])
       w_aic[3] = MakeSideBandFitAIC_2( tree->CopyTree( cut ), forceSigma, constrainMu, forceMu, mggName, aic[3], aic_2[3], aic_3[3], fitStatus_1[3],fitStatus_2[3], fitStatus_3[3],fitStatus_4[3] , "doublePow");
       w_aic[4] = MakeSideBandFitAIC_2( tree->CopyTree( cut ), forceSigma, constrainMu, forceMu, mggName, aic[4], aic_2[4], aic_3[4], fitStatus_1[4],fitStatus_2[4], fitStatus_3[4],fitStatus_4[4] , "poly2");
       w_aic[5] = MakeSideBandFitAIC_2( tree->CopyTree( cut ), forceSigma, constrainMu, forceMu, mggName, aic[5], aic_2[5], aic_3[5], fitStatus_1[5],fitStatus_2[5], fitStatus_3[5],fitStatus_4[5] , "poly3");
-      w_aic[6] = MakeSideBandFitAIC_2( tree->CopyTree( cut ), forceSigma, constrainMu, forceMu, mggName, aic[6], aic_2[6], aic_3[6], fitStatus_1[6],fitStatus_2[6], fitStatus_3[6],fitStatus_4[6] , "modExp");
-      w_aic[7] = MakeSideBandFitAIC_2( tree->CopyTree( cut ), forceSigma, constrainMu, forceMu, mggName, aic[7], aic_2[7], aic_3[7], fitStatus_1[7],fitStatus_2[7], fitStatus_3[7],fitStatus_4[7] , "poly4");
+      //w_aic[6] = MakeSideBandFitAIC_2( tree->CopyTree( cut ), forceSigma, constrainMu, forceMu, mggName, aic[6], aic_2[6], aic_3[6], fitStatus_1[6],fitStatus_2[6], fitStatus_3[6],fitStatus_4[6] , "modExp");
+      //w_aic[7] = MakeSideBandFitAIC_2( tree->CopyTree( cut ), forceSigma, constrainMu, forceMu, mggName, aic[7], aic_2[7], aic_3[7], fitStatus_1[7],fitStatus_2[7], fitStatus_3[7],fitStatus_4[7] , "poly4");
+      w_aic[6] = MakeSideBandFitAIC_2( tree->CopyTree( cut ), forceSigma, constrainMu, forceMu, mggName, aic[6], aic_2[6], aic_3[6], fitStatus_1[6],fitStatus_2[6], fitStatus_3[6],fitStatus_4[6] , "poly4");
       
 	double min_aic_tmp = 999.0;
 
-       for(int i=0;i<8;i++)
+       //for(int i=0;i<8;i++)
+       for(int i=0;i<7;i++)
         {
 	  if(aic[i]<min_aic_tmp)
 	    {
@@ -688,7 +701,8 @@ int main( int argc, char* argv[])
 	    }
         }
 
-       for(int i=0;i<8;i++)
+       //for(int i=0;i<8;i++)
+       for(int i=0;i<7;i++)
         {
         if(aic[i]>990.0)
                 {
@@ -704,8 +718,9 @@ int main( int argc, char* argv[])
       if( aic_map.find("doublePow") == aic_map.end() ) aic_map.insert( std::pair<std::string, double>("doublePow",aic[3]));
       if( aic_map.find("poly2") == aic_map.end() ) aic_map.insert( std::pair<std::string, double>("poly2",aic[4]));
       if( aic_map.find("poly3") == aic_map.end() ) aic_map.insert( std::pair<std::string, double>("poly3",aic[5]));
-      if( aic_map.find("modExp") == aic_map.end() ) aic_map.insert( std::pair<std::string, double>("modExp",aic[6]));
-      if( aic_map.find("poly4") == aic_map.end() ) aic_map.insert( std::pair<std::string, double>("poly4",aic[7]));
+      //if( aic_map.find("modExp") == aic_map.end() ) aic_map.insert( std::pair<std::string, double>("modExp",aic[6]));
+      //if( aic_map.find("poly4") == aic_map.end() ) aic_map.insert( std::pair<std::string, double>("poly4",aic[7]));
+      if( aic_map.find("poly4") == aic_map.end() ) aic_map.insert( std::pair<std::string, double>("poly4",aic[6]));
       
       if( aic_map_2.find("doubleExp") == aic_map_2.end() ) aic_map_2.insert( std::pair<std::string, double>("doubleExp",aic_2[0]));
       if( aic_map_2.find("singleExp") == aic_map_2.end() ) aic_map_2.insert( std::pair<std::string, double>("singleExp",aic_2[1]));
@@ -713,8 +728,9 @@ int main( int argc, char* argv[])
       if( aic_map_2.find("doublePow") == aic_map_2.end() ) aic_map_2.insert( std::pair<std::string, double>("doublePow",aic_2[3]));
       if( aic_map_2.find("poly2") == aic_map_2.end() ) aic_map_2.insert( std::pair<std::string, double>("poly2",aic_2[4]));
       if( aic_map_2.find("poly3") == aic_map_2.end() ) aic_map_2.insert( std::pair<std::string, double>("poly3",aic_2[5]));
-      if( aic_map_2.find("modExp") == aic_map_2.end() ) aic_map_2.insert( std::pair<std::string, double>("modExp",aic_2[6]));
-      if( aic_map_2.find("poly4") == aic_map_2.end() ) aic_map_2.insert( std::pair<std::string, double>("poly4",aic_2[7]));
+      //if( aic_map_2.find("modExp") == aic_map_2.end() ) aic_map_2.insert( std::pair<std::string, double>("modExp",aic_2[6]));
+      //if( aic_map_2.find("poly4") == aic_map_2.end() ) aic_map_2.insert( std::pair<std::string, double>("poly4",aic_2[7]));
+      if( aic_map_2.find("poly4") == aic_map_2.end() ) aic_map_2.insert( std::pair<std::string, double>("poly4",aic_2[6]));
       
       if( aic_map_3.find("doubleExp") == aic_map_3.end() ) aic_map_3.insert( std::pair<std::string, double>("doubleExp",aic_3[0]));
       if( aic_map_3.find("singleExp") == aic_map_3.end() ) aic_map_3.insert( std::pair<std::string, double>("singleExp",aic_3[1]));
@@ -722,8 +738,9 @@ int main( int argc, char* argv[])
       if( aic_map_3.find("doublePow") == aic_map_3.end() ) aic_map_3.insert( std::pair<std::string, double>("doublePow",aic_3[3]));
       if( aic_map_3.find("poly2") == aic_map_3.end() ) aic_map_3.insert( std::pair<std::string, double>("poly2",aic_3[4]));
       if( aic_map_3.find("poly3") == aic_map_3.end() ) aic_map_3.insert( std::pair<std::string, double>("poly3",aic_3[5]));
-      if( aic_map_3.find("modExp") == aic_map_3.end() ) aic_map_3.insert( std::pair<std::string, double>("modExp",aic_3[6]));
-      if( aic_map_3.find("poly4") == aic_map_3.end() ) aic_map_3.insert( std::pair<std::string, double>("poly4",aic_3[7]));
+      //if( aic_map_3.find("modExp") == aic_map_3.end() ) aic_map_3.insert( std::pair<std::string, double>("modExp",aic_3[6]));
+      //if( aic_map_3.find("poly4") == aic_map_3.end() ) aic_map_3.insert( std::pair<std::string, double>("poly4",aic_3[7]));
+      if( aic_map_3.find("poly4") == aic_map_3.end() ) aic_map_3.insert( std::pair<std::string, double>("poly4",aic_3[6]));
  
       if( fitStatus_1_map.find("doubleExp") == fitStatus_1_map.end() ) fitStatus_1_map.insert( std::pair<std::string, double>("doubleExp",fitStatus_1[0]));
       if( fitStatus_1_map.find("singleExp") == fitStatus_1_map.end() ) fitStatus_1_map.insert( std::pair<std::string, double>("singleExp",fitStatus_1[1]));
@@ -731,8 +748,9 @@ int main( int argc, char* argv[])
       if( fitStatus_1_map.find("doublePow") == fitStatus_1_map.end() ) fitStatus_1_map.insert( std::pair<std::string, double>("doublePow",fitStatus_1[3]));
       if( fitStatus_1_map.find("poly2") == fitStatus_1_map.end() ) fitStatus_1_map.insert( std::pair<std::string, double>("poly2",fitStatus_1[4]));
       if( fitStatus_1_map.find("poly3") == fitStatus_1_map.end() ) fitStatus_1_map.insert( std::pair<std::string, double>("poly3",fitStatus_1[5]));
-      if( fitStatus_1_map.find("modExp") == fitStatus_1_map.end() ) fitStatus_1_map.insert( std::pair<std::string, double>("modExp",fitStatus_1[6]));
-      if( fitStatus_1_map.find("poly4") == fitStatus_1_map.end() ) fitStatus_1_map.insert( std::pair<std::string, double>("poly4",fitStatus_1[7]));
+      //if( fitStatus_1_map.find("modExp") == fitStatus_1_map.end() ) fitStatus_1_map.insert( std::pair<std::string, double>("modExp",fitStatus_1[6]));
+      //if( fitStatus_1_map.find("poly4") == fitStatus_1_map.end() ) fitStatus_1_map.insert( std::pair<std::string, double>("poly4",fitStatus_1[7]));
+      if( fitStatus_1_map.find("poly4") == fitStatus_1_map.end() ) fitStatus_1_map.insert( std::pair<std::string, double>("poly4",fitStatus_1[6]));
    
       if( fitStatus_2_map.find("doubleExp") == fitStatus_2_map.end() ) fitStatus_2_map.insert( std::pair<std::string, double>("doubleExp",fitStatus_2[0]));
       if( fitStatus_2_map.find("singleExp") == fitStatus_2_map.end() ) fitStatus_2_map.insert( std::pair<std::string, double>("singleExp",fitStatus_2[1]));
@@ -740,8 +758,9 @@ int main( int argc, char* argv[])
       if( fitStatus_2_map.find("doublePow") == fitStatus_2_map.end() ) fitStatus_2_map.insert( std::pair<std::string, double>("doublePow",fitStatus_2[3]));
       if( fitStatus_2_map.find("poly2") == fitStatus_2_map.end() ) fitStatus_2_map.insert( std::pair<std::string, double>("poly2",fitStatus_2[4]));
       if( fitStatus_2_map.find("poly3") == fitStatus_2_map.end() ) fitStatus_2_map.insert( std::pair<std::string, double>("poly3",fitStatus_2[5]));
-      if( fitStatus_2_map.find("modExp") == fitStatus_2_map.end() ) fitStatus_2_map.insert( std::pair<std::string, double>("modExp",fitStatus_2[6]));
-      if( fitStatus_2_map.find("poly4") == fitStatus_2_map.end() ) fitStatus_2_map.insert( std::pair<std::string, double>("poly4",fitStatus_2[7]));
+      //if( fitStatus_2_map.find("modExp") == fitStatus_2_map.end() ) fitStatus_2_map.insert( std::pair<std::string, double>("modExp",fitStatus_2[6]));
+      //if( fitStatus_2_map.find("poly4") == fitStatus_2_map.end() ) fitStatus_2_map.insert( std::pair<std::string, double>("poly4",fitStatus_2[7]));
+      if( fitStatus_2_map.find("poly4") == fitStatus_2_map.end() ) fitStatus_2_map.insert( std::pair<std::string, double>("poly4",fitStatus_2[6]));
  
       if( fitStatus_3_map.find("doubleExp") == fitStatus_3_map.end() ) fitStatus_3_map.insert( std::pair<std::string, double>("doubleExp",fitStatus_3[0]));
       if( fitStatus_3_map.find("singleExp") == fitStatus_3_map.end() ) fitStatus_3_map.insert( std::pair<std::string, double>("singleExp",fitStatus_3[1]));
@@ -749,8 +768,9 @@ int main( int argc, char* argv[])
       if( fitStatus_3_map.find("doublePow") == fitStatus_3_map.end() ) fitStatus_3_map.insert( std::pair<std::string, double>("doublePow",fitStatus_3[3]));
       if( fitStatus_3_map.find("poly2") == fitStatus_3_map.end() ) fitStatus_3_map.insert( std::pair<std::string, double>("poly2",fitStatus_3[4]));
       if( fitStatus_3_map.find("poly3") == fitStatus_3_map.end() ) fitStatus_3_map.insert( std::pair<std::string, double>("poly3",fitStatus_3[5]));
-      if( fitStatus_3_map.find("modExp") == fitStatus_3_map.end() ) fitStatus_3_map.insert( std::pair<std::string, double>("modExp",fitStatus_3[6]));
-      if( fitStatus_3_map.find("poly4") == fitStatus_3_map.end() ) fitStatus_3_map.insert( std::pair<std::string, double>("poly4",fitStatus_3[7]));
+      //if( fitStatus_3_map.find("modExp") == fitStatus_3_map.end() ) fitStatus_3_map.insert( std::pair<std::string, double>("modExp",fitStatus_3[6]));
+      //if( fitStatus_3_map.find("poly4") == fitStatus_3_map.end() ) fitStatus_3_map.insert( std::pair<std::string, double>("poly4",fitStatus_3[7]));
+      if( fitStatus_3_map.find("poly4") == fitStatus_3_map.end() ) fitStatus_3_map.insert( std::pair<std::string, double>("poly4",fitStatus_3[6]));
       
       if( fitStatus_4_map.find("doubleExp") == fitStatus_4_map.end() ) fitStatus_4_map.insert( std::pair<std::string, double>("doubleExp",fitStatus_4[0]));
       if( fitStatus_4_map.find("singleExp") == fitStatus_4_map.end() ) fitStatus_4_map.insert( std::pair<std::string, double>("singleExp",fitStatus_4[1]));
@@ -758,8 +778,9 @@ int main( int argc, char* argv[])
       if( fitStatus_4_map.find("doublePow") == fitStatus_4_map.end() ) fitStatus_4_map.insert( std::pair<std::string, double>("doublePow",fitStatus_4[3]));
       if( fitStatus_4_map.find("poly2") == fitStatus_4_map.end() ) fitStatus_4_map.insert( std::pair<std::string, double>("poly2",fitStatus_4[4]));
       if( fitStatus_4_map.find("poly3") == fitStatus_4_map.end() ) fitStatus_4_map.insert( std::pair<std::string, double>("poly3",fitStatus_4[5]));
-      if( fitStatus_4_map.find("modExp") == fitStatus_4_map.end() ) fitStatus_4_map.insert( std::pair<std::string, double>("modExp",fitStatus_4[6]));
-      if( fitStatus_4_map.find("poly4") == fitStatus_4_map.end() ) fitStatus_4_map.insert( std::pair<std::string, double>("poly4",fitStatus_4[7]));
+      //if( fitStatus_4_map.find("modExp") == fitStatus_4_map.end() ) fitStatus_4_map.insert( std::pair<std::string, double>("modExp",fitStatus_4[6]));
+      //if( fitStatus_4_map.find("poly4") == fitStatus_4_map.end() ) fitStatus_4_map.insert( std::pair<std::string, double>("poly4",fitStatus_4[7]));
+      if( fitStatus_4_map.find("poly4") == fitStatus_4_map.end() ) fitStatus_4_map.insert( std::pair<std::string, double>("poly4",fitStatus_4[6]));
      
     }
   else if ( fitMode == "bias" )
@@ -855,7 +876,7 @@ int main( int argc, char* argv[])
       w_aic[4]->Write("w7");
       w_aic[5]->Write("w8");
       w_aic[6]->Write("w9");
-      w_aic[7]->Write("w10");
+      //w_aic[7]->Write("w10");
       std::cout.precision(10);
       double min_aic = 99999999;
       double min_aic_2 = 99999999;

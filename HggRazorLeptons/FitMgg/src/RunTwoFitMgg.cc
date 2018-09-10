@@ -1866,9 +1866,11 @@ RooWorkspace* MakeDataCard( TTree* treeData, TTree* treeSignal, TTree* treeSMH, 
   std::ofstream ofs( dataCardName , std::ofstream::out );
 
   int combinedBinNumber = atoi(binNumber); // this is equal to binNumber, except for the LowRes bins, where it is equal to the number of the corresponding HighRes bin
+  /*
   if ( combinedBinNumber > 13 ) {
       combinedBinNumber -= 5;
   }
+  */
   
   //correction is of the form N+ = nominal/(1+highres_sigmaMoverM_corr)
   //correction is of the form N- = nominal*(1+2*highres_sigmaMoverM_corr)/(1+highres_sigmaMoverM_corr)
@@ -2482,8 +2484,8 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
   //---------------------------------
   RooPlot *fmgg3 = mgg.frame();
   dataSMH.plotOn(fmgg3);
-  //ws->pdf( tagSMH )->plotOn(fmgg3, RooFit::LineColor(kRed), RooFit::Range("Full"), RooFit::NormRange("Full"));
-  ws->pdf( tagSMH )->plotOn(fmgg3, RooFit::LineColor(kBlue), RooFit::LineStyle(kDashed), RooFit::Range("low,high"),RooFit::NormRange("low,high"));
+  ws->pdf( tagSMH )->plotOn(fmgg3, RooFit::LineColor(kRed), RooFit::Range("Full"), RooFit::NormRange("Full"));
+  //ws->pdf( tagSMH )->plotOn(fmgg3, RooFit::LineColor(kBlue), RooFit::LineStyle(kDashed), RooFit::Range("low,high"),RooFit::NormRange("low,high"));
   fmgg3->Draw();
   c->SaveAs( "HggRazorDataCards/" + sModel + "/smhFit_bin" + binNumber + ".pdf" );
   fmgg3->SetName( "SMHFitPlot" );
@@ -2657,9 +2659,11 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
   std::ofstream ofs( dataCardName , std::ofstream::out );
 
   int combinedBinNumber = atoi(binNumber); // this is equal to binNumber, except for the LowRes bins, where it is equal to the number of the corresponding HighRes bin
+  /*
   if ( combinedBinNumber > 8 ) {
       combinedBinNumber -= 5;
   }
+  */
   
   //correction is of the form N+ = nominal/(1+highres_sigmaMoverM_corr)
   //correction is of the form N- = nominal*(1+2*highres_sigmaMoverM_corr)/(1+highres_sigmaMoverM_corr)
@@ -2713,12 +2717,20 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
 	  else if ( isys == 4 )
 	    {
 	      //ofs << "SMH_renScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "/" << smh_sys.at(isys) << "\t\t-\n";
-	      ofs << "SMH_renScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "\t\t-\n";
+	      //ofs << "SMH_renScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "\t\t-\n";
+	      if(smh_sys.at(isys+1)<0) 
+                      ofs << "SMH_renScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t 1.0 \t\t-\n";
+              else 
+                      ofs << "SMH_renScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "\t\t-\n";
 	    }
 	  else if ( isys == 6 )
 	    {
 	      //ofs << "SMH_facRenScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "/" << smh_sys.at(isys) << "\t\t-\n";
-	      ofs << "SMH_facRenScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "\t\t-\n";
+	      //ofs << "SMH_facRenScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "\t\t-\n";
+	      if(smh_sys.at(isys+1)<0)
+                      ofs << "SMH_facRenScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t 1.0 \t\t-\n";
+              else 
+                      ofs << "SMH_facRenScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "\t\t-\n";
 	    }
 	  else if ( isys > 7 )
 	    {
@@ -4358,7 +4370,7 @@ RooWorkspace* MakeSideBandFitAIC_2( TTree* tree, float forceSigma, bool constrai
            fitStatus_1 = fitStatus_3;
            fitStatus_2 = fitStatus_4;
    }
-  
+
   std::cout << "===================" << std::endl;
   std::cout << "[INFO]: LEAVING FIT" << std::endl;
   std::cout << "===================" << std::endl;
