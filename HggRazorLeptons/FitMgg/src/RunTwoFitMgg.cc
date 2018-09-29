@@ -2077,6 +2077,10 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
 			    TString sModel, TString f1, bool _signalOnly )
 {
   std::cout << "entering datacard: " << SMH_Yield << " " << Signal_Yield << std::endl;
+  std::cout << "if yield numbers are negative: " << std::endl;
+  if(SMH_Yield<0) SMH_Yield = 0.;
+  if(Signal_Yield<0) Signal_Yield = 0.;
+  std::cout << "entering datacard: " << SMH_Yield << " " << Signal_Yield << std::endl;
   //uncomment out SMH_CF Signal_CF stuff
 
   std::stringstream ss_smh, ss_signal;
@@ -2718,19 +2722,23 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
 	    {
 	      //ofs << "SMH_renScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "/" << smh_sys.at(isys) << "\t\t-\n";
 	      //ofs << "SMH_renScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "\t\t-\n";
-	      if(smh_sys.at(isys+1)<0) 
+	     
+              if(smh_sys.at(isys+1)<0) 
                       ofs << "SMH_renScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t 1.0 \t\t-\n";
               else 
                       ofs << "SMH_renScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "\t\t-\n";
+                      
 	    }
 	  else if ( isys == 6 )
 	    {
 	      //ofs << "SMH_facRenScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "/" << smh_sys.at(isys) << "\t\t-\n";
 	      //ofs << "SMH_facRenScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "\t\t-\n";
-	      if(smh_sys.at(isys+1)<0)
+	      
+               if(smh_sys.at(isys+1)<0)
                       ofs << "SMH_facRenScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t 1.0 \t\t-\n";
               else 
                       ofs << "SMH_facRenScale_bin" << combinedBinNumber << "\t\t\tlnN\t\t-\t\t" << smh_sys.at(isys+1) << "\t\t-\n";
+                      
 	    }
 	  else if ( isys > 7 )
 	    {

@@ -387,7 +387,7 @@ int main( int argc, char* argv[] )
       if ( process != "signal" ) assert( SumPdfWeights );     
       TH1F* ISRHist = (TH1F*)fin->Get("NISRJets");
       if ( process == "signal" ) assert( ISRHist );
-      TH1F* ISRPtHist = (TH1F*)fin->Get("PtISR");
+      TH1F* ISRPtHist = (TH1F*)fin->Get("ISRPtHist");
       if ( isEWKSUSYSignal && process == "signal" ) assert( ISRPtHist );
       TH1F* NPVHist = (TH1F*)fin->Get("NPV");
       if ( isEWKSUSYSignal && process == "signal" ) assert( NPVHist );

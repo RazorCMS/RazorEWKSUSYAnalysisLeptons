@@ -1156,11 +1156,11 @@ bool SetHistoStyle( TH1D* h, Process process )
       h->SetFillColor( kAzure - 4 );
       h->SetLineColor( kAzure - 4 );
     }
-  else if ( process == Process::dy )
+  /*else if ( process == Process::dy )
     {
       h->SetFillColor( kViolet - 2 );
       h->SetLineColor( kViolet - 2 );
-    }
+    }*/
   else if ( process == Process::tt )
     {
       h->SetFillColor( kPink - 2 );
@@ -1203,8 +1203,13 @@ bool SetHistoStyle( TH1D* h, Process process )
     }
   else if ( process == Process::wz )
     {
-      h->SetFillColor( kRed + 6 );
-      h->SetLineColor( kRed + 6 );
+      h->SetFillColor( kGreen - 6 );
+      h->SetLineColor( kGreen - 6 );
+    }
+  else if ( process == Process::dy )
+    {
+      h->SetFillColor( kViolet - 2 );
+      h->SetLineColor( kViolet - 2 );
     }
   else if ( process  == Process::signal )
     {

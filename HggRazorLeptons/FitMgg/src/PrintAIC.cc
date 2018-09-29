@@ -42,6 +42,7 @@ void PrintAICTable(std::string category, std::string LowMRcut,std::string HighMR
         for (auto tmp :delta_aic_map)
 	{
 		sort_func_name.insert(std::pair<double, std::string>(delta_aic_map[tmp.first],tmp.first));
+                std::cout << "sort AIC map " << tmp.first << std::endl;
 	}
     //print the table to a file
     	std::string str_table = "AIC_output/FitChoices_Table_"+category+".tex";
@@ -180,6 +181,8 @@ void PrintAICTable(std::string category, std::string LowMRcut,std::string HighMR
 	{
 		  fprintf(m_outfile_5,"\\rowcolor[rgb]{1.0,0.41,0.38}  \n");
 		  fprintf(m_outfile_5,"%s & %2d & %6.2f & %6.2f  \\\\ \n",func_name[tmp.second].c_str(), num_par[tmp.second], delta_aic_map[tmp.second], aic_weight_map[tmp.second]);
+		  //for 1 problematic bin
+                  //fprintf(m_outfile_list,"%s   %4.3f   ",tmp.second.c_str(), aic_weight_map[tmp.second]);
 	}
 	
  	}
@@ -190,7 +193,7 @@ void PrintAICTable(std::string category, std::string LowMRcut,std::string HighMR
 	fprintf(m_outfile_5,"\\end{center} \n");
 	fprintf(m_outfile_5,"\\end{table*} \n \n \n");
  
-	fprintf(m_outfile_list," \n");
+	fprintf(m_outfile_list," \n\n");
 
 
        //print the AIC table with color and status to a file
@@ -218,12 +221,14 @@ void PrintAICTable(std::string category, std::string LowMRcut,std::string HighMR
 	if(aic_weight_map[tmp.second] > 0.1)
 	{
 		  fprintf(m_outfile_6,"\\rowcolor[rgb]{0.31,0.78,0.47}  \n");
-		  fprintf(m_outfile_6,"%s & %2d & %6.2f & %6.2f & %2.0f, %2.0f, %2.0f, %2.0f \\\\ \n",func_name[tmp.second].c_str(), num_par[tmp.second], delta_aic_map[tmp.second], aic_weight_map[tmp.second], fitStatus_1_map[tmp.second], fitStatus_2_map[tmp.second], fitStatus_3_map[tmp.second], fitStatus_4_map[tmp.second]);
+		  //fprintf(m_outfile_6,"%s & %2d & %6.2f & %6.2f & %2.0f, %2.0f, %2.0f, %2.0f \\\\ \n",func_name[tmp.second].c_str(), num_par[tmp.second], delta_aic_map[tmp.second], aic_weight_map[tmp.second], fitStatus_1_map[tmp.second], fitStatus_2_map[tmp.second], fitStatus_3_map[tmp.second], fitStatus_4_map[tmp.second]);
+		  fprintf(m_outfile_6,"%s & %2d & %6.3f & %6.3f & %2.0f, %2.0f, %2.0f, %2.0f \\\\ \n",func_name[tmp.second].c_str(), num_par[tmp.second], delta_aic_map[tmp.second], aic_weight_map[tmp.second], fitStatus_1_map[tmp.second], fitStatus_2_map[tmp.second], fitStatus_3_map[tmp.second], fitStatus_4_map[tmp.second]);
 	}
         else
 	{
 		  fprintf(m_outfile_6,"\\rowcolor[rgb]{1.0,0.41,0.38}  \n");
-		  fprintf(m_outfile_6,"%s & %2d & %6.2f & %6.2f & %2.0f, %2.0f, %2.0f, %2.0f \\\\ \n",func_name[tmp.second].c_str(), num_par[tmp.second], delta_aic_map[tmp.second], aic_weight_map[tmp.second], fitStatus_1_map[tmp.second], fitStatus_2_map[tmp.second], fitStatus_3_map[tmp.second], fitStatus_4_map[tmp.second]);
+		  //fprintf(m_outfile_6,"%s & %2d & %6.2f & %6.2f & %2.0f, %2.0f, %2.0f, %2.0f \\\\ \n",func_name[tmp.second].c_str(), num_par[tmp.second], delta_aic_map[tmp.second], aic_weight_map[tmp.second], fitStatus_1_map[tmp.second], fitStatus_2_map[tmp.second], fitStatus_3_map[tmp.second], fitStatus_4_map[tmp.second]);
+		  fprintf(m_outfile_6,"%s & %2d & %6.3f & %6.3f & %2.0f, %2.0f, %2.0f, %2.0f \\\\ \n",func_name[tmp.second].c_str(), num_par[tmp.second], delta_aic_map[tmp.second], aic_weight_map[tmp.second], fitStatus_1_map[tmp.second], fitStatus_2_map[tmp.second], fitStatus_3_map[tmp.second], fitStatus_4_map[tmp.second]);
 	}
 	
  	}
@@ -239,6 +244,8 @@ void PrintAICTable(std::string category, std::string LowMRcut,std::string HighMR
 	//plot the fit
 	double delta_aic_2[8]={delta_aic[0],delta_aic[6],delta_aic[1],delta_aic[7],delta_aic[3],delta_aic[4],delta_aic[5],delta_aic[2]};
 	double weight_aic_2[8]={weight_aic[0],weight_aic[6],weight_aic[1],weight_aic[7],weight_aic[3],weight_aic[4],weight_aic[5],weight_aic[2]};
+	//double delta_aic_2[7]={delta_aic[0],delta_aic[6],delta_aic[1],delta_aic[7],delta_aic[3],delta_aic[4],delta_aic[5]};
+	//double weight_aic_2[7]={weight_aic[0],weight_aic[6],weight_aic[1],weight_aic[7],weight_aic[3],weight_aic[4],weight_aic[5]};
 	//double weight_aic_2[7]={weight_aic[0],weight_aic[5],weight_aic[1],weight_aic[6],weight_aic[3],weight_aic[4],weight_aic[2]};
 
 	gStyle->SetTitleSize(0.15,"t");
@@ -274,8 +281,10 @@ void PrintAICTable(std::string category, std::string LowMRcut,std::string HighMR
 	grshade[0]->SetFillColor(kRed-9);
 	grshade[0]->Draw("f same");
 	
-	TLegend* leg[8];
+        TLegend* leg[8];
+	//TLegend* leg[7];
 	for(int idx=0;idx<8;idx++)
+	//for(int idx=0;idx<7;idx++)
 	{
 	leg[idx] = new TLegend(0.75, 0.75, 0.99, 0.99);
 	leg[idx]->AddEntry(p1,Form("    #Delta A = %5.2f", delta_aic_2[idx]),"");
@@ -409,7 +418,8 @@ void PrintAICTable(std::string category, std::string LowMRcut,std::string HighMR
 //	leg[5]->AddEntry(p6,Form("#chi^{2}/ndf = %5.2f", p1->chiSquare(4)),"");
 	leg[5]->Draw();
 	myC->cd(7);
-	RooPlot * p7 = (RooPlot*)w[7]->obj("sideband_fit_poly4_pol4_ext_frame");
+	//RooPlot * p7 = (RooPlot*)w[7]->obj("sideband_fit_poly4_pol4_ext_frame");
+	RooPlot * p7 = (RooPlot*)w[6]->obj("sideband_fit_poly4_pol4_ext_frame");
 	p7->SetTitle("fourth order poly");
 	p7->GetXaxis()->SetTitleSize(0.09);
 	p7->GetXaxis()->SetLabelSize(0.11);
@@ -432,6 +442,7 @@ void PrintAICTable(std::string category, std::string LowMRcut,std::string HighMR
 	
 //	leg[6]->AddEntry(p7,Form("#chi^{2}/ndf = %5.2f", p1->chiSquare(5)),"");
 	leg[6]->Draw();
+        /*
 	myC->cd(8);
 	RooPlot * p8 = (RooPlot*)w[6]->obj("sideband_fit_modExp_mexp_ext_frame");
 	p8->SetTitle("modified exponential");
@@ -453,11 +464,12 @@ void PrintAICTable(std::string category, std::string LowMRcut,std::string HighMR
         grshade[7]->SetFillStyle(3344);//1001
         grshade[7]->SetFillColor(kRed-9);
         grshade[7]->Draw("f same");
+        */
 	
 //	leg[7]->AddEntry(p8,Form("#chi^{2}/ndf = %5.2f", p1->chiSquare(2)),"");
-	leg[7]->Draw();
+/*	leg[7]->Draw();
 	
-/*	myC->cd(8);
+	myC->cd(8);
 	TLegend* leg8 = new TLegend(0.2, 0.25, 0.8, 0.75);
 	leg8->AddEntry(p1,Form("M_{R} cut: %s", LowMRcut.c_str()),"");
 	leg8->AddEntry(p1,Form(" R^{2} cut: %s", LowRSQcut.c_str()),"");
@@ -545,6 +557,18 @@ p5->Draw();
 	p6->GetYaxis()->SetNdivisions(505);
 p6->Draw();
 	myC->cd(7);
+	RooPlot * p7 = (RooPlot*)w[6]->obj("sideband_fit_poly4_poly4_ext_frame");
+	p7->SetTitle("fourth order poly");
+	p7->SetTitleSize(0.1);
+	p7->GetXaxis()->SetTitleSize(0.09);
+    p7->GetXaxis()->SetLabelSize(0.11);
+	p7->GetYaxis()->SetTitleSize(0.11);
+	p7->GetYaxis()->SetLabelSize(0.11);
+	p7->GetYaxis()->SetTitleOffset(0.55);
+	p7->GetYaxis()->SetNdivisions(505);
+p7->Draw();
+/*
+	myC->cd(7);
 	RooPlot * p7 = (RooPlot*)w[6]->obj("sideband_fit_modExp_mexp_ext_frame");
 	p7->SetTitle("modified exponential");
 	p7->SetTitleSize(0.1);
@@ -555,6 +579,7 @@ p6->Draw();
 	p7->GetYaxis()->SetTitleOffset(0.55);
 	p7->GetYaxis()->SetNdivisions(505);
 p7->Draw();
+*/
 	std::string str = "AIC_output/"+MRcut+"_"+RSQcut+".pdf";
 	const char * file_Name = str.c_str();
 	myC->SaveAs(file_Name);

@@ -589,7 +589,9 @@ int main( int argc, char* argv[])
   TFile* fout = 0;
   if (outputfilename == "")
     {
-      outName = Form("test_out_%d",rand());
+      outName = Form("test_out_"+_sModel);
+      std::cout << "[INFO]: outName -> " << outName << std::endl;
+      //outName = Form("test_out_%d",rand());
       //fout = new TFile( Form("test_out_%d.root",rand()), "recreate" );
       fout = new TFile(outName+".root" , "recreate" );
     }

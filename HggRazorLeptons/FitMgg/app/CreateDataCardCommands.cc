@@ -337,6 +337,7 @@ int main( int argc, char* argv[] )
       
     }
  
+  outf << "rm test_out_" << sModel << ".root;\n";
 /*
   //Do Combine DataCard step
   outf << "\n\n";

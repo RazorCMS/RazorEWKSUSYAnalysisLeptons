@@ -176,12 +176,15 @@ int main( int argc, char* argv[] )
     {
       //cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1Eta) <1.48 && abs(pho2Eta)<1.48 && (pho1Pt>40||pho2Pt>40)  && pho1Pt> 25. && pho2Pt>25. ";
       cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho2Pt/mGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5 ";
-      triggerCut = " && ( HLTDecision[82] || HLTDecision[83] || HLTDecision[93] ) ";
+      //triggerCut = " ";
+      triggerCut = " &&  HLTDecision[82]  ";
+      //triggerCut = " && ( HLTDecision[82] || HLTDecision[83] || HLTDecision[93] ) ";
     } 
   else if ( analysisTag == "Razor2017_92X" ) 
     {
       cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho2Pt/mGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5 ";
-      triggerCut = " && ( HLTDecision[54] || HLTDecision[55] ) ";
+      triggerCut = " && HLTDecision[54]  ";
+      //triggerCut = " && ( HLTDecision[54] || HLTDecision[55] ) ";
     } 
 
   //--------------------------
@@ -197,8 +200,8 @@ int main( int argc, char* argv[] )
   else if (categoryMode == "zbblowpt") categoryCutString   = " && pTGammaGamma < 110 && box==7";
   else if (categoryMode == "highres") categoryCutString    = " && box==8 ";
   else if (categoryMode == "lowres") categoryCutString     = " && box==9 ";
-  else if (categoryMode == "muhighpt") categoryCutString   = " && pTGammaGamma >= 110 && box == 3 && lep1Pt > 15. ";
-  else if (categoryMode == "mulowpt") categoryCutString    = " && pTGammaGamma < 110 && box == 3 && lep1Pt > 15. ";
+  else if (categoryMode == "muhighpt") categoryCutString   = " && pTGammaGamma >= 110 && box == 3 && lep1Pt > 20. ";
+  else if (categoryMode == "mulowpt") categoryCutString    = " && pTGammaGamma < 110 && box == 3 && lep1Pt > 20. ";
   else if (categoryMode == "elehighpt") categoryCutString  = " && pTGammaGamma >= 110 && box == 4 && lep1Pt > 20. ";
   else if (categoryMode == "elelowpt") categoryCutString   = " && pTGammaGamma < 110 && box == 4 && lep1Pt > 20. ";
   else if (categoryMode == "twoleptons") categoryCutString = " && (box == 0 || box == 1 || box == 2)";
@@ -537,6 +540,9 @@ int main( int argc, char* argv[] )
        int bin   = nominal->FindBin( tmp[0]+10, tmp[1]+0.0001 );
        float nom = nominal->GetBinContent( bin );
        float nomS = nominalS->GetBinContent( bin );
+
+       std::cout << "Bin : " << bin << " " << tmp[0] << " " << tmp[1] << " " << tmp[2] << " " << tmp[3] << " : SMH yield "
+		 << nom  << "\n";
 
        float totalFractionalUncertaintySqr = 0;
 

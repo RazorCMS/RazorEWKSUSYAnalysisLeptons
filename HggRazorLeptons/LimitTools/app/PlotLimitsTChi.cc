@@ -51,7 +51,8 @@ const float bottomMargin = 0.12;
 TString CMSText = "CMS";
 TString extraText   = "Preliminary";
 //TString lumiText = "2.32 fb^{-1} (13 TeV)";
-TString lumiText = "35.9 fb^{-1} (13 TeV)";
+//TString lumiText = "35.9 fb^{-1} (13 TeV)";
+TString lumiText = "77.7 fb^{-1} (13 TeV)";
 
 bool AddCMS( TCanvas* C );
 
@@ -119,7 +120,7 @@ int main( int argc, char** argv )
 	  //	  std::cout << "fname: " << fname << std::endl;
 	  TFile* fin = new TFile( fname.c_str(), "READ" );
 	  if ( fin->IsZombie() ) continue;
-	  int low = fname.find("April19Limits/");
+          int low = fname.find("April19Limits/");
 	  int high = fname.find("_Asymptotic.root");
 	  std::string mass = fname.substr( low+14, high-(low+14) );
 	  float _mass = atof( mass.c_str() );
@@ -217,6 +218,7 @@ int main( int argc, char** argv )
   c->SetBottomMargin( bottomMargin );
   c->SetFrameBorderMode(0);
   c->SetFrameBorderMode(0);
+  c->SetLogy();
 
   gStyle->SetPaintTextFormat("4.3f");
 
@@ -266,14 +268,16 @@ int main( int argc, char** argv )
   //gTwoS->GetYaxis()->SetTitle("95% C.L. limit #sigma(pp#rightarrow #tilde{#chi}^{0}_{2} #tilde{#chi}^{0}_{2}) (pb)");
   gTwoS->GetYaxis()->SetTitle("#sigma^{95%}_{excl} [pb]");
 
-  //gTwoS->GetYaxis()->SetRangeUser(0,20.6);
   gTwoS->GetYaxis()->SetRangeUser(0,15);
-  gTwoS->GetXaxis()->SetRangeUser(120,400);
+  gTwoS->SetMaximum(1000);
+  //gTwoS->GetYaxis()->SetRangeUser(0,15);
+  //gTwoS->GetXaxis()->SetRangeUser(150,400);
+  gTwoS->GetXaxis()->SetRangeUser(120,450);
   
   gTwoS->Draw("AFC");
   gOneS->Draw("FC");
   gExp->Draw("PC");
-  gObs->Draw("C");
+  //gObs->Draw("C");
   gTheory->Draw("PC");
   gTheory_up->Draw("PC");
   gTheory_down->Draw("PC");
@@ -298,7 +302,7 @@ int main( int argc, char** argv )
   leg2->SetFillColor(0);
   leg2->SetFillStyle(1001);
   leg2->SetTextSize(0.04);
-  leg2->AddEntry( gObs, " Observed", "l" );
+  //leg2->AddEntry( gObs, " Observed", "l" );
   leg2->AddEntry( gExp, " Expected", "l" );
   leg2->AddEntry( gOneS, " 68% expected", "f" );
   leg2->AddEntry( gTwoS, " 95% expected", "f" );
@@ -325,10 +329,15 @@ int main( int argc, char** argv )
   latex2.SetNDC();
   latex2.SetTextSize(0.038);   
   latex2.SetTextFont(42);
-  latex2.DrawLatex(cmsx, cmsy, "pp #rightarrow #tilde{#chi}^{0,#pm}_{i} #tilde{#chi}^{0,#pm}_{j} #rightarrow  #tilde{#chi}^{0}_{1} #tilde{#chi}^{0}_{1} + X_{soft}; #tilde{#chi}^{0}_{1} #rightarrow H #tilde{G} (100%)");
+  //HH
+  //latex2.DrawLatex(cmsx, cmsy, "pp #rightarrow #tilde{#chi}^{0,#pm}_{i} #tilde{#chi}^{0,#pm}_{j} #rightarrow  #tilde{#chi}^{0}_{1} #tilde{#chi}^{0}_{1} + X_{soft}; #tilde{#chi}^{0}_{1} #rightarrow H #tilde{G} (100%)");
+  //latex2.DrawLatex(cmsx+0.263, cmsy-0.07, "m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}};  m_{#tilde{G}} = 1 GeV");
+  //HZ
+  //latex2.DrawLatex(cmsx, cmsy, "pp #rightarrow #tilde{#chi}^{0,#pm}_{i} #tilde{#chi}^{0,#pm}_{j} #rightarrow  #tilde{#chi}^{0}_{1} #tilde{#chi}^{0}_{1} + X_{soft}; #tilde{#chi}^{0}_{1} #rightarrow H #tilde{G} (50%)");
   //latex2.DrawLatex(cmsx+0.415, cmsy-0.07, "#tilde{#chi}^{0}_{1} #rightarrow Z #tilde{G} (50%)");
   //latex2.DrawLatex(cmsx+0.25, cmsy-0.13, "m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}};  m_{#tilde{G}} = 1 GeV");
-  latex2.DrawLatex(cmsx+0.263, cmsy-0.07, "m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}};  m_{#tilde{G}} = 1 GeV");
+  //1D WH
+  latex2.DrawLatex(cmsx+0.15, cmsy, "pp #rightarrow #tilde{#chi}^{#pm}_{1} #tilde{#chi}^{0}_{2} ; #tilde{#chi}^{#pm}_{1} #rightarrow W^{#pm} #tilde{#chi}^{0}_{1}, #tilde{#chi}^{0}_{2} #rightarrow H #tilde{#chi}^{0}_{1}");
   //std::cout << "hola " << latex2.GetTextFont() << std::endl;
   AddCMS(c);
 
@@ -336,8 +345,9 @@ int main( int argc, char** argv )
   c->SaveAs("NarrowResLimit_BIAS_fix.pdf");
   c->SaveAs("NarrowResLimit_BIAS_fix.C");
   
-  gObs->GetXaxis()->SetRangeUser(0, 30);
-  gObs->Write("gObs");
+  //gObs->GetXaxis()->SetRangeUser(0, 30);
+  //gObs->Write("gObs");
+  gExp->GetXaxis()->SetRangeUser(0, 30);
   gExp->Write("gExp");
   gOneS->Write("gOneS");
   gTwoS->Write("gTwoS");
@@ -357,8 +367,10 @@ bool AddCMS( TCanvas* C )
   float cmsx = 0.25;
   float cmsy = 0.94;
   float cmsTextFont   = 61;  // default is helvetic-bold
-  float extrax = cmsx + 0.078;
-  float extray = cmsy - 0.04;
+  float extrax = cmsx +0.20;
+  float extray = cmsy;
+  //float extrax = cmsx + 0.078;
+  //float extray = cmsy - 0.04;
   float extraTextFont = 52;  // default is helvetica-italics
   // ratio of "CMS" and extra text size
   float extraOverCmsTextSize  = 0.76;
@@ -381,6 +393,6 @@ bool AddCMS( TCanvas* C )
   latex.SetTextFont(extraTextFont);
   latex.SetTextAlign(31); 
   latex.SetTextSize(extraTextSize);
-  //latex.DrawLatex(extrax, extray, extraText);
+  latex.DrawLatex(extrax, extray, extraText);
   return true;
 };

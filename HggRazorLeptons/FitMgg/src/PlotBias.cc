@@ -581,7 +581,8 @@ myF_CB->SetLineWidth( 3 );
 //4: alpha_low
 //5: n_high
 //6: n_low
-TF1* myF_DTCB = new TF1("myF_DTCB", doubletailcrystalball_function, -3.0, 2.5, 7 );
+//TF1* myF_DTCB = new TF1("myF_DTCB", doubletailcrystalball_function, -3.0, 2.5, 7 );
+TF1* myF_DTCB = new TF1("myF_DTCB", doubletailcrystalball_function, -2.0, 2.0, 7 );
 myF_DTCB->SetParameter(0, hbias_gaus->GetMean()); 
 myF_DTCB->SetParameter(1, hbias_gaus->GetStdDev());
 myF_DTCB->SetParameter(2, hbias->GetMaximum());

@@ -86,7 +86,10 @@ int main( int argc, char* argv[] )
   std::vector<Bin> binVector;
   //std::ifstream input( "data/HggRazor2016Binning.txt", std::fstream::in );
   //std::ifstream input( "data/HggRazor2016Binning_ICHEP.txt", std::fstream::in );
-  std::ifstream input( "data/HggRazor2016Binning_Moriond.txt", std::fstream::in );
+  //std::ifstream input( "data/HggRazor2016Binning_Moriond.txt", std::fstream::in );
+  //std::ifstream input( "data/HggRazor2017_Binning_simplified_v3.txt", std::fstream::in );
+  std::ifstream input( "data/HggRazor2017_Binning_simplified_singleExp.txt", std::fstream::in );
+  //std::ifstream input( "data/HggRazor2017_Binning_simplified_singleExp_order.txt", std::fstream::in );
   
   if ( input.is_open() )
     {
@@ -134,7 +137,7 @@ int main( int argc, char* argv[] )
   std::string categoryMode = ParseCommandLine( argc, argv, "-category=" );
   if (  categoryMode == "" )
     {
-      std::cerr << "[ERROR]: please provide the category. Use --category=<highpt,hzbb,highres,lowres>" << std::endl;
+      std::cerr << "[ERROR]: please provide the category. Use --category=<highpt,hbb,zbb,highres,lowres,muhighpt,mulowpt,elehighpt,elelowpt,twoleptons>" << std::endl;
       return -1;
     }
   
@@ -168,20 +171,39 @@ int main( int argc, char* argv[] )
   std::string analysisTag = ParseCommandLine( argc, argv, "-analysisTag=" );
   if ( analysisTag == "" )
     {
-      std::cerr << "[ERROR]: please provide the analysisTag. Use --analysisTag=<Razor2015_76X,Razor2016_80X>" << std::endl;
+      std::cerr << "[ERROR]: please provide the analysisTag. Use --analysisTag=<Razor2015_76X,Razor2016_80X,Razor2017_92X>" << std::endl;
       return -1;
     } 
   
-
-  TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1Eta) <1.48 && abs(pho2Eta)<1.48 && (pho1Pt>40||pho2Pt>40)  && pho1Pt> 25. && pho2Pt>25. && MR>150 && box>4 && box<10";
-  //TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1Eta) <1.48 && abs(pho2Eta)<1.48 && (pho1Pt>40||pho2Pt>40)  && pho1Pt> 25. && pho2Pt>25.";
+  //2017
+  TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && pho1R9>0.5 && pho2R9>0.5 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho1Pt> 20. && pho2Pt>20. ";
   TString categoryCutString;
+  
+  if (categoryMode == "highpt") categoryCutString = " && box==5 ";
+  else if (categoryMode == "hbb") categoryCutString = " && box==6 "; 
+  else if (categoryMode == "hbbhighpt") categoryCutString = " && box==6 && pTGammaGamma >= 110 "; 
+  else if (categoryMode == "hbblowpt") categoryCutString = " && box==6 && pTGammaGamma < 110 "; 
+  else if (categoryMode == "zbb") categoryCutString = " && box==7 "; 
+  else if (categoryMode == "zbbhighpt") categoryCutString = " && box==7 && pTGammaGamma < 110 "; 
+  else if (categoryMode == "zbblowpt") categoryCutString = " && box==7 && pTGammaGamma < 110 "; 
+  else if (categoryMode == "highres") categoryCutString = " && box==8 ";
+  else if (categoryMode == "lowres") categoryCutString  = " && box==9 ";
+  else if (categoryMode == "muhighpt") categoryCutString  = " && box==3 && pTGammaGamma >= 110 ";
+  else if (categoryMode == "mulowpt") categoryCutString  = " && box==3 && pTGammaGamma < 110 ";
+  else if (categoryMode == "elehighpt") categoryCutString  = " && box==4 && pTGammaGamma >= 110 ";
+  else if (categoryMode == "elelowpt") categoryCutString  = " && box==4 && pTGammaGamma < 110 ";
+  else if (categoryMode == "twoleptons") categoryCutString  = " && (box==0||box==1||box==2) ";
+
+  else if (categoryMode == "inclusive") categoryCutString = "";
+
+  /*TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1Eta) <1.48 && abs(pho2Eta)<1.48 && (pho1Pt>40||pho2Pt>40)  && pho1Pt> 25. && pho2Pt>25.";
 
   if (categoryMode == "highpt") categoryCutString = " && pTGammaGamma >= 110 ";
   else if (categoryMode == "hzbb") categoryCutString = " && pTGammaGamma < 110 && ( abs(mbbH_L-125.) < 15. || ( abs(mbbH_L-125.) >= 15. && abs(mbbZ_L-91.) < 15 ) )";
   else if (categoryMode == "highres") categoryCutString = " && pTGammaGamma < 110 && abs(mbbH_L-125.) >= 15 && abs(mbbZ_L-91.) >= 15 && sigmaMoverM < 0.0085";
   else if (categoryMode == "lowres") categoryCutString  = " && pTGammaGamma < 110 && abs(mbbH_L-125.) >= 15 && abs(mbbZ_L-91.) >= 15 && sigmaMoverM >= 0.0085 ";
   else if (categoryMode == "inclusive") categoryCutString = "";
+  */
 
   TString triggerCut = " && ( HLTDecision[82] || HLTDecision[83] || HLTDecision[93] ) ";
   // TString metFilterCut = " && (Flag_HBHENoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1)";
@@ -191,8 +213,10 @@ int main( int argc, char* argv[] )
   if ( analysisTag == "Razor2015_76X" ) {
     cut = cut + categoryCutString + triggerCut+ metFilterCut;  
   } else if ( analysisTag == "Razor2016_80X" ) {
-    //for 80X MC, trigger table doesn't exist. so don't apply triggers.
     cut = cut + categoryCutString + triggerCut + metFilterCut;
+  } else if ( analysisTag == "Razor2017_92X" ) {
+    //for 92X MC, trigger table doesn't exist. so don't apply triggers.
+    cut = cut + categoryCutString + metFilterCut;
   } else {
     std::cout << "Analysis Tag " << analysisTag << " not recognized. Error!\n";
     return -1;
@@ -507,7 +531,7 @@ int main( int argc, char* argv[] )
   std::cout << " & ggH & ttH & vbfH & vH & bbH & non-resonant & Signal\\\\" << std::endl;
   std::cout << "\\hline" << std::endl;*/
 
-  std::cout << "\\begin{table*}[htb]\n\\begin{center}\n\\caption{The predicted yields for the standard model Higgs background processes are shown for an integrated luminosity corresponding to 15.2~$\\mathrm{fb}^{-1}$ for each search region considered in this analysis. The contributions from each standard model Higgs process is shown separately, and the total is shown on the rightmost column along with its full uncertainty.\\label{tab:SMHBkgPrediction}}\n\\def\\arraystretch{1.5}";
+  std::cout << "\\begin{table*}[htb]\n\\begin{center}\n\\caption{The predicted yields for the standard model Higgs background processes are shown for an integrated luminosity corresponding to 77.7~$\\mathrm{fb}^{-1}$ for each search region considered in this analysis. The contributions from each standard model Higgs process is shown separately, and the total is shown on the rightmost column along with its full uncertainty.\\label{tab:SMHBkgPrediction}}\n\\def\\arraystretch{1.5}";
   std::cout << "\n\\begin{tabular}{|c|c|c|c|c|c|c|c|}\n\\hline\n& & \\multicolumn{5}{c|}{Expected SM Higgs Yield} & \\\\";
   std::cout << "\n\\hline\n\\small";
   std::cout << "\nBin & Category & ggH & $t\\bar{t}$H & VBF H & VH & bbH & Total \\\\\n\\hline\n";
@@ -542,6 +566,7 @@ int main( int argc, char* argv[] )
       
       float nom_SMH = nom_ggH + nom_ttH + nom_vbfH + nom_vH + nom_bbH;
       
+      //if ( _debug ) std::cout << "get nom_smh" << std::endl;
       /*
       //Adding systematic uncertainties
       float nom_ggH_U = sqrt( pow(smhMapTotalErr["ggH"]->GetBinContent( bin ),2) + pow(nom_ggH*0.04, 2) + pow(nom_ggH*0.05,2) + pow(nom_ggH*0.079,2) + pow(nom_ggH*0.071,2) );
@@ -565,6 +590,7 @@ int main( int argc, char* argv[] )
       float nom_s_U  = nominalS->GetBinError( bin );
       */
 
+      //if ( _debug ) std::cout << "get nom_smh_U" << std::endl;
       float nom_ggH_U = sqrt( smhMapTotalErr["ggH"]->GetBinContent( bin ) );
       float nom_ttH_U = sqrt( smhMapTotalErr["ttH"]->GetBinContent( bin ) );
       float nom_vbfH_U = sqrt( smhMapTotalErr["vbfH"]->GetBinContent( bin ) );
@@ -579,7 +605,7 @@ int main( int argc, char* argv[] )
       std::stringstream ss;
       ss << categoryMode << "_" << tmp[0] << "-" << tmp[2] << "_" << tmp[1] << "-" << tmp[3]; 
       std::stringstream ss_fn;
-      if ( categoryMode ==  "lowres" ) myMap2[ss.str()].bin = myMap2[ss.str()].bin - 5;
+      //if ( categoryMode ==  "lowres" ) myMap2[ss.str()].bin = myMap2[ss.str()].bin - 5;
       ss_fn << fitResultDir << "/mlfit_bin" << myMap2[ss.str()].bin << ".root";
       
       float Ns = GetNs( ss_fn.str(),  myMap2[ss.str()].bin, categoryMode );
@@ -671,7 +697,8 @@ int main( int argc, char* argv[] )
 	tmp[0], tmp[2], tmp[1], tmp[3], Nsmh, NsmhErr, Nbkg, NbkgErr, Ns, NsErr);
       */
       std::stringstream ss_sigma;
-      ss_sigma << fitResultDir << "/PL_nsigma_npvalue_uncapped_bin" << myMap2[ss.str()].bin << ".root";
+      //ss_sigma << fitResultDir << "/PL_nsigma_npvalue_uncapped_bin" << myMap2[ss.str()].bin << ".root";
+      ss_sigma << fitResultDir << "/PL_nsigma_npvalue_bin" << myMap2[ss.str()].bin << ".root";
       TFile* fsigma = new TFile( ss_sigma.str().c_str(), "READ");
       TTree* limit = (TTree*)fsigma->Get("limit");
       double _limit;
@@ -716,9 +743,12 @@ float GetNs( std::string fname, int bin, std::string cat )
 
   //return norm_fit_s->getRealValue("bin11/signal");
   std::stringstream ss;
+  /*
   if ( cat == "highres" ) ss << "highResBin" << bin << "/signal";
   else if ( cat == "lowres" ) ss << "lowResBin" << bin << "/signal";
   else ss << "bin" << bin << "/signal";
+  */
+  ss << "bin" << bin << "/signal";
   RooRealVar* ss2 = (RooRealVar*)norm_fit_s->find( ss.str().c_str() );
   return ss2->getVal();
 };
@@ -729,9 +759,12 @@ float GetNsErr( std::string fname, int bin, std::string cat )
   RooArgSet* norm_fit_s = (RooArgSet*) fin->Get("norm_fit_s");
   //return norm_fit_s->getRealValue("bin11/signal");
   std::stringstream ss;
+  /*
   if ( cat == "highres" ) ss << "highResBin" << bin << "/signal";
   else if ( cat == "lowres" ) ss << "lowResBin" << bin << "/signal";
   else ss << "bin" << bin << "/signal";
+  */
+  ss << "bin" << bin << "/signal";
   RooRealVar* ss2 = (RooRealVar*)norm_fit_s->find( ss.str().c_str() );
   
 
@@ -769,9 +802,11 @@ float GetSMH( std::string fname, int bin, std::string cat )
   RooArgSet* norm_fit_s = (RooArgSet*) fin->Get("norm_prefit");
 
   std::stringstream ss;
-  if ( cat == "highres" ) ss << "highResBin" << bin << "/SMH";
+  /*if ( cat == "highres" ) ss << "highResBin" << bin << "/SMH";
   else if ( cat == "lowres" ) ss << "lowResBin" << bin << "/SMH";
   else ss << "bin" << bin << "/SMH";
+  */
+  ss << "bin" << bin << "/SMH";
   RooRealVar* ss2 = (RooRealVar*)norm_fit_s->find( ss.str().c_str() );
   return ss2->getVal();
 };
@@ -782,9 +817,12 @@ float GetSMHErr( std::string fname, int bin, std::string cat )
   //RooArgSet* norm_fit_s = (RooArgSet*) fin->Get("norm_fit_s");
   RooArgSet* norm_fit_s = (RooArgSet*) fin->Get("norm_prefit");
   std::stringstream ss;
+  /*
   if ( cat == "highres" ) ss << "highResBin" << bin << "/SMH";
   else if ( cat == "lowres" ) ss << "lowResBin" << bin << "/SMH";
   else ss << "bin" << bin << "/SMH";
+  */
+  ss << "bin" << bin << "/SMH";
   RooRealVar* ss2 = (RooRealVar*)norm_fit_s->find( ss.str().c_str() );
   return ss2->getError();
 };
@@ -796,9 +834,12 @@ float GetSMH_PF( std::string fname, int bin, std::string cat )
   //RooArgSet* norm_fit_s = (RooArgSet*) fin->Get("norm_prefit");
 
   std::stringstream ss;
+  /*
   if ( cat == "highres" ) ss << "highResBin" << bin << "/SMH";
   else if ( cat == "lowres" ) ss << "lowResBin" << bin << "/SMH";
   else ss << "bin" << bin << "/SMH";
+  */
+  ss << "bin" << bin << "/SMH";
   RooRealVar* ss2 = (RooRealVar*)norm_fit_s->find( ss.str().c_str() );
   return ss2->getVal();
 };
@@ -809,9 +850,12 @@ float GetSMHErr_PF( std::string fname, int bin, std::string cat )
   RooArgSet* norm_fit_s = (RooArgSet*) fin->Get("norm_fit_s");
   //RooArgSet* norm_fit_s = (RooArgSet*) fin->Get("norm_prefit");
   std::stringstream ss;
+  /*
   if ( cat == "highres" ) ss << "highResBin" << bin << "/SMH";
   else if ( cat == "lowres" ) ss << "lowResBin" << bin << "/SMH";
   else ss << "bin" << bin << "/SMH";
+  */
+  ss << "bin" << bin << "/SMH";
   RooRealVar* ss2 = (RooRealVar*)norm_fit_s->find( ss.str().c_str() );
   return ss2->getError();
 };
@@ -852,15 +896,18 @@ float GetNbkg( std::string fname, std::string f1, int bin, bool _err, std::strin
   if ( f1 == "singleExp" )
     {
       int realBin = bin;
-      if ( cat == "lowres" ) realBin = realBin+5;
+      //if ( cat == "lowres" ) realBin = realBin+5;
       std::stringstream ss;
       ss << "singleExp_Bkg_bin" << realBin << "_sExp_a";
       RooRealVar *alpha = (RooRealVar*)fit_r->floatParsFinal().find( ss.str().c_str() );
       
       std::stringstream ss_2;
+      /*
       if ( cat == "highres" ) ss_2 << "shapeBkg_Bkg_highResBin" << bin << "__norm";
       else if ( cat == "lowres" ) ss_2 << "shapeBkg_Bkg_lowResBin" << bin << "__norm";
       else ss_2 << "shapeBkg_Bkg_bin" << bin << "__norm";
+      */
+      ss_2 << "shapeBkg_Bkg_bin" << bin << "__norm";
       RooRealVar *Nbkg = (RooRealVar*)fit_r->floatParsFinal().find( ss_2.str().c_str() );
       
       
@@ -901,7 +948,7 @@ float GetNbkg( std::string fname, std::string f1, int bin, bool _err, std::strin
   else if ( f1 == "poly2" )
     {
       int realBin = bin;
-      if ( cat == "lowres" ) realBin = realBin+5;
+      //if ( cat == "lowres" ) realBin = realBin+5;
       std::stringstream ss0;
       ss0 << "poly2_Bkg_bin" << realBin << "_pol2_p0";
       RooRealVar *p0 = (RooRealVar*)fit_r->floatParsFinal().find( ss0.str().c_str() );
@@ -936,7 +983,7 @@ float GetNbkg( std::string fname, std::string f1, int bin, bool _err, std::strin
   else if ( f1 == "poly3" )
     {
       int realBin = bin;
-      if ( cat == "lowres" ) realBin = realBin+5;
+      //if ( cat == "lowres" ) realBin = realBin+5;
       std::stringstream ss0;
       ss0 << "poly3_Bkg_bin" << realBin << "_pol3_p0";
       RooRealVar *p0 = (RooRealVar*)fit_r->floatParsFinal().find( ss0.str().c_str() );
@@ -976,7 +1023,7 @@ float GetNbkg( std::string fname, std::string f1, int bin, bool _err, std::strin
   else if ( f1 == "modExp" )
     {
       int realBin = bin;
-      if ( cat == "lowres" ) realBin = realBin+5;
+      //if ( cat == "lowres" ) realBin = realBin+5;
       std::stringstream ss;
       ss << "modExp_Bkg_bin" << realBin << "_mexp_a";
       RooRealVar *alpha = (RooRealVar*)fit_r->floatParsFinal().find( ss.str().c_str() );
@@ -1007,7 +1054,7 @@ float GetNbkg( std::string fname, std::string f1, int bin, bool _err, std::strin
   else if ( f1 == "doubleExp" )
     {
       int realBin = bin;
-      if ( cat == "lowres" ) realBin = realBin+5;
+      //if ( cat == "lowres" ) realBin = realBin+5;
       std::stringstream ssa1;
       ssa1 << "doubleExp_Bkg_bin" << realBin << "_doubleExp_a1";
       RooRealVar *alpha1 = (RooRealVar*)fit_r->floatParsFinal().find( ssa1.str().c_str() );

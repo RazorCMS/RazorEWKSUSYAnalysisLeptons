@@ -76,7 +76,7 @@ if __name__ == '__main__':
 
     binWidth = 50 # to be changed to 25
     
-    tfile = rt.TFile.Open('/afs/cern.ch/work/c/cpena/public/combineDiphotonHM/CMSSW_7_4_7/src/RazorEWKSUSYAnalysis/HggRazor/SMS-Plotting/test_limit.root')
+    tfile = rt.TFile.Open('/afs/cern.ch/user/j/jmao/work/public/releases/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/SMS-Plotting/test_limit_T2bH0920.root')
 
     #####################
     ##observed limit TH2F

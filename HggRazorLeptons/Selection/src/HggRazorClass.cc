@@ -543,6 +543,14 @@ void HggRazorClass::Loop()
       if ( !pho1_isFake && !pho2_isFake ) prompt_prompt = true;
       if ( !pho1_isFake || !pho2_isFake ) prompt_fake = true;
       
+      if(pho1MotherID==22 || pho2MotherID==22){
+      //if ( pho1_isFake || pho2_isFake ) isFake = true;
+              std::cout << "[INFO] pho1MotherID = " << pho1MotherID << ", pho2MotherID = " << pho2MotherID << "; \n"<< std::endl;
+              std::cout << "[INFO] pho1_isFake = " << pho1_isFake << ", pho2_isFake = " << pho2_isFake << "; \n"<< std::endl;
+              std::cout << "[INFO] isFakeFake = " << isFakeFake << ", isFake = " << isFake << "; \n"<< std::endl;
+              std::cout << "[INFO] prompt_prompt = " << prompt_prompt << ", prompt_fake = " << prompt_fake << ". \n"<< std::endl;
+      }
+
       //removing events which are not prompt-fake
       if ( prompt_prompt && this->processName == "gammaJet" )
 	{
