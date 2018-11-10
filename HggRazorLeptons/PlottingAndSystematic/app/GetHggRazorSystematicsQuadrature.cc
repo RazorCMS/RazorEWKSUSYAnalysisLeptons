@@ -171,6 +171,7 @@ int main( int argc, char* argv[] )
   }
 
   TString cut;
+  TString cutSignal;
   TString triggerCut;
   if ( analysisTag == "Razor2016_80X" ) 
     {
@@ -186,6 +187,7 @@ int main( int argc, char* argv[] )
       triggerCut = " && HLTDecision[54]  ";
       //triggerCut = " && ( HLTDecision[54] || HLTDecision[55] ) ";
     } 
+    cutSignal = cut;
 
   //--------------------------
   //Category CUT Strings
@@ -208,13 +210,23 @@ int main( int argc, char* argv[] )
   else if (categoryMode == "inclusive") categoryCutString  = "";
   else if (categoryMode == "ele") categoryCutString        = "&& box == 4 && lep1Pt > 20. ";
   
-  TString metFilterCut = " && (Flag_HBHENoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1)";
-  //TString metFilterCut = " && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1)";
+  //TString metFilterCut = " && (Flag_HBHENoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1)";
+  TString metFilterCut2016 = " && (Flag_HBHENoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 && Flag_goodVertices == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_EcalDeadCellTriggerPrimitiveFilter==1 && Flag_badMuonFilter==1  && Flag_badChargedCandidateFilter==1 )";
+  //TString metFilterCut2017 = " && (Flag_HBHENoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 && Flag_goodVertices == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_EcalDeadCellTriggerPrimitiveFilter==1 && Flag_badMuonFilter==1  && Flag_badChargedCandidateFilter==1 )";
+  TString metFilterCut2017 = " && (Flag_HBHENoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 && Flag_goodVertices == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_EcalDeadCellTriggerPrimitiveFilter==1 && Flag_BadPFMuonFilter==1  && Flag_BadChargedCandidateFilter==1 && Flag_ecalBadCalibFilter==1) ";
+  TString metFilterCut = " && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1)";
 
-  //For fastsim signals, turn off trigger and met filters
+    TString triggerCutSignal = "";
+    TString metFilterCutSignal = "";
+    TString metFilterCut2016Signal = "";
+    TString metFilterCut2017Signal = "";
+  
+//For fastsim signals, turn off trigger and met filters
   if (isEWKSUSYSignal) {
-    triggerCut = "";
-    metFilterCut = "";
+    triggerCutSignal = "";
+    metFilterCutSignal = "";
+    metFilterCut2016Signal = "";
+    metFilterCut2017Signal = "";
   }
 
   if ( analysisTag == "Razor2015_76X" ) 
@@ -223,11 +235,14 @@ int main( int argc, char* argv[] )
     } 
   else if ( analysisTag == "Razor2016_80X" ) 
     {
-      cut = cut + categoryCutString + triggerCut + metFilterCut;
+      cut = cut + categoryCutString + triggerCut + metFilterCut2016;
+      cutSignal = cutSignal + categoryCutString + triggerCutSignal + metFilterCut2016Signal;
     } 
   else if ( analysisTag == "Razor2017_92X" ) 
     {
-      cut = cut + categoryCutString + triggerCut ;
+      cut = cut + categoryCutString + triggerCut + metFilterCut2017 ;
+      cutSignal = cut;
+      //cutSignal = cutSignal + categoryCutString + triggerCutSignal + metFilterCut2017Signal;
     } 
   else 
     {
@@ -387,12 +402,22 @@ int main( int argc, char* argv[] )
       if ( process == "signal" ) assert( ISRHist );
       TH1F* ISRPtHist = (TH1F*)fin->Get("PtISR");
       if ( isEWKSUSYSignal && process == "signal" ) assert( ISRPtHist );
-      TH1F* NPVHist = (TH1F*)fin->Get("NPV");
-      if ( isEWKSUSYSignal && process == "signal" ) assert( NPVHist );
+      //TH1F* NPVHist = (TH1F*)fin->Get("NPV");
+      //if ( isEWKSUSYSignal && process == "signal" ) assert( NPVHist );
 
       TString tmpName = Form("tmp_%d.root", rand());
       TFile* tmp = new TFile( tmpName , "RECREATE");
-      TTree* cutTree = tree->CopyTree( cut );
+      TTree* cutTree ;
+      if ( process == "signal" ) 
+      {
+	cutTree= tree->CopyTree( cutSignal );
+      if ( _debug ) std::cout << "[INFO]: cutSignal: " << cutSignal << " \n\n"<< std::endl;
+      }
+      else
+      {
+	 cutTree= tree->CopyTree( cut );
+      if ( _debug ) std::cout << "[INFO]: cut: " << cut << " \n\n"<< std::endl;
+      }
       assert( cutTree );
       TString currentProcess = process.c_str();
 
@@ -410,8 +435,8 @@ int main( int argc, char* argv[] )
       hggSys->SetFacScaleWeightsHisto( SumScaleWeights );
       hggSys->SetPdfWeightsHisto( SumPdfWeights );
       hggSys->SetISRHisto( ISRHist );
-      hggSys->SetNPVHisto( NPVHist );
-      hggSys->LoadNPVTarget("/afs/cern.ch/user/j/jmao/work/public/releases/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/data/PileUpDistribution/NPVTarget_2016.root");
+      //hggSys->SetNPVHisto( NPVHist );
+      //hggSys->LoadNPVTarget("/afs/cern.ch/user/j/jmao/work/public/releases/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/data/PileUpDistribution/NPVTarget_2016.root");
       if ( isEWKSUSYSignal ) hggSys->SetISRPtHisto( ISRPtHist );
       hggSys->Loop();
       for ( auto tmp: myVectBinning )
@@ -541,8 +566,8 @@ int main( int argc, char* argv[] )
        float nom = nominal->GetBinContent( bin );
        float nomS = nominalS->GetBinContent( bin );
 
-       std::cout << "Bin : " << bin << " " << tmp[0] << " " << tmp[1] << " " << tmp[2] << " " << tmp[3] << " : SMH yield "
-		 << nom  << "\n";
+       //std::cout << "Bin : " << bin << " " << tmp[0] << " " << tmp[1] << " " << tmp[2] << " " << tmp[3] << " : SMH yield "
+	// 	 << nom << " ; Signal Yield " <<  nomS << "\n";
 
        float totalFractionalUncertaintySqr = 0;
 
@@ -646,7 +671,7 @@ int main( int argc, char* argv[] )
        outf << "\n";
       
        std::cout << "Bin : " << bin << " " << tmp[0] << " " << tmp[1] << " " << tmp[2] << " " << tmp[3] << " : "
-		 << nom << " +/- " << 100*sqrt(totalFractionalUncertaintySqr) << "%; signal: " << nomS << "\n";
+		 << "SMH Yield : " << nom << " +/- " << 100*sqrt(totalFractionalUncertaintySqr) << "%; signal: " << nomS << "\n";
  
      }
 
