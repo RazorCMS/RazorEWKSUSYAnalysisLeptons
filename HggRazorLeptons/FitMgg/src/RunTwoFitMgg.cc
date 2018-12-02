@@ -1541,15 +1541,16 @@ RooWorkspace* MakeDataCard( TTree* treeData, TTree* treeSignal, TTree* treeSMH, 
   //------------------------------------------------------------------------------
   //Define and obtain initial pdf parameters for f1, using sideband fit parameters
   //------------------------------------------------------------------------------
-  double dE_N1, dE_N2, dE_a1, dE_a2;//doubleExp
+  double dE_N, dE_f, dE_a1, dE_a2;//doubleExp
   double sE_N, sE_a;//singleExp
   double mE_N, mE_a, mE_m;//modExp
   double sP_N, sP_a;//singlePow
-  double dP_N, dP_f, dP_a1, dP_a2;//doubleExp
+  double dP_N, dP_f, dP_a1, dP_a2;//doublePow
   double pC, p0, p1, p2, p3, pN;//poly2,pol3;
   if ( f1 == "doubleExp" )
     {
-      dE_N1  = ws->var( f1 + "_fullsb_fit_Nbkg" )->getVal();
+      dE_N  = ws->var( f1 + "_fullsb_fit_Nbkg" )->getVal();
+      dE_f  = ws->var( f1 + "_fullsb_fit_frac" )->getVal();
       dE_a1  = ws->var( f1 + "_fullsb_fit_a1" )->getVal();
       dE_a2  = ws->var( f1 + "_fullsb_fit_a2" )->getVal();
     }
@@ -1788,6 +1789,7 @@ RooWorkspace* MakeDataCard( TTree* treeData, TTree* treeSignal, TTree* treeSMH, 
       combineBkg = MakeDoubleExpNE( f1 + "_Bkg_bin" + binNumber, mgg, *combine_ws );
       combine_ws->var( combineBkg + "_a1" )->setVal( dE_a1 );
       combine_ws->var( combineBkg + "_a2" )->setVal( dE_a2 );
+      combine_ws->var( combineBkg + "_frac" )->setVal( dE_f );
     }
   else if ( f1 == "singleExp" )
     {
@@ -2329,15 +2331,16 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
   //------------------------------------------------------------------------------
   //Define and obtain initial pdf parameters for f1, using sideband fit parameters
   //------------------------------------------------------------------------------
-  double dE_N1, dE_N2, dE_a1, dE_a2;//doubleExp
+  double dE_N, dE_f, dE_a1, dE_a2;//doubleExp
   double sE_N, sE_a;//singleExp
   double mE_N, mE_a, mE_m;//modExp
   double sP_N, sP_a;//singlePow
-  double dP_N, dP_f, dP_a1, dP_a2;//doubleExp
+  double dP_N, dP_f, dP_a1, dP_a2;//doublePow
   double pC, p0, p1, p2, p3, pN;//poly2,pol3;
   if ( f1 == "doubleExp" )
     {
-      dE_N1  = ws->var( f1 + "_fullsb_fit_Nbkg" )->getVal();
+      dE_N  = ws->var( f1 + "_fullsb_fit_Nbkg" )->getVal();
+      dE_f  = ws->var( f1 + "_fullsb_fit_frac" )->getVal();
       dE_a1  = ws->var( f1 + "_fullsb_fit_a1" )->getVal();
       dE_a2  = ws->var( f1 + "_fullsb_fit_a2" )->getVal();
     }
@@ -2585,6 +2588,7 @@ RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* t
       combineBkg = MakeDoubleExpNE( f1 + "_Bkg_bin" + binNumber, mgg, *combine_ws );
       combine_ws->var( combineBkg + "_a1" )->setVal( dE_a1 );
       combine_ws->var( combineBkg + "_a2" )->setVal( dE_a2 );
+      combine_ws->var( combineBkg + "_frac" )->setVal( dE_f );
     }
   else if ( f1 == "singleExp" )
     {
