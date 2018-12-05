@@ -230,6 +230,7 @@ int main( int argc, char* argv[] )
   if (isEWKSUSYSignal) {
     triggerCutSignal = "";
     triggerCutSignal2016 = "";
+    triggerCutSignal2017 = "";
     metFilterCutSignal = "";
     metFilterCut2016Signal = "";
     metFilterCut2017Signal = "";
@@ -259,6 +260,8 @@ int main( int argc, char* argv[] )
 
   std::cerr << "===========================================================================" << std::endl;
   std::cerr << "[INFO]: cut--> " << cut << std::endl;
+  std::cerr << "===========================================================================" << std::endl;
+  std::cerr << "[INFO]: cutSignal--> " << cutSignal << std::endl;
   std::cerr << "===========================================================================" << std::endl;
   
   std::ifstream ifs( inputList, std::ifstream::in );
