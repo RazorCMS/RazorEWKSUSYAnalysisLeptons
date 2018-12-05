@@ -811,6 +811,7 @@ bool HggRazorSystematics::SetPdfWeightsHisto( TH1F* histo )
   this->SumPdfWeights = new TH1F( *histo );
   return true;
 };
+
 /*
 float HggRazorSystematics::GetNominalYield( float mr, float rsq )
 {
@@ -879,7 +880,6 @@ float HggRazorSystematics::GetNominalYield( float mr, float rsq )
           std::cout << "nominal: " << nominal << std::endl;
           return nominal;
 };
-
 float HggRazorSystematics::GetNominalError( float mr, float rsq )
 {
   int bin = h2p_Err->FindBin( mr+10, rsq+0.0001 );

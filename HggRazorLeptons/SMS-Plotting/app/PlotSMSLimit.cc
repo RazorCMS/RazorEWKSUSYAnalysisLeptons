@@ -90,7 +90,6 @@ int main( int argc, char* argv[] )
   //-------------------
   //T2bH settings Trick
   //-------------------
-  /*
   double maxY = 750;
   double maxX = 750;
   double minY = -50;
@@ -99,11 +98,11 @@ int main( int argc, char* argv[] )
   double binWidthY = 100.;
   int nbinsX = (int)(maxX-minX)/binWidthX;
   int nbinsY = (int)(maxY-minY)/binWidthY;
-  */
   
   //-------------------
   //TChiWH settings
   //-------------------
+  /*
   double maxY = 712.5;
   double maxX = 712.5;
   double minY = -12.5;
@@ -112,6 +111,7 @@ int main( int argc, char* argv[] )
   double binWidthY = 25.;
   int nbinsX = (int)(maxX-minX)/binWidthX;
   int nbinsY = (int)(maxY-minY)/binWidthY;
+  */
   
 
   TH2F* h2_limit     = new TH2F("h2_limit", "", nbinsX, minX, maxX, nbinsY, minY, maxY);

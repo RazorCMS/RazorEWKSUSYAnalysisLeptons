@@ -178,14 +178,15 @@ int main( int argc, char* argv[] )
       //cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1Eta) <1.48 && abs(pho2Eta)<1.48 && (pho1Pt>40||pho2Pt>40)  && pho1Pt> 25. && pho2Pt>25. ";
       cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho2Pt/mGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5 ";
       //triggerCut = " ";
-      triggerCut = " &&  HLTDecision[82]  ";
+      //triggerCut = " &&  HLTDecision[82]  ";
+      triggerCut = " && ( HLTDecision[82] || HLTDecision[83] ) ";
       //triggerCut = " && ( HLTDecision[82] || HLTDecision[83] || HLTDecision[93] ) ";
     } 
   else if ( analysisTag == "Razor2017_92X" ) 
     {
       cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho2Pt/mGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5 ";
-      triggerCut = " && HLTDecision[54]  ";
-      //triggerCut = " && ( HLTDecision[54] || HLTDecision[55] ) ";
+      //triggerCut = " && HLTDecision[54]  ";
+      triggerCut = " && ( HLTDecision[54] || HLTDecision[55] ) ";
     } 
     cutSignal = cut;
 
@@ -217,13 +218,18 @@ int main( int argc, char* argv[] )
   TString metFilterCut = " && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1)";
 
     TString triggerCutSignal = "";
+    TString triggerCutSignal2016 = " && ( HLTDecision[82] || HLTDecision[83] ) ";
+    //using 2016 signal for pre-approval
+    TString triggerCutSignal2017 = " && ( HLTDecision[82] || HLTDecision[83] ) ";
     TString metFilterCutSignal = "";
-    TString metFilterCut2016Signal = "";
-    TString metFilterCut2017Signal = "";
+    TString metFilterCut2016Signal = " && (Flag_HBHENoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 && Flag_goodVertices == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_EcalDeadCellTriggerPrimitiveFilter==1 && Flag_badMuonFilter==1  && Flag_badChargedCandidateFilter==1 )";
+    //using 2016 signal for pre-approval
+    TString metFilterCut2017Signal = " && (Flag_HBHENoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 && Flag_goodVertices == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_EcalDeadCellTriggerPrimitiveFilter==1 && Flag_badMuonFilter==1  && Flag_badChargedCandidateFilter==1 )";
   
 //For fastsim signals, turn off trigger and met filters
   if (isEWKSUSYSignal) {
     triggerCutSignal = "";
+    triggerCutSignal2016 = "";
     metFilterCutSignal = "";
     metFilterCut2016Signal = "";
     metFilterCut2017Signal = "";
@@ -236,13 +242,13 @@ int main( int argc, char* argv[] )
   else if ( analysisTag == "Razor2016_80X" ) 
     {
       cut = cut + categoryCutString + triggerCut + metFilterCut2016;
-      cutSignal = cutSignal + categoryCutString + triggerCutSignal + metFilterCut2016Signal;
+      cutSignal = cutSignal + categoryCutString + triggerCutSignal2016 + metFilterCut2016Signal;
     } 
   else if ( analysisTag == "Razor2017_92X" ) 
     {
       cut = cut + categoryCutString + triggerCut + metFilterCut2017 ;
-      cutSignal = cut;
-      //cutSignal = cutSignal + categoryCutString + triggerCutSignal + metFilterCut2017Signal;
+      //cutSignal = cut;
+      cutSignal = cutSignal + categoryCutString + triggerCutSignal2017 + metFilterCut2017Signal;
     } 
   else 
     {
@@ -402,8 +408,8 @@ int main( int argc, char* argv[] )
       if ( process == "signal" ) assert( ISRHist );
       TH1F* ISRPtHist = (TH1F*)fin->Get("PtISR");
       if ( isEWKSUSYSignal && process == "signal" ) assert( ISRPtHist );
-      //TH1F* NPVHist = (TH1F*)fin->Get("NPV");
-      //if ( isEWKSUSYSignal && process == "signal" ) assert( NPVHist );
+      TH1F* NPVHist = (TH1F*)fin->Get("NPV");
+      if ( isEWKSUSYSignal && process == "signal" ) assert( NPVHist );
 
       TString tmpName = Form("tmp_%d.root", rand());
       TFile* tmp = new TFile( tmpName , "RECREATE");
@@ -435,8 +441,8 @@ int main( int argc, char* argv[] )
       hggSys->SetFacScaleWeightsHisto( SumScaleWeights );
       hggSys->SetPdfWeightsHisto( SumPdfWeights );
       hggSys->SetISRHisto( ISRHist );
-      //hggSys->SetNPVHisto( NPVHist );
-      //hggSys->LoadNPVTarget("/afs/cern.ch/user/j/jmao/work/public/releases/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/data/PileUpDistribution/NPVTarget_2016.root");
+      hggSys->SetNPVHisto( NPVHist );
+      hggSys->LoadNPVTarget("/data/jmao/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/data/PileUpDistribution/NPVTarget_2016.root");
       if ( isEWKSUSYSignal ) hggSys->SetISRPtHisto( ISRPtHist );
       hggSys->Loop();
       for ( auto tmp: myVectBinning )
@@ -566,8 +572,8 @@ int main( int argc, char* argv[] )
        float nom = nominal->GetBinContent( bin );
        float nomS = nominalS->GetBinContent( bin );
 
-       //std::cout << "Bin : " << bin << " " << tmp[0] << " " << tmp[1] << " " << tmp[2] << " " << tmp[3] << " : SMH yield "
-	// 	 << nom << " ; Signal Yield " <<  nomS << "\n";
+     std::cout << "Bin : " << bin << " " << tmp[0] << " " << tmp[1] << " " << tmp[2] << " " << tmp[3] << " : SMH yield "
+ 	 << nom << " ; Signal Yield " <<  nomS << "\n";
 
        float totalFractionalUncertaintySqr = 0;
 
