@@ -79,7 +79,7 @@ if __name__ == '__main__':
     nbinsX = (mgMax-mgMin)/binWidth + 1
     nbinsY = (mchiMax-mchiMin)/binWidthY + 1
      
-    tfile = rt.TFile.Open('/afs/cern.ch/user/j/jmao/work/public/releases/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/SMS-Plotting/test_limit.root')
+    tfile = rt.TFile.Open('/data/jmao/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/SMS-Plotting/test_limit.root')
     #tfile = rt.TFile.Open('/afs/cern.ch/work/c/cpena/public/combineDiphotonHM/CMSSW_7_4_7/src/RazorEWKSUSYAnalysis/HggRazor/SMS-Plotting/test_limit.root')
 
     #####################

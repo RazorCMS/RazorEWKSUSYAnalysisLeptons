@@ -88,7 +88,8 @@ int main( int argc, char* argv[] )
   //std::ifstream input( "data/HggRazor2016Binning_ICHEP.txt", std::fstream::in );
   //std::ifstream input( "data/HggRazor2016Binning_Moriond.txt", std::fstream::in );
   //std::ifstream input( "data/HggRazor2017_Binning_simplified_v3.txt", std::fstream::in );
-  std::ifstream input( "data/HggRazor2017_Binning_simplified_singleExp.txt", std::fstream::in );
+  //std::ifstream input( "data/HggRazor2017_Binning_simplified_singleExp.txt", std::fstream::in );
+  std::ifstream input( "data/HggRazor2016n2017_Binning.txt", std::fstream::in );
   //std::ifstream input( "data/HggRazor2017_Binning_simplified_singleExp_order.txt", std::fstream::in );
   
   if ( input.is_open() )
@@ -160,7 +161,7 @@ int main( int argc, char* argv[] )
   std::string fitResultDir = ParseCommandLine( argc, argv, "-fitResultDir=" );
   if (  fitResultDir == "" )
     {
-      std::cerr << "[ERROR]: please provide a fit result directory. For example, use --fitResultDir=/afs/cern.ch/work/c/cpena/public/CMSSW_7_6_3/src/RazorEWKSUSYAnalysis/HggRazor/PlottingAndSystematic" << std::endl;
+      std::cerr << "[ERROR]: please provide a fit result directory (after limit fit to each bin). For example, use --fitResultDir=/afs/cern.ch/work/c/cpena/public/CMSSW_7_6_3/src/RazorEWKSUSYAnalysis/HggRazor/PlottingAndSystematic" << std::endl;
       return -1;
     }
   std::cout << "[INFO] : Using fitResultDir = " << fitResultDir << "\n";
@@ -171,12 +172,15 @@ int main( int argc, char* argv[] )
   std::string analysisTag = ParseCommandLine( argc, argv, "-analysisTag=" );
   if ( analysisTag == "" )
     {
-      std::cerr << "[ERROR]: please provide the analysisTag. Use --analysisTag=<Razor2015_76X,Razor2016_80X,Razor2017_92X>" << std::endl;
+      std::cerr << "[ERROR]: please provide the analysisTag. Use --analysisTag=<Razor2015_76X,Razor2016_80X,Razor2017_92X,Razor2016n2017_80X94X>" << std::endl;
       return -1;
     } 
   
   //2017
-  TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && pho1R9>0.5 && pho2R9>0.5 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho1Pt> 20. && pho2Pt>20. ";
+  TString cut ;
+  //TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && pho1R9>0.5 && pho2R9>0.5 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4.  ";
+      cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho2Pt/mGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5 ";
+  //TString cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && pho1R9>0.5 && pho2R9>0.5 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho1Pt> 20. && pho2Pt>20. ";
   TString categoryCutString;
   
   if (categoryMode == "highpt") categoryCutString = " && box==5 ";
@@ -206,17 +210,26 @@ int main( int argc, char* argv[] )
   */
 
   TString triggerCut = " && ( HLTDecision[82] || HLTDecision[83] || HLTDecision[93] ) ";
+  TString triggerCut2016 = " && ( HLTDecision[82] || HLTDecision[83] ) ";
+  TString triggerCut2017 = " && ( HLTDecision[54] || HLTDecision[55] ) ";
   // TString metFilterCut = " && (Flag_HBHENoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1)";
   TString metFilterCut = " && (Flag_HBHENoiseFilter == 1 && Flag_goodVertices == 1 && Flag_eeBadScFilter == 1 && Flag_HBHEIsoNoiseFilter == 1)";
+  TString metFilterCut2016 = " && (Flag_goodVertices==1 && Flag_CSCTightHaloFilter==1 && Flag_HBHENoiseFilter==1 && Flag_HBHEIsoNoiseFilter==1 && Flag_EcalDeadCellTriggerPrimitiveFilter==1 && Flag_badMuonFilter==1  && Flag_badChargedCandidateFilter==1 ) ";
+  //TString metFilterCut2017 = " && (Flag_goodVertices==1 && Flag_CSCTightHaloFilter==1 && Flag_HBHENoiseFilter==1 && Flag_HBHEIsoNoiseFilter==1 && Flag_EcalDeadCellTriggerPrimitiveFilter==1 && Flag_BadPFMuonFilter==1  && Flag_BadChargedCandidateFilter==1 && Flag_ecalBadCalibFilter==1)";
+  TString metFilterCut2017 = " && (Flag_HBHENoiseFilter == 1 && Flag_CSCTightHaloFilter == 1 && Flag_goodVertices == 1 && Flag_HBHEIsoNoiseFilter == 1 && Flag_EcalDeadCellTriggerPrimitiveFilter==1 && Flag_BadPFMuonFilter==1  && Flag_BadChargedCandidateFilter==1 && Flag_ecalBadCalibFilter==1)"; 
   
   
   if ( analysisTag == "Razor2015_76X" ) {
     cut = cut + categoryCutString + triggerCut+ metFilterCut;  
   } else if ( analysisTag == "Razor2016_80X" ) {
-    cut = cut + categoryCutString + triggerCut + metFilterCut;
+    cut = cut + categoryCutString + triggerCut2016 + metFilterCut2016;
   } else if ( analysisTag == "Razor2017_92X" ) {
     //for 92X MC, trigger table doesn't exist. so don't apply triggers.
-    cut = cut + categoryCutString + metFilterCut;
+    //cut = cut + categoryCutString + metFilterCut;
+    cut = cut + categoryCutString + triggerCut2017 + metFilterCut2017;
+  } else if ( analysisTag == "Razor2016n2017_80X94X" ) {
+    //skimmed file before so no need to add trigger cut and met filter cut
+    cut = cut + categoryCutString;
   } else {
     std::cout << "Analysis Tag " << analysisTag << " not recognized. Error!\n";
     return -1;
@@ -237,69 +250,76 @@ int main( int argc, char* argv[] )
 
   std::vector<float*> myVectBinning;
   myVectBinning = SetBinning(binVector, categoryMode );
+  std::cout << "Before define TH2Poly" << std::endl;
   
   TH2Poly* nominal[5];
-  nominal[0] = new TH2Poly("nominal_SMH_0", "", 150, 10000, 0, 1 );
-  nominal[1] = new TH2Poly("nominal_SMH_1", "", 150, 10000, 0, 1 );
-  nominal[2] = new TH2Poly("nominal_SMH_2", "", 150, 10000, 0, 1 );
-  nominal[3] = new TH2Poly("nominal_SMH_3", "", 150, 10000, 0, 1 );
-  nominal[4] = new TH2Poly("nominal_SMH_4", "", 150, 10000, 0, 1 );
+  nominal[0] = new TH2Poly("nominal_SMH_0", "", 0, 10000, 0, 1 );
+  nominal[1] = new TH2Poly("nominal_SMH_1", "", 0, 10000, 0, 1 );
+  nominal[2] = new TH2Poly("nominal_SMH_2", "", 0, 10000, 0, 1 );
+  nominal[3] = new TH2Poly("nominal_SMH_3", "", 0, 10000, 0, 1 );
+  nominal[4] = new TH2Poly("nominal_SMH_4", "", 0, 10000, 0, 1 );
 
   TH2Poly* nominalErr[5];
-  nominalErr[0] = new TH2Poly("nominalErr_SMH_0", "", 150, 10000, 0, 1 );
-  nominalErr[1] = new TH2Poly("nominalErr_SMH_1", "", 150, 10000, 0, 1 );
-  nominalErr[2] = new TH2Poly("nominalErr_SMH_2", "", 150, 10000, 0, 1 );
-  nominalErr[3] = new TH2Poly("nominalErr_SMH_3", "", 150, 10000, 0, 1 );
-  nominalErr[4] = new TH2Poly("nominalErr_SMH_4", "", 150, 10000, 0, 1 );
+  nominalErr[0] = new TH2Poly("nominalErr_SMH_0", "", 0, 10000, 0, 1 );
+  nominalErr[1] = new TH2Poly("nominalErr_SMH_1", "", 0, 10000, 0, 1 );
+  nominalErr[2] = new TH2Poly("nominalErr_SMH_2", "", 0, 10000, 0, 1 );
+  nominalErr[3] = new TH2Poly("nominalErr_SMH_3", "", 0, 10000, 0, 1 );
+  nominalErr[4] = new TH2Poly("nominalErr_SMH_4", "", 0, 10000, 0, 1 );
   
   TH2Poly* totalErr[5];
-  totalErr[0] = new TH2Poly("totalErr_SMH_0", "", 150, 10000, 0, 1 );
-  totalErr[1] = new TH2Poly("totalErr_SMH_1", "", 150, 10000, 0, 1 );
-  totalErr[2] = new TH2Poly("totalErr_SMH_2", "", 150, 10000, 0, 1 );
-  totalErr[3] = new TH2Poly("totalErr_SMH_3", "", 150, 10000, 0, 1 );
-  totalErr[4] = new TH2Poly("totalErr_SMH_4", "", 150, 10000, 0, 1 );
+  totalErr[0] = new TH2Poly("totalErr_SMH_0", "", 0, 10000, 0, 1 );
+  totalErr[1] = new TH2Poly("totalErr_SMH_1", "", 0, 10000, 0, 1 );
+  totalErr[2] = new TH2Poly("totalErr_SMH_2", "", 0, 10000, 0, 1 );
+  totalErr[3] = new TH2Poly("totalErr_SMH_3", "", 0, 10000, 0, 1 );
+  totalErr[4] = new TH2Poly("totalErr_SMH_4", "", 0, 10000, 0, 1 );
 
   
-  TH2Poly* nominalS = new TH2Poly("nominal_Signal", "", 150, 10000, 0, 1 );
+  TH2Poly* nominalS = new TH2Poly("nominal_Signal", "", 0, 10000, 0, 1 );
 
-  TH2Poly* facScaleUp    = new TH2Poly("facScaleUp", "", 150, 10000, 0, 1 );
-  TH2Poly* facScaleDown  = new TH2Poly("facScaleDown", "", 150, 10000, 0, 1 );
-  TH2Poly* facScaleUpS   = new TH2Poly("facScaleUpS", "", 150, 10000, 0, 1 );
-  TH2Poly* facScaleDownS = new TH2Poly("facScaleDownS", "", 150, 10000, 0, 1 );
-  
-  TH2Poly* renScaleUp    = new TH2Poly("renScaleUp", "", 150, 10000, 0, 1 );
-  TH2Poly* renScaleDown  = new TH2Poly("renScaleDown", "", 150, 10000, 0, 1 );
-  TH2Poly* renScaleUpS   = new TH2Poly("renScaleUpS", "", 150, 10000, 0, 1 );
-  TH2Poly* renScaleDownS = new TH2Poly("renScaleDownS", "", 150, 10000, 0, 1 );
-  
-  TH2Poly* facRenScaleUp    = new TH2Poly("facRenScaleUp", "", 150, 10000, 0, 1 );
-  TH2Poly* facRenScaleDown  = new TH2Poly("facRenScaleDown", "", 150, 10000, 0, 1 );
-  TH2Poly* facRenScaleUpS   = new TH2Poly("facRenScaleUpS", "", 150, 10000, 0, 1 );
-  TH2Poly* facRenScaleDownS = new TH2Poly("facRenScaleDownS", "", 150, 10000, 0, 1 );
-  
-  TH2Poly* JesUp    = new TH2Poly("JesUp", "", 150, 10000, 0, 1 );
-  TH2Poly* JesDown  = new TH2Poly("JesDown", "", 150, 10000, 0, 1 );
-  TH2Poly* JesUpS   = new TH2Poly("JesUpS", "", 150, 10000, 0, 1 );//signal
-  TH2Poly* JesDownS = new TH2Poly("JesDownS", "", 150, 10000, 0, 1 );//signal
+  TH2Poly* ISRUpS   = new TH2Poly("ISRUpS", "", 0, 10000, 0, 1 );
+  TH2Poly* ISRDownS = new TH2Poly("ISRDownS", "", 0, 10000, 0, 1 );
 
-  TH2Poly* btagUp    = new TH2Poly("btagUp", "", 150, 10000, 0, 1 );
-  TH2Poly* btagDown  = new TH2Poly("btagDown", "", 150, 10000, 0, 1 );
-  TH2Poly* btagUpS   = new TH2Poly("btagUpS", "", 150, 10000, 0, 1 );//signal
-  TH2Poly* btagDownS = new TH2Poly("btagDownS", "", 150, 10000, 0, 1 );//signal
-
-  TH2Poly* misstagUp    = new TH2Poly("misstagUp", "", 150, 10000, 0, 1 );
-  TH2Poly* misstagDown  = new TH2Poly("misstagDown", "", 150, 10000, 0, 1 );
-  TH2Poly* misstagUpS   = new TH2Poly("misstagUpS", "", 150, 10000, 0, 1 );//signal
-  TH2Poly* misstagDownS = new TH2Poly("misstagDownS", "", 150, 10000, 0, 1 );//signal
+  TH2Poly* facScaleUp    = new TH2Poly("facScaleUp", "", 0, 10000, 0, 1 );
+  TH2Poly* facScaleDown  = new TH2Poly("facScaleDown", "", 0, 10000, 0, 1 );
+  TH2Poly* facScaleUpS   = new TH2Poly("facScaleUpS", "", 0, 10000, 0, 1 );
+  TH2Poly* facScaleDownS = new TH2Poly("facScaleDownS", "", 0, 10000, 0, 1 );
   
+  TH2Poly* renScaleUp    = new TH2Poly("renScaleUp", "", 0, 10000, 0, 1 );
+  TH2Poly* renScaleDown  = new TH2Poly("renScaleDown", "", 0, 10000, 0, 1 );
+  TH2Poly* renScaleUpS   = new TH2Poly("renScaleUpS", "", 0, 10000, 0, 1 );
+  TH2Poly* renScaleDownS = new TH2Poly("renScaleDownS", "", 0, 10000, 0, 1 );
+  
+  TH2Poly* facRenScaleUp    = new TH2Poly("facRenScaleUp", "", 0, 10000, 0, 1 );
+  TH2Poly* facRenScaleDown  = new TH2Poly("facRenScaleDown", "", 0, 10000, 0, 1 );
+  TH2Poly* facRenScaleUpS   = new TH2Poly("facRenScaleUpS", "", 0, 10000, 0, 1 );
+  TH2Poly* facRenScaleDownS = new TH2Poly("facRenScaleDownS", "", 0, 10000, 0, 1 );
+  
+  TH2Poly* JesUp    = new TH2Poly("JesUp", "", 0, 10000, 0, 1 );
+  TH2Poly* JesDown  = new TH2Poly("JesDown", "", 0, 10000, 0, 1 );
+  TH2Poly* JesUpS   = new TH2Poly("JesUpS", "", 0, 10000, 0, 1 );//signal
+  TH2Poly* JesDownS = new TH2Poly("JesDownS", "", 0, 10000, 0, 1 );//signal
+
+  TH2Poly* btagUp    = new TH2Poly("btagUp", "", 0, 10000, 0, 1 );
+  TH2Poly* btagDown  = new TH2Poly("btagDown", "", 0, 10000, 0, 1 );
+  TH2Poly* btagUpS   = new TH2Poly("btagUpS", "", 0, 10000, 0, 1 );//signal
+  TH2Poly* btagDownS = new TH2Poly("btagDownS", "", 0, 10000, 0, 1 );//signal
+
+  TH2Poly* misstagUp    = new TH2Poly("misstagUp", "", 0, 10000, 0, 1 );
+  TH2Poly* misstagDown  = new TH2Poly("misstagDown", "", 0, 10000, 0, 1 );
+  TH2Poly* misstagUpS   = new TH2Poly("misstagUpS", "", 0, 10000, 0, 1 );//signal
+  TH2Poly* misstagDownS = new TH2Poly("misstagDownS", "", 0, 10000, 0, 1 );//signal
+  
+  TH2Poly* genMetS = new TH2Poly("genMet_Signal", "", 0, 10000, 0, 1 );//signal
+  TH2Poly* pileupS = new TH2Poly("pileup_Signal", "", 0, 10000, 0, 1 );//signal
+
   
   TH2Poly* pdf[60];
   TH2Poly* pdfS[60];
   for ( int i = 0; i < 60; i++ )
     {
       TString pdfName = Form("pdf%d", i);
-      pdf[i]  = new TH2Poly( pdfName, "", 150, 10000, 0, 1 );
-      pdfS[i] = new TH2Poly( pdfName+"S", "", 150, 10000, 0, 1 );
+      pdf[i]  = new TH2Poly( pdfName, "", 0, 10000, 0, 1 );
+      pdfS[i] = new TH2Poly( pdfName+"S", "", 0, 10000, 0, 1 );
     }
   std::map< std::pair<float,float>, float > sysMap;
   for ( auto tmp : myVectBinning )
@@ -323,6 +343,8 @@ int main( int argc, char* argv[] )
       totalErr[4]->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
       
       nominalS->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
+      ISRUpS->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
+      ISRDownS->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
       facScaleUp->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
       facScaleUpS->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
       facScaleDown->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
@@ -356,11 +378,14 @@ int main( int argc, char* argv[] )
 	  pdf[i]->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
 	  pdfS[i]->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
 	}
+      genMetS->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
+      pileupS->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
     }
 
   std::map< std::string, TH2Poly* > smhMapNominal;
   std::map< std::string, TH2Poly* > smhMapNominalErr;
   std::map< std::string, TH2Poly* > smhMapTotalErr;
+  std::cout << "After define TH2Poly" << std::endl;
   std::string process, rootFileName;
   int ctr = 0;
   std::cout << "[INFO]: reading process file" << std::endl;
@@ -381,37 +406,54 @@ int main( int argc, char* argv[] )
       TTree* tree = (TTree*)fin->Get("HggRazorLeptons");
       //TTree* tree = (TTree*)fin->Get("HggRazor");
       assert( tree );
+      if ( _debug ) std::cout << "[INFO]: file: " << rootFileName << " Get Tree \n\n"<< std::endl;
       TH1F* NEvents = (TH1F*)fin->Get("NEvents");
+      if ( _debug ) std::cout << "[INFO]: file: " << rootFileName << " Get NEvents \n\n"<< std::endl;
       if ( process != "signal" ) assert( NEvents );
+      if ( _debug ) std::cout << "[INFO]: file: " << rootFileName << " Get NEvents \n\n"<< std::endl;
       TH1F* SumScaleWeights   = (TH1F*)fin->Get("SumScaleWeights");
       if ( process != "signal" ) assert( SumScaleWeights );
+      if ( _debug ) std::cout << "[INFO]: file: " << rootFileName << " Get SumScaleWeights \n\n"<< std::endl;
       TH1F* SumPdfWeights   = (TH1F*)fin->Get("SumPdfWeights");
       if ( process != "signal" ) assert( SumPdfWeights );
+      if ( _debug ) std::cout << "[INFO]: file: " << rootFileName << " Get SumPdfWeights \n\n"<< std::endl;
       TH1F* NISRJets;
       if ( process == "signal" )
 	{
 	  NISRJets = (TH1F*)fin->Get("NISRJets");
 	  assert( NISRJets );
 	}
+      TH1F* ISRPtHist = (TH1F*)fin->Get("PtISR");
+      if ( process == "signal" ) assert( ISRPtHist );
+      TH1F* NPVHist = (TH1F*)fin->Get("NPV");
+      if (  process == "signal" ) assert( NPVHist );
+
       
       TFile* tmp = new TFile("tmp.root", "RECREATE");
       TTree* cutTree = tree->CopyTree( cut );
+      if ( _debug ) std::cout << "[INFO]: file: " << rootFileName << " Get cut Tree \n\n"<< std::endl;
       TString currentProcess = process.c_str();
 
       //---------------------------
       //Create HggSystematic object
       //---------------------------
-      HggRazorSystematics* hggSys = new HggRazorSystematics( cutTree, currentProcess, categoryMode, analysisTag, false, false );
+      HggRazorSystematics* hggSys = new HggRazorSystematics( cutTree, currentProcess, categoryMode, analysisTag, true, true );
       hggSys->SetLumi(lumi);
       //hggSys->PrintBinning();
       //hggSys->SetBinningMap( binningMap );
-      //hggSys->PrintBinning();
+      hggSys->PrintBinning();
       hggSys->SetBinningVector( myVectBinning );
+      if ( _debug ) std::cout << "[INFO]: file: " << rootFileName << " Start binning vector   \n\n"<< std::endl;
       hggSys->InitMrRsqTH2Poly( 1 );
+      if ( _debug ) std::cout << "[INFO]: file: " << rootFileName << " Finish binning vector   \n\n"<< std::endl;
       hggSys->SetNeventsHisto( NEvents );
       hggSys->SetFacScaleWeightsHisto( SumScaleWeights );
       hggSys->SetPdfWeightsHisto( SumPdfWeights );
       if ( process == "signal" ) hggSys->SetISRHisto( NISRJets );
+      hggSys->SetNPVHisto( NPVHist );
+      hggSys->LoadNPVTarget("/data/jmao/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/PlottingAndSystematic/data/PileUpDistribution/NPVTarget_2016.root");
+      if ( process == "signal" ) hggSys->SetISRPtHisto( ISRPtHist );
+
       hggSys->Loop();
       for ( auto tmp: myVectBinning )
 	{
@@ -443,16 +485,26 @@ int main( int argc, char* argv[] )
 	      facSys = hggSys->GetMisstagSystematic( tmp[0], tmp[1] );
 	      misstagUpS->SetBinContent( bin, facSys.first );
 	      misstagDownS->SetBinContent( bin, facSys.second );
+
+	      //Signal ISR systematic
+	      facSys = hggSys->GetISRSystematic( tmp[0], tmp[1] );
+	      ISRUpS->SetBinContent( bin,  facSys.first );
+	      ISRDownS->SetBinContent( bin, facSys.second );
+
 	      //PDF
 	      for ( int ipdf = 0; ipdf < 60; ipdf++ )
 		{
 		  pdfS[ipdf]->SetBinContent( bin, hggSys->GetPdfSystematic( ipdf, tmp[0], tmp[1] ) );
 		  //std::cout << "mr: " << tmp[0] << " rsq: " << tmp[1] << "; pdf: " << hggSys->GetPdfSystematic( ipdf, tmp[0], tmp[1] ) << std::endl;
 		}
+	      genMetS->SetBinContent( bin, hggSys->GetGenMetSystematic( tmp[0], tmp[1] ) );
+	      pileupS->SetBinContent( bin, hggSys->GetNominalError( tmp[0], tmp[1] ) );
 	    }
 	  else
 	    {
 	      float nom = hggSys->GetNominalYield( tmp[0], tmp[1] );
+       std::cout << "Bin : " << bin << " " << tmp[0] << " " << tmp[1] << " " << tmp[2] << " " << tmp[3] << " : " << "SMH Yield : " << nom << "\n";
+	      //nominal[ctr]->SetBinContent( bin, hggSys->GetNominalYield( tmp[0], tmp[1] )+nominal[ctr]->GetBinContent(bin) );
 	      nominal[ctr]->SetBinContent( bin, hggSys->GetNominalYield( tmp[0], tmp[1] ) );
 	      nominalErr[ctr]->SetBinContent( bin, hggSys->GetNominalError( tmp[0], tmp[1] ) );
 	      //facScale
@@ -531,7 +583,7 @@ int main( int argc, char* argv[] )
   std::cout << " & ggH & ttH & vbfH & vH & bbH & non-resonant & Signal\\\\" << std::endl;
   std::cout << "\\hline" << std::endl;*/
 
-  std::cout << "\\begin{table*}[htb]\n\\begin{center}\n\\caption{The predicted yields for the standard model Higgs background processes are shown for an integrated luminosity corresponding to 77.7~$\\mathrm{fb}^{-1}$ for each search region considered in this analysis. The contributions from each standard model Higgs process is shown separately, and the total is shown on the rightmost column along with its full uncertainty.\\label{tab:SMHBkgPrediction}}\n\\def\\arraystretch{1.5}";
+  std::cout << "\\begin{table*}[htb]\n\\begin{center}\n\\caption{The predicted yields for the standard model Higgs background processes are shown for an integrated luminosity corresponding to 77~$\\mathrm{fb}^{-1}$ for each search region considered in this analysis. The contributions from each standard model Higgs process is shown separately, and the total is shown on the rightmost column along with its full uncertainty.\\label{tab:SMHBkgPrediction}}\n\\def\\arraystretch{1.5}";
   std::cout << "\n\\begin{tabular}{|c|c|c|c|c|c|c|c|}\n\\hline\n& & \\multicolumn{5}{c|}{Expected SM Higgs Yield} & \\\\";
   std::cout << "\n\\hline\n\\small";
   std::cout << "\nBin & Category & ggH & $t\\bar{t}$H & VBF H & VH & bbH & Total \\\\\n\\hline\n";
@@ -619,8 +671,10 @@ int main( int argc, char* argv[] )
 
     
       /*TString line = Form("%0.f-%0.f $\\otimes$ %.3f-%.3f & %.3f $\\pm$ %.3f & %.3f $\\pm$ %.3f & %.3f $\\pm$ %.3f & %.3f $\\pm$ %.3f & %.3f $\\pm$ %.3f & %.3f $\\pm$ %.3f & %.3f $\\pm$ %.3f \\\\",
-	tmp[0], tmp[2], tmp[1], tmp[3], nom_ggH, nom_ggH_U, nom_ttH, nom_ttH_U, nom_vbfH, nom_vbfH_U, nom_vH, nom_vH_U, nom_bbH, nom_bbH_U, Nbkg, NbkgErr, Ns, NsErr);*/
-      TString line = Form("%d & %s & %.2f & %.2f & %.2f & %.2f & %.2f & %.1f $\\pm$ %.1f \\\\", myMap2[ss.str()].bin, categoryMode.c_str(), nom_ggH, nom_ttH, nom_vbfH, nom_vH, nom_bbH, Nsmh, NsmhErr);
+	tmp[0], tmp[2], tmp[1], tmp[3], nom_ggH, nom_ggH_U, nom_ttH, nom_ttH_U, nom_vbfH, nom_vbfH_U, nom_vH, nom_vH_U, nom_bbH, nom_bbH_U, Nbkg, NbkgErr, Ns, NsErr);
+       */
+      //TString line = Form("%d & %s & %.2f & %.2f & %.2f & %.2f & %.2f & %.1f $\\pm$ %.1f \\\\", myMap2[ss.str()].bin, categoryMode.c_str(), nom_ggH, nom_ttH, nom_vbfH, nom_vH, nom_bbH, Nsmh, NsmhErr);
+      TString line = Form("%d & %s & %.6f & %.6f & %.6f & %.6f & %.6f & %.1f $\\pm$ %.1f \\\\", myMap2[ss.str()].bin, categoryMode.c_str(), nom_ggH, nom_ttH, nom_vbfH, nom_vH, nom_bbH, Nsmh, NsmhErr);
       std::cout << line << std::endl;
     }
   
@@ -945,6 +999,37 @@ float GetNbkg( std::string fname, std::string f1, int bin, bool _err, std::strin
       ftmp->Close();
       */
     }
+  else if ( f1 == "singlePow" )
+    {
+      int realBin = bin;
+      //if ( cat == "lowres" ) realBin = realBin+5;
+      std::stringstream ss;
+      ss << "singlePow_Bkg_bin" << realBin << "_spow_a";
+      RooRealVar *alpha = (RooRealVar*)fit_r->floatParsFinal().find( ss.str().c_str() );
+      
+      std::stringstream ss_2;
+      /*
+      if ( cat == "highres" ) ss_2 << "shapeBkg_Bkg_highResBin" << bin << "__norm";
+      else if ( cat == "lowres" ) ss_2 << "shapeBkg_Bkg_lowResBin" << bin << "__norm";
+      else ss_2 << "shapeBkg_Bkg_bin" << bin << "__norm";
+      */
+      ss_2 << "shapeBkg_Bkg_bin" << bin << "__norm";
+      RooRealVar *Nbkg = (RooRealVar*)fit_r->floatParsFinal().find( ss_2.str().c_str() );
+      
+      
+      TString pdf = MakeSinglePowNE( Form("%s_Bkg_bin%d",f1.c_str(),realBin), mgg, *ws );
+      ws->var( pdf + "_a" )->setVal( alpha->getVal() );
+      RooAbsReal* igx = ws->pdf( pdf )->createIntegral(mgg);
+      //std::cout << Nbkg->getVal() << " +/- " << Nbkg->getError() << std::endl;
+      RooAbsReal* igx_sig = ws->pdf( pdf )->createIntegral(mgg, RooFit::NormSet(mgg), RooFit::Range("signal"));
+      //std::cout << Nbkg->getVal()*igx_sig->getVal() << " +/- " << Nbkg->getError()*igx_sig->getVal() << std::endl;
+      if ( _err ) {
+        return GetErrorFromToys( ws, fit_r, pdf, 10000, realBin );
+      }
+      //if ( _err ) return Nbkg->getError()*igx_sig->getVal();
+      return Nbkg->getVal()*igx_sig->getVal();
+      //double shapeErr = ws->pdf( pdf )->getPropagatedError(*fit_r)*Nbkg->getVal();
+    }
   else if ( f1 == "poly2" )
     {
       int realBin = bin;
@@ -960,9 +1045,12 @@ float GetNbkg( std::string fname, std::string f1, int bin, bool _err, std::strin
       RooRealVar *pC = (RooRealVar*)fit_r->floatParsFinal().find( ssC.str().c_str() );
 
       std::stringstream ss_2;
+      /*
       if ( cat == "highres" ) ss_2 << "shapeBkg_Bkg_highResBin" << bin << "__norm";
       else if ( cat == "lowres" ) ss_2 << "shapeBkg_Bkg_lowResBin" << bin << "__norm";
       else ss_2 << "shapeBkg_Bkg_bin" << bin << "__norm";
+      */
+      ss_2 << "shapeBkg_Bkg_bin" << bin << "__norm";
       RooRealVar *Nbkg = (RooRealVar*)fit_r->floatParsFinal().find( ss_2.str().c_str() );
       
       
@@ -999,9 +1087,12 @@ float GetNbkg( std::string fname, std::string f1, int bin, bool _err, std::strin
       //std::cout << pC->getVal() << std::endl;
 
       std::stringstream ss_2;
+      /*
       if ( cat == "highres" ) ss_2 << "shapeBkg_Bkg_highResBin" << bin << "__norm";
       else if ( cat == "lowres" ) ss_2 << "shapeBkg_Bkg_lowResBin" << bin << "__norm";
       else ss_2 << "shapeBkg_Bkg_bin" << bin << "__norm";
+      */
+      ss_2 << "shapeBkg_Bkg_bin" << bin << "__norm";
       RooRealVar *Nbkg = (RooRealVar*)fit_r->floatParsFinal().find( ss_2.str().c_str() );
 
       
@@ -1032,9 +1123,12 @@ float GetNbkg( std::string fname, std::string f1, int bin, bool _err, std::strin
       RooRealVar *m = (RooRealVar*)fit_r->floatParsFinal().find( ssm.str().c_str() );
       
       std::stringstream ss_2;
+      /*
       if ( cat == "highres" ) ss_2 << "shapeBkg_Bkg_highResBin" << bin << "__norm";
       else if ( cat == "lowres" ) ss_2 << "shapeBkg_Bkg_lowResBin" << bin << "__norm";
       else ss_2 << "shapeBkg_Bkg_bin" << bin << "__norm";
+      */
+      ss_2 << "shapeBkg_Bkg_bin" << bin << "__norm";
       RooRealVar *Nbkg = (RooRealVar*)fit_r->floatParsFinal().find( ss_2.str().c_str() );
       
       
@@ -1066,9 +1160,12 @@ float GetNbkg( std::string fname, std::string f1, int bin, bool _err, std::strin
       RooRealVar *frac = (RooRealVar*)fit_r->floatParsFinal().find( ssfrac.str().c_str() );
       
       std::stringstream ss_2;
+      /*
       if ( cat == "highres" ) ss_2 << "shapeBkg_Bkg_highResBin" << bin << "__norm";
       else if ( cat == "lowres" ) ss_2 << "shapeBkg_Bkg_lowResBin" << bin << "__norm";
       else ss_2 << "shapeBkg_Bkg_bin" << bin << "__norm";
+      */
+      ss_2 << "shapeBkg_Bkg_bin" << bin << "__norm";
       RooRealVar *Nbkg = (RooRealVar*)fit_r->floatParsFinal().find( ss_2.str().c_str() );
       
       

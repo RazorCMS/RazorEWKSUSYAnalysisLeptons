@@ -91,6 +91,7 @@ public :
    Float_t         MET_JESUp;
    Float_t         MET_JESDown;
    Float_t         t1MET;
+   Float_t         Myt1MET;
    Float_t         t1MET_JESUp;
    Float_t         t1MET_JESDown;
    Float_t         HT;
@@ -254,6 +255,7 @@ public :
    TBranch        *b_MET_JESUp;   //!
    TBranch        *b_MET_JESDown;   //!
    TBranch        *b_t1MET;   //!
+   TBranch        *b_Myt1MET;   //!
    TBranch        *b_t1MET_JESUp;   //!
    TBranch        *b_t1MET_JESDown;   //!
    TBranch        *b_HT;   //!
@@ -490,6 +492,7 @@ void HggTree::Init(TTree *tree)
    fChain->SetBranchAddress("MET_JESUp", &MET_JESUp, &b_MET_JESUp);
    fChain->SetBranchAddress("MET_JESDown", &MET_JESDown, &b_MET_JESDown);
    fChain->SetBranchAddress("t1MET", &t1MET, &b_t1MET);
+   fChain->SetBranchAddress("Myt1MET", &Myt1MET, &b_Myt1MET);
    fChain->SetBranchAddress("t1MET_JESUp", &t1MET_JESUp, &b_t1MET_JESUp);
    fChain->SetBranchAddress("t1MET_JESDown", &t1MET_JESDown, &b_t1MET_JESDown);
    fChain->SetBranchAddress("HT", &HT, &b_HT);
