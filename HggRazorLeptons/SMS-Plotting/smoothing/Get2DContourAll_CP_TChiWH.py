@@ -70,7 +70,7 @@ if __name__ == '__main__':
     nRebins = 1
     diagonalOffset = 150
     mgMin = 150
-    mgMax = 700
+    mgMax = 300
     mchiMin = 0
     mchiMax = 300
 
@@ -79,7 +79,7 @@ if __name__ == '__main__':
     nbinsX = (mgMax-mgMin)/binWidth + 1
     nbinsY = (mchiMax-mchiMin)/binWidthY + 1
      
-    tfile = rt.TFile.Open('/data/jmao/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/SMS-Plotting/test_limit.root')
+    tfile = rt.TFile.Open('/data/cpena/Work/DelayedJets/CMSSW_9_4_4/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/SMS-Plotting//test_limit_WH1205.root')
     #tfile = rt.TFile.Open('/afs/cern.ch/work/c/cpena/public/combineDiphotonHM/CMSSW_7_4_7/src/RazorEWKSUSYAnalysis/HggRazor/SMS-Plotting/test_limit.root')
 
     #####################
