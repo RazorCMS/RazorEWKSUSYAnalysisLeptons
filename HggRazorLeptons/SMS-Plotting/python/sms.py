@@ -64,10 +64,10 @@ class sms():
         self.masslabel = ""
         # plot boundary. The top 1/4 of the y axis is taken by the legend
         self.Xmin = 150
-        self.Xmax = 500
+        self.Xmax = 300
         self.Ymin = 0
         self.Ymax = 300
-        self.Zmax = 5
+        self.Zmax = 3
         self.Zmin = 0.1
         # produce sparticle
         self.sParticle = "m_{#tilde{#chi}^{#pm}_{1}} = m_{#tilde{#chi}^{0}_{2}} [GeV]"

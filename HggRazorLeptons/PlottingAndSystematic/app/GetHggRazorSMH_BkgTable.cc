@@ -89,7 +89,8 @@ int main( int argc, char* argv[] )
   //std::ifstream input( "data/HggRazor2016Binning_Moriond.txt", std::fstream::in );
   //std::ifstream input( "data/HggRazor2017_Binning_simplified_v3.txt", std::fstream::in );
   //std::ifstream input( "data/HggRazor2017_Binning_simplified_singleExp.txt", std::fstream::in );
-  std::ifstream input( "data/HggRazor2016n2017_Binning.txt", std::fstream::in );
+  std::ifstream input( "data/HggRazor2016n2017_Binning_bin33.txt", std::fstream::in );
+  //std::ifstream input( "data/HggRazor2016n2017_Binning.txt", std::fstream::in );
   //std::ifstream input( "data/HggRazor2017_Binning_simplified_singleExp_order.txt", std::fstream::in );
   
   if ( input.is_open() )

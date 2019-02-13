@@ -62,6 +62,7 @@ class smsPlotXSEC(smsPlotABS):
     def Draw(self):
         self.emptyHisto.GetXaxis().SetRangeUser(self.model.Xmin, self.model.Xmax)
         self.emptyHisto.GetYaxis().SetRangeUser(self.model.Ymin, self.model.Ymax)
+        self.emptyHisto.GetZaxis().SetRangeUser(self.model.Zmin, self.model.Zmax)
         self.emptyHisto.Draw()
         self.histo.Draw("COLZSAME")
         self.DrawDiagonal()
