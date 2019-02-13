@@ -176,7 +176,7 @@ int main( int argc, char* argv[] )
   if ( analysisTag == "Razor2016_80X" ) 
     {
       //cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1Eta) <1.48 && abs(pho2Eta)<1.48 && (pho1Pt>40||pho2Pt>40)  && pho1Pt> 25. && pho2Pt>25. ";
-      cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho2Pt/mGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5 ";
+      cut = "mGammaGamma > 100. && mGammaGamma < 180. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho2Pt/mGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5 ";
       //triggerCut = " ";
       //triggerCut = " &&  HLTDecision[82]  ";
       triggerCut = " && ( HLTDecision[82] || HLTDecision[83] ) ";
@@ -184,7 +184,7 @@ int main( int argc, char* argv[] )
     } 
   else if ( analysisTag == "Razor2017_92X" ) 
     {
-      cut = "mGammaGamma > 103. && mGammaGamma < 160. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho2Pt/mGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5 ";
+      cut = "mGammaGamma > 100. && mGammaGamma < 180. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho2Pt/mGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5 ";
       //triggerCut = " && HLTDecision[54]  ";
       triggerCut = " && ( HLTDecision[54] || HLTDecision[55] ) ";
     } 
@@ -330,6 +330,16 @@ int main( int argc, char* argv[] )
   TH2Poly* misstagUpS   = new TH2Poly("misstagUpS", "", 0, 10000, 0, 1 );//signal
   TH2Poly* misstagDownS = new TH2Poly("misstagDownS", "", 0, 10000, 0, 1 );//signal
   
+  TH2Poly* leptonEffSFUp    = new TH2Poly("leptonEffSFUp", "", 0, 10000, 0, 1 );
+  TH2Poly* leptonEffSFDown  = new TH2Poly("leptonEffSFDown", "", 0, 10000, 0, 1 );
+  TH2Poly* leptonEffSFUpS   = new TH2Poly("leptonEffSFUpS", "", 0, 10000, 0, 1 );//signal
+  TH2Poly* leptonEffSFDownS = new TH2Poly("leptonEffSFDownS", "", 0, 10000, 0, 1 );//signal
+  
+  TH2Poly* photonEffSFUp    = new TH2Poly("photonEffSFUp", "", 0, 10000, 0, 1 );
+  TH2Poly* photonEffSFDown  = new TH2Poly("photonEffSFDown", "", 0, 10000, 0, 1 );
+  TH2Poly* photonEffSFUpS   = new TH2Poly("photonEffSFUpS", "", 0, 10000, 0, 1 );//signal
+  TH2Poly* photonEffSFDownS = new TH2Poly("photonEffSFDownS", "", 0, 10000, 0, 1 );//signal
+  
   TH2Poly* genMetS = new TH2Poly("genMet_Signal", "", 0, 10000, 0, 1 );//signal
   TH2Poly* pileupS = new TH2Poly("pileup_Signal", "", 0, 10000, 0, 1 );//signal
 
@@ -375,6 +385,16 @@ int main( int argc, char* argv[] )
       misstagUpS->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
       misstagDown->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
       misstagDownS->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
+      //leptonEffSF
+      leptonEffSFUp->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
+      leptonEffSFUpS->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
+      leptonEffSFDown->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
+      leptonEffSFDownS->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
+      //photonEffSF
+      photonEffSFUp->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
+      photonEffSFUpS->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
+      photonEffSFDown->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
+      photonEffSFDownS->AddBin( tmp[0], tmp[1], tmp[2], tmp[3] );
       //pdf
       for( int i = 0; i < 60; i++ )
 	{
@@ -468,6 +488,14 @@ int main( int argc, char* argv[] )
 	      facSys = hggSys->GetMisstagSystematic( tmp[0], tmp[1] );
 	      misstagUpS->SetBinContent( bin, facSys.first );
 	      misstagDownS->SetBinContent( bin, facSys.second );
+	      //leptonEffSF
+	      facSys = hggSys->GetMisstagSystematic( tmp[0], tmp[1] );
+	      leptonEffSFUpS->SetBinContent( bin, facSys.first );
+	      leptonEffSFDownS->SetBinContent( bin, facSys.second );
+	      //photonEffSF
+	      facSys = hggSys->GetMisstagSystematic( tmp[0], tmp[1] );
+	      photonEffSFUpS->SetBinContent( bin, facSys.first );
+	      photonEffSFDownS->SetBinContent( bin, facSys.second );
 
 	      //Signal ISR systematic
 	      facSys = hggSys->GetISRSystematic( tmp[0], tmp[1] );
@@ -533,6 +561,14 @@ int main( int argc, char* argv[] )
 	      facSys = hggSys->GetMisstagSystematic( tmp[0], tmp[1] );
 	      misstagUp->SetBinContent( bin, misstagUp->GetBinContent(bin) + facSys.first );
 	      misstagDown->SetBinContent( bin, misstagDown->GetBinContent(bin) + facSys.second );
+	      //leptonEffSF
+	      facSys = hggSys->GetMisstagSystematic( tmp[0], tmp[1] );
+	      leptonEffSFUp->SetBinContent( bin, leptonEffSFUp->GetBinContent(bin) + facSys.first );
+	      leptonEffSFDown->SetBinContent( bin, leptonEffSFDown->GetBinContent(bin) + facSys.second );
+	      //photonEffSF
+	      facSys = hggSys->GetMisstagSystematic( tmp[0], tmp[1] );
+	      photonEffSFUp->SetBinContent( bin, photonEffSFUp->GetBinContent(bin) + facSys.first );
+	      photonEffSFDown->SetBinContent( bin, photonEffSFDown->GetBinContent(bin) + facSys.second );
 	      //PDF
 	      for ( int ipdf = 0; ipdf < 60; ipdf++ )
 		{
@@ -615,9 +651,20 @@ int main( int argc, char* argv[] )
        misstagDown->SetBinContent( bin, misstagDown->GetBinContent( bin )/nom );
        misstagUpS->SetBinContent( bin, misstagUpS->GetBinContent( bin )/nomS );
        misstagDownS->SetBinContent( bin, misstagDownS->GetBinContent( bin )/nomS );
+       //leptonEffSF
+       leptonEffSFUp->SetBinContent( bin, leptonEffSFUp->GetBinContent( bin )/nom );
+       leptonEffSFDown->SetBinContent( bin, leptonEffSFDown->GetBinContent( bin )/nom );
+       leptonEffSFUpS->SetBinContent( bin, leptonEffSFUpS->GetBinContent( bin )/nomS );
+       leptonEffSFDownS->SetBinContent( bin, leptonEffSFDownS->GetBinContent( bin )/nomS );
+       //photonEffSF
+       photonEffSFUp->SetBinContent( bin, photonEffSFUp->GetBinContent( bin )/nom );
+       photonEffSFDown->SetBinContent( bin, photonEffSFDown->GetBinContent( bin )/nom );
+       photonEffSFUpS->SetBinContent( bin, photonEffSFUpS->GetBinContent( bin )/nomS );
+       photonEffSFDownS->SetBinContent( bin, photonEffSFDownS->GetBinContent( bin )/nomS );
 
        if ( categoryMode == "highres") nominal->SetBinContent( bin, highres_sigmaMoverM_corr*nominal->GetBinContent( bin ) );
        if ( categoryMode == "lowres") nominal->SetBinContent( bin, lowres_sigmaMoverM_corr*nominal->GetBinContent( bin ) );
+
        outf << tmp[4] << "\t" << categoryMode << "\t" << tmp[0] << "\t" << tmp[2] << " \t" << tmp[1] << "\t" << tmp[3] << "\t"
 	    << nominal->GetBinContent( bin ) << "\t"
 	    << JesUp->GetBinContent( bin ) << "\t" <<  JesDown->GetBinContent( bin ) << "\t"
@@ -643,12 +690,33 @@ int main( int argc, char* argv[] )
        //add total cross section uncertainties
        totalFractionalUncertaintySqr += 
 	 pow( 0.04 ,2)  //lumi
-	 + pow( 0.05 ,2)  //photon selection
+	 //+ pow( 0.05 ,2)  //photon selection
 	 //+ pow( 0.067 ,2)  //scale variation
 	 + pow( 0.057 ,2)  //PDF
 	 ;
 
-       if (tmp[5] == 8) totalFractionalUncertaintySqr += pow( 0.04 ,2); //for btag efficiency systematic
+       //photonEffSF systematics
+       outf << photonEffSFUp->GetBinContent( bin ) << "\t" << photonEffSFDown->GetBinContent( bin ) << "\t";
+       //btag SF systematics for box=6,7, bin 7-16
+       if ( categoryMode == "hbb" || categoryMode == "zbb" || categoryMode == "hbbhighpt" || categoryMode == "hbblowpt" || categoryMode == "zbbhighpt" || categoryMode == "zbblowpt") {
+	outf << btagUp->GetBinContent( bin ) << "\t" << btagDown->GetBinContent( bin ) << "\t";
+	} else {
+	outf << "0.0" << "\t" << "0.0" << "\t";
+	}
+       //misbtag SF systematics for box=6,7, bin 7-16
+       if ( categoryMode == "hbb" || categoryMode == "zbb" || categoryMode == "hbbhighpt" || categoryMode == "hbblowpt" || categoryMode == "zbbhighpt" || categoryMode == "zbblowpt") {
+	outf << misstagUp->GetBinContent( bin ) << "\t" << misstagDown->GetBinContent( bin ) << "\t";
+	} else {
+	outf << "0.0" << "\t" << "0.0" << "\t";
+	}
+       //leptonEffSF systematics for box=0-4, bin 0-6
+       if ( categoryMode == "twoleptons" || categoryMode == "mu" || categoryMode == "ele" || categoryMode == "muhighpt" || categoryMode == "mulowpt" || categoryMode == "elehighpt" || categoryMode == "elelowpt") {
+	outf << leptonEffSFUp->GetBinContent( bin ) << "\t" << leptonEffSFDown->GetBinContent( bin ) << "\t";
+	} else {
+	outf << "0.0" << "\t" << "0.0" << "\t";
+	}
+
+       //if (tmp[5] == 8) totalFractionalUncertaintySqr += pow( 0.04 ,2); //for btag efficiency systematic, 2016 only bin 8 hbbzbb has bjet inside
 
        //Signal
        if ( categoryMode == "highres") nomS = highres_sigmaMoverM_corr*nomS;
@@ -677,9 +745,30 @@ int main( int argc, char* argv[] )
 	 outf << "0.0" << "\t";
        }
        
+       //photonEffSF systematics
+       outf << photonEffSFUpS->GetBinContent( bin ) << "\t" << photonEffSFDownS->GetBinContent( bin ) << "\t";
+       //btag SF systematics for box=6,7, bin 7-16
+       if ( categoryMode == "hbb" || categoryMode == "zbb" || categoryMode == "hbbhighpt" || categoryMode == "hbblowpt" || categoryMode == "zbbhighpt" || categoryMode == "zbblowpt") {
+	outf << btagUpS->GetBinContent( bin ) << "\t" << btagDownS->GetBinContent( bin ) << "\t";
+	} else {
+	outf << "0.0" << "\t" << "0.0" << "\t";
+	}
+       //misbtag SF systematics for box=6,7, bin 7-16
+       if ( categoryMode == "hbb" || categoryMode == "zbb" || categoryMode == "hbbhighpt" || categoryMode == "hbblowpt" || categoryMode == "zbbhighpt" || categoryMode == "zbblowpt") {
+	outf << misstagUpS->GetBinContent( bin ) << "\t" << misstagDownS->GetBinContent( bin ) << "\t";
+	} else {
+	outf << "0.0" << "\t" << "0.0" << "\t";
+	}
+       //leptonEffSF systematics for box=0-4, bin 0-6
+       if ( categoryMode == "twoleptons" || categoryMode == "mu" || categoryMode == "ele" || categoryMode == "muhighpt" || categoryMode == "mulowpt" || categoryMode == "elehighpt" || categoryMode == "elelowpt") {
+	outf << leptonEffSFUpS->GetBinContent( bin ) << "\t" << leptonEffSFDownS->GetBinContent( bin ) << "\t";
+	} else {
+	outf << "0.0" << "\t" << "0.0" << "\t";
+	}
+
        outf << "\n";
       
-       std::cout << "Bin : " << bin << " " << tmp[0] << " " << tmp[1] << " " << tmp[2] << " " << tmp[3] << " : "
+       std::cout << "Bin : " << bin << " real bin "<< tmp[-1] << " : " << tmp[0] << " " << tmp[1] << " " << tmp[2] << " " << tmp[3] << " : "
 		 << "SMH Yield : " << nom << " +/- " << 100*sqrt(totalFractionalUncertaintySqr) << "%; signal: " << nomS << "\n";
  
      }
@@ -701,6 +790,10 @@ int main( int argc, char* argv[] )
    btagDown->Write("btagDown");
    misstagUp->Write("misstagUp");
    misstagDown->Write("misstagDown");
+   leptonEffSFUp->Write("leptonEffSFUp");
+   leptonEffSFDown->Write("leptonEffSFDown");
+   photonEffSFUp->Write("photonEffSFUp");
+   photonEffSFDown->Write("photonEffSFDown");
   for( int ipdf = 0; ipdf < 60; ipdf++ ) pdf[ipdf]->Write();
    sF->Close();
    

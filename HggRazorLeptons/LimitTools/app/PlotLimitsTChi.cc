@@ -52,7 +52,7 @@ TString CMSText = "CMS";
 TString extraText   = "Preliminary";
 //TString lumiText = "2.32 fb^{-1} (13 TeV)";
 //TString lumiText = "35.9 fb^{-1} (13 TeV)";
-TString lumiText = "77 fb^{-1} (13 TeV)";
+TString lumiText = "77.5 fb^{-1} (13 TeV)";
 
 bool AddCMS( TCanvas* C );
 
@@ -277,7 +277,7 @@ int main( int argc, char** argv )
   gTwoS->Draw("AFC");
   gOneS->Draw("FC");
   gExp->Draw("PC");
-  //gObs->Draw("C");
+  gObs->Draw("C");
   gTheory->Draw("PC");
   gTheory_up->Draw("PC");
   gTheory_down->Draw("PC");
@@ -302,7 +302,7 @@ int main( int argc, char** argv )
   leg2->SetFillColor(0);
   leg2->SetFillStyle(1001);
   leg2->SetTextSize(0.04);
-  //leg2->AddEntry( gObs, " Observed", "l" );
+  leg2->AddEntry( gObs, " Observed", "l" );
   leg2->AddEntry( gExp, " Expected", "l" );
   leg2->AddEntry( gOneS, " 68% expected", "f" );
   leg2->AddEntry( gTwoS, " 95% expected", "f" );

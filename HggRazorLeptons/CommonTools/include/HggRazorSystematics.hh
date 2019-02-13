@@ -48,6 +48,8 @@ public:
   std::pair<float, float> GetJesSystematic( float mr, float rsq );
   std::pair<float, float> GetBtagSystematic( float mr, float rsq );
   std::pair<float, float> GetMisstagSystematic( float mr, float rsq );
+  std::pair<float, float> GetLeptonEffSFSystematic( float mr, float rsq );
+  std::pair<float, float> GetPhotonEffSFSystematic( float mr, float rsq );
   float GetPdfSystematic( int i, float mr, float rsq );
   static float GetHggBF( );
 
@@ -104,6 +106,12 @@ private:
   //Mistag
   TH2Poly* h2p_misstagUp;
   TH2Poly* h2p_misstagDown;
+  //leptonEffSF
+  TH2Poly* h2p_leptonEffSFUp;
+  TH2Poly* h2p_leptonEffSFDown;
+  //photonEffSF
+  TH2Poly* h2p_photonEffSFUp;
+  TH2Poly* h2p_photonEffSFDown;
   //GenMet
   TH2Poly* h2p_genMet;
   //Pileup

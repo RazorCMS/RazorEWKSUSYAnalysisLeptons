@@ -30,7 +30,11 @@ public :
    Float_t         triggerEffWeight;
    Float_t         triggerEffSFWeight;
    Float_t         photonEffSF;
+   Float_t         photonEffSFUp;
+   Float_t         photonEffSFDown;
    Float_t         leptonEffSF;
+   Float_t         leptonEffSFUp;
+   Float_t         leptonEffSFDown;
    Float_t         ISRSystWeightUp;
    Float_t         ISRSystWeightDown;
    Int_t           NISRJets;
@@ -194,7 +198,11 @@ public :
    TBranch        *b_triggerEffWeight;   //!
    TBranch        *b_triggerEffSFWeight;   //!
    TBranch        *b_photonEffSF;   //!
+   TBranch        *b_photonEffSFUp;   //!
+   TBranch        *b_photonEffSFDown;   //!
    TBranch        *b_leptonEffSF;   //!
+   TBranch        *b_leptonEffSFUp;   //!
+   TBranch        *b_leptonEffSFDown;   //!
    TBranch        *b_ISRSystWeightUp;   //!
    TBranch        *b_ISRSystWeightDown;   //!
    TBranch        *b_NISRJets;   //!
@@ -431,7 +439,11 @@ void HggTree::Init(TTree *tree)
    fChain->SetBranchAddress("triggerEffWeight", &triggerEffWeight, &b_triggerEffWeight);
    fChain->SetBranchAddress("triggerEffSFWeight", &triggerEffSFWeight, &b_triggerEffSFWeight);
    fChain->SetBranchAddress("photonEffSF", &photonEffSF, &b_photonEffSF);
+   fChain->SetBranchAddress("photonEffSFUp", &photonEffSFUp, &b_photonEffSFUp);
+   fChain->SetBranchAddress("photonEffSFDown", &photonEffSFDown, &b_photonEffSFDown);
    fChain->SetBranchAddress("leptonEffSF", &leptonEffSF, &b_leptonEffSF);
+   fChain->SetBranchAddress("leptonEffSFUp", &leptonEffSFUp, &b_leptonEffSFUp);
+   fChain->SetBranchAddress("leptonEffSFDown", &leptonEffSFDown, &b_leptonEffSFDown);
    fChain->SetBranchAddress("ISRSystWeightUp", &ISRSystWeightUp, &b_ISRSystWeightUp);
    fChain->SetBranchAddress("ISRSystWeightDown", &ISRSystWeightDown, &b_ISRSystWeightDown);
    fChain->SetBranchAddress("NISRJets", &NISRJets, &b_NISRJets);

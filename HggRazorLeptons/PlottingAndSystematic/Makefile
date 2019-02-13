@@ -33,7 +33,7 @@ TARGET13 = GetHggRazorSystematicsQuadratureFaster
 TARGET14 = GetHggRazorPull
 TARGET15 = GetHggLeptonRazorSMH_BkgTable 
 TARGET16 = copyTree
-TARGET17=GetHggRazorSMHNBkgSiganlTable
+TARGET17=GetHggRazorSMHNBkgSignalTable
 
 SRC = app/PlotCustomMrRsq.cc $(CommonTools)/src/HggAux.cc $(Aux)/src/CommandLineInput.cc $(Aux)/src/TChainTools.cc $(Aux)/src/PlotCosmetics.cc
 SRC2 = app/PlotFromTree.cc $(CommonTools)/src/HggTree.cc $(Selection)/src/HggRazorClass.cc $(CommonTools)/src/HggAux.cc $(Aux)/src/CommandLineInput.cc $(Aux)/src/TChainTools.cc $(Aux)/src/PlotCosmetics.cc
@@ -53,7 +53,7 @@ SRC13 = app/GetHggRazorSystematicsQuadratureFaster.cc $(CommonTools)/src/HggRazo
 SRC14 = app/GetHggRazorPullTable.cc $(CommonTools)/src/HggRazorSystematics.cc $(CommonTools)/src/HggTree.cc $(CommonTools)/src/HggAux.cc $(Aux)/src/CommandLineInput.cc $(FitTools)/src/DefinePdfs.cc
 SRC15 = app/GetHggLeptonRazorSMH_BkgTable.cc $(CommonTools)/src/HggRazorSystematics.cc $(CommonTools)/src/HggTree.cc $(CommonTools)/src/HggAux.cc $(Aux)/src/CommandLineInput.cc $(FitTools)/src/DefinePdfs.cc
 SRC16 = app/copyTree.cc
-SRC17 = app/GetHggRazorSMHNBkgSiganlTable.cc $(CommonTools)/src/HggRazorSystematics.cc $(CommonTools)/src/HggTree.cc $(CommonTools)/src/HggAux.cc $(Aux)/src/CommandLineInput.cc $(FitTools)/src/DefinePdfs.cc
+SRC17 = app/GetHggRazorSMHNBkgSignalTable.cc $(CommonTools)/src/HggRazorSystematics.cc $(CommonTools)/src/HggTree.cc $(CommonTools)/src/HggAux.cc $(Aux)/src/CommandLineInput.cc $(FitTools)/src/DefinePdfs.cc
 
 OBJ  = $(SRC:.cc=.o)
 	OBJ2 = $(SRC2:.cc=.o)

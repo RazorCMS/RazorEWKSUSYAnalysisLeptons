@@ -90,14 +90,16 @@ int main( int argc, char* argv[] )
   //-------------------
   //T2bH settings Trick
   //-------------------
-  double maxY = 750;
-  double maxX = 750;
-  double minY = -50;
-  double minX = -50;
-  double binWidthX = 100.;
-  double binWidthY = 100.;
+  double maxY = 450;
+  double maxX = 650;
+  double minY = 0;
+  double minX = 250;
+  double binWidthX = 50.;
+  double binWidthY = 50.;
   int nbinsX = (int)(maxX-minX)/binWidthX;
   int nbinsY = (int)(maxY-minY)/binWidthY;
+  std::cout << "[INFO]: nbinsX-> " << nbinsX << std::endl;
+  std::cout << "[INFO]: nbinsY-> " << nbinsY << std::endl;
   
   //-------------------
   //TChiWH settings
@@ -119,6 +121,195 @@ int main( int argc, char* argv[] )
   TH2F* h2_limit_exp_up = new TH2F("h2_limit_exp_up", "", nbinsX, minX, maxX, nbinsY, minY, maxY);
   TH2F* h2_limit_exp_down = new TH2F("h2_limit_exp_down", "", nbinsX, minX, maxX, nbinsY, minY, maxY);
   
+  float limit500_1 = 0.;
+  float limit500_1_exp = 0.;
+  float limit500_1_exp_up = 0.;
+  float limit500_1_exp_down = 0.;
+
+  float limit500_50 = 0.;
+  float limit500_50_exp = 0.;
+  float limit500_50_exp_up = 0.;
+  float limit500_50_exp_down = 0.;
+
+  float limit500_100 = 0.;
+  float limit500_100_exp = 0.;
+  float limit500_100_exp_up = 0.;
+  float limit500_100_exp_down = 0.;
+
+  float limit500_150 = 0.;
+  float limit500_150_exp = 0.;
+  float limit500_150_exp_up = 0.;
+  float limit500_150_exp_down = 0.;
+
+  float limit500_200 = 0.;
+  float limit500_200_exp = 0.;
+  float limit500_200_exp_up = 0.;
+  float limit500_200_exp_down = 0.;
+
+  float limit500_250 = 0.;
+  float limit500_250_exp = 0.;
+  float limit500_250_exp_up = 0.;
+  float limit500_250_exp_down = 0.;
+
+  float limit500_300 = 0.;
+  float limit500_300_exp = 0.;
+  float limit500_300_exp_up = 0.;
+  float limit500_300_exp_down = 0.;
+
+  float limit550_1 = 0.;
+  float limit550_1_exp = 0.;
+  float limit550_1_exp_up = 0.;
+  float limit550_1_exp_down = 0.;
+
+  float limit550_50 = 0.;
+  float limit550_50_exp = 0.;
+  float limit550_50_exp_up = 0.;
+  float limit550_50_exp_down = 0.;
+
+  float limit550_100 = 0.;
+  float limit550_100_exp = 0.;
+  float limit550_100_exp_up = 0.;
+  float limit550_100_exp_down = 0.;
+
+  float limit550_150 = 0.;
+  float limit550_150_exp = 0.;
+  float limit550_150_exp_up = 0.;
+  float limit550_150_exp_down = 0.;
+
+  float limit550_200 = 0.;
+  float limit550_200_exp = 0.;
+  float limit550_200_exp_up = 0.;
+  float limit550_200_exp_down = 0.;
+
+  float limit550_250 = 0.;
+  float limit550_250_exp = 0.;
+  float limit550_250_exp_up = 0.;
+  float limit550_250_exp_down = 0.;
+
+  float limit550_300 = 0.;
+  float limit550_300_exp = 0.;
+  float limit550_300_exp_up = 0.;
+  float limit550_300_exp_down = 0.;
+
+  float limit600_1 = 0.;
+  float limit600_1_exp = 0.;
+  float limit600_1_exp_up = 0.;
+  float limit600_1_exp_down = 0.;
+
+  float limit600_50 = 0.;
+  float limit600_50_exp = 0.;
+  float limit600_50_exp_up = 0.;
+  float limit600_50_exp_down = 0.;
+
+  float limit600_100 = 0.;
+  float limit600_100_exp = 0.;
+  float limit600_100_exp_up = 0.;
+  float limit600_100_exp_down = 0.;
+
+  float limit600_150 = 0.;
+  float limit600_150_exp = 0.;
+  float limit600_150_exp_up = 0.;
+  float limit600_150_exp_down = 0.;
+
+  float limit600_200 = 0.;
+  float limit600_200_exp = 0.;
+  float limit600_200_exp_up = 0.;
+  float limit600_200_exp_down = 0.;
+
+  float limit600_250 = 0.;
+  float limit600_250_exp = 0.;
+  float limit600_250_exp_up = 0.;
+  float limit600_250_exp_down = 0.;
+
+  float limit600_300 = 0.;
+  float limit600_300_exp = 0.;
+  float limit600_300_exp_up = 0.;
+  float limit600_300_exp_down = 0.;
+
+  
+  float limit500_1_obs = 0.;
+  float limit500_1_limit_exp = 0.;
+  float limit500_1_xsecUn = 0.;
+
+  float limit500_50_obs = 0.;
+  float limit500_50_limit_exp = 0.;
+  float limit500_50_xsecUn = 0.;
+
+  float limit500_100_obs = 0.;
+  float limit500_100_limit_exp = 0.;
+  float limit500_100_xsecUn = 0.;
+
+  float limit500_150_obs = 0.;
+  float limit500_150_limit_exp = 0.;
+  float limit500_150_xsecUn = 0.;
+
+  float limit500_200_obs = 0.;
+  float limit500_200_limit_exp = 0.;
+  float limit500_200_xsecUn = 0.;
+
+  float limit500_250_obs = 0.;
+  float limit500_250_limit_exp = 0.;
+  float limit500_250_xsecUn = 0.;
+
+  float limit500_300_obs = 0.;
+  float limit500_300_limit_exp = 0.;
+  float limit500_300_xsecUn = 0.;
+
+  float limit550_1_obs = 0.;
+  float limit550_1_limit_exp = 0.;
+  float limit550_1_xsecUn = 0.;
+
+  float limit550_50_obs = 0.;
+  float limit550_50_limit_exp = 0.;
+  float limit550_50_xsecUn = 0.;
+
+  float limit550_100_obs = 0.;
+  float limit550_100_limit_exp = 0.;
+  float limit550_100_xsecUn = 0.;
+
+  float limit550_150_obs = 0.;
+  float limit550_150_limit_exp = 0.;
+  float limit550_150_xsecUn = 0.;
+
+  float limit550_200_obs = 0.;
+  float limit550_200_limit_exp = 0.;
+  float limit550_200_xsecUn = 0.;
+
+  float limit550_250_obs = 0.;
+  float limit550_250_limit_exp = 0.;
+  float limit550_250_xsecUn = 0.;
+
+  float limit550_300_obs = 0.;
+  float limit550_300_limit_exp = 0.;
+  float limit550_300_xsecUn = 0.;
+
+  float limit600_1_obs = 0.;
+  float limit600_1_limit_exp = 0.;
+  float limit600_1_xsecUn = 0.;
+
+  float limit600_50_obs = 0.;
+  float limit600_50_limit_exp = 0.;
+  float limit600_50_xsecUn = 0.;
+
+  float limit600_100_obs = 0.;
+  float limit600_100_limit_exp = 0.;
+  float limit600_100_xsecUn = 0.;
+
+  float limit600_150_obs = 0.;
+  float limit600_150_limit_exp = 0.;
+  float limit600_150_xsecUn = 0.;
+
+  float limit600_200_obs = 0.;
+  float limit600_200_limit_exp = 0.;
+  float limit600_200_xsecUn = 0.;
+
+  float limit600_250_obs = 0.;
+  float limit600_250_limit_exp = 0.;
+  float limit600_250_xsecUn = 0.;
+
+  float limit600_300_obs = 0.;
+  float limit600_300_limit_exp = 0.;
+  float limit600_300_xsecUn = 0.;
 
   std::ifstream ifs( inputList.c_str(), std::fstream::in );
   if ( ifs.is_open() )
@@ -131,13 +322,15 @@ int main( int argc, char* argv[] )
 	  std::cout << "[INFO]: fname-> " << fname << std::endl;
 	  //nominal observed
 	  Limit myLimit;
-	  GetLimit( myLimit, fname, 5.0 );
+	  GetLimit( myLimit, fname, 1.0 );
+	  //GetLimit( myLimit, fname, 5.0 );
 	  
 	  //Filling observed limit TH2F
 	  h2_limit->Fill(myLimit.msb, myLimit.mlsp, myLimit.xsecL );
 	  h2_limit_exp->Fill(myLimit.msb, myLimit.mlsp, myLimit.xsecLExp );
 	  h2_limit_exp_up->Fill(myLimit.msb, myLimit.mlsp, myLimit.xsecLExpUp );
 	  h2_limit_exp_down->Fill(myLimit.msb, myLimit.mlsp, myLimit.xsecLExpDown );
+
 	  //-------------------------------------------
 	  //N o m i n a l   o b s e r v e d   l i m i t
 	  //-------------------------------------------
@@ -267,9 +460,304 @@ int main( int argc, char* argv[] )
 	    {
 	      minMsigma[myLimit.mlsp] = myLimit.msb; 
 	    }
-	  
-	  //std::cout << "[INFO]: fname-> " << fname << std::endl;
-	}
+	  if(myLimit.msb==500&&myLimit.mlsp==1) 
+	  {
+		limit500_1 = myLimit.xsecL;
+		limit500_1_exp = myLimit.xsecLExp;
+		limit500_1_exp_up = myLimit.xsecLExpUp;
+		limit500_1_exp_down = myLimit.xsecLExpDown;
+		
+		limit500_1_obs = myLimit.obs;
+		limit500_1_limit_exp = myLimit.exp;
+		limit500_1_xsecUn = myLimit.xsecUn;
+	  }
+	  if(myLimit.msb==500&&myLimit.mlsp==50) 
+	  {
+		limit500_50 = myLimit.xsecL;
+		limit500_50_exp = myLimit.xsecLExp;
+		limit500_50_exp_up = myLimit.xsecLExpUp;
+		limit500_50_exp_down = myLimit.xsecLExpDown;
+		
+		limit500_50_obs = myLimit.obs;
+		limit500_50_limit_exp = myLimit.exp;
+		limit500_50_xsecUn = myLimit.xsecUn;
+	  }
+	  if(myLimit.msb==500&&myLimit.mlsp==100) 
+	  {
+		limit500_100 = myLimit.xsecL;
+		limit500_100_exp = myLimit.xsecLExp;
+		limit500_100_exp_up = myLimit.xsecLExpUp;
+		limit500_100_exp_down = myLimit.xsecLExpDown;
+		
+		limit500_100_obs = myLimit.obs;
+		limit500_100_limit_exp = myLimit.exp;
+		limit500_100_xsecUn = myLimit.xsecUn;
+	  }
+/*
+	  if(myLimit.msb==500&&myLimit.mlsp==150) 
+	  {
+		limit500_150 = myLimit.xsecL;
+		limit500_150_exp = myLimit.xsecLExp;
+		limit500_150_exp_up = myLimit.xsecLExpUp;
+		limit500_150_exp_down = myLimit.xsecLExpDown;
+	  }
+*/
+	  if(myLimit.msb==500&&myLimit.mlsp==200) 
+	  {
+		limit500_200 = myLimit.xsecL;
+		limit500_200_exp = myLimit.xsecLExp;
+		limit500_200_exp_up = myLimit.xsecLExpUp;
+		limit500_200_exp_down = myLimit.xsecLExpDown;
+		
+		limit500_200_obs = myLimit.obs;
+		limit500_200_limit_exp = myLimit.exp;
+		limit500_200_xsecUn = myLimit.xsecUn;
+	  }
+	  if(myLimit.msb==500&&myLimit.mlsp==250) 
+	  {
+		limit500_250 = myLimit.xsecL;
+		limit500_250_exp = myLimit.xsecLExp;
+		limit500_250_exp_up = myLimit.xsecLExpUp;
+		limit500_250_exp_down = myLimit.xsecLExpDown;
+		
+		limit500_250_obs = myLimit.obs;
+		limit500_250_limit_exp = myLimit.exp;
+		limit500_250_xsecUn = myLimit.xsecUn;
+	  }
+	  if(myLimit.msb==500&&myLimit.mlsp==300) 
+	  {
+		limit500_300 = myLimit.xsecL;
+		limit500_300_exp = myLimit.xsecLExp;
+		limit500_300_exp_up = myLimit.xsecLExpUp;
+		limit500_300_exp_down = myLimit.xsecLExpDown;
+		
+		limit500_300_obs = myLimit.obs;
+		limit500_300_limit_exp = myLimit.exp;
+		limit500_300_xsecUn = myLimit.xsecUn;
+	  }
+
+	  if(myLimit.msb==600&&myLimit.mlsp==1) 
+	  {
+		limit600_1 = myLimit.xsecL;
+		limit600_1_exp = myLimit.xsecLExp;
+		limit600_1_exp_up = myLimit.xsecLExpUp;
+		limit600_1_exp_down = myLimit.xsecLExpDown;
+		
+		limit600_1_obs = myLimit.obs;
+		limit600_1_limit_exp = myLimit.exp;
+		limit600_1_xsecUn = myLimit.xsecUn;
+	  }
+	  if(myLimit.msb==600&&myLimit.mlsp==100) 
+	  {
+		limit600_100 = myLimit.xsecL;
+		limit600_100_exp = myLimit.xsecLExp;
+		limit600_100_exp_up = myLimit.xsecLExpUp;
+		limit600_100_exp_down = myLimit.xsecLExpDown;
+		
+		limit600_100_obs = myLimit.obs;
+		limit600_100_limit_exp = myLimit.exp;
+		limit600_100_xsecUn = myLimit.xsecUn;
+	  }
+	  if(myLimit.msb==600&&myLimit.mlsp==200) 
+	  {
+		limit600_200 = myLimit.xsecL;
+		limit600_200_exp = myLimit.xsecLExp;
+		limit600_200_exp_up = myLimit.xsecLExpUp;
+		limit600_200_exp_down = myLimit.xsecLExpDown;
+		
+		limit600_200_obs = myLimit.obs;
+		limit600_200_limit_exp = myLimit.exp;
+		limit600_200_xsecUn = myLimit.xsecUn;
+	  }
+	  if(myLimit.msb==600&&myLimit.mlsp==300) 
+	  {
+		limit600_300 = myLimit.xsecL;
+		limit600_300_exp = myLimit.xsecLExp;
+		limit600_300_exp_up = myLimit.xsecLExpUp;
+		limit600_300_exp_down = myLimit.xsecLExpDown;
+		
+		limit600_300_obs = myLimit.obs;
+		limit600_300_limit_exp = myLimit.exp;
+		limit600_300_xsecUn = myLimit.xsecUn;
+	  }
+	 }
+
+	limit500_150 = (limit500_100+limit500_200)/2.;
+	limit500_150_exp = (limit500_100_exp+limit500_200_exp)/2.;
+	limit500_150_exp_up = (limit500_100_exp_up+limit500_200_exp_up)/2.;
+	limit500_150_exp_down = (limit500_100_exp_down+limit500_200_exp_down)/2.;
+
+	limit600_50 = (limit600_1+limit600_100)/2.;
+	limit600_50_exp = (limit600_1_exp+limit600_100_exp)/2.;
+	limit600_50_exp_up = (limit600_1_exp_up+limit600_100_exp_up)/2.;
+	limit600_50_exp_down = (limit600_1_exp_down+limit600_100_exp_down)/2.;
+
+	limit600_150 = (limit600_100+limit600_200)/2.;
+	limit600_150_exp = (limit600_100_exp+limit600_200_exp)/2.;
+	limit600_150_exp_up = (limit600_100_exp_up+limit600_200_exp_up)/2.;
+	limit600_150_exp_down = (limit600_100_exp_down+limit600_200_exp_down)/2.;
+
+	limit600_250 = (limit600_200+limit600_300)/2.;
+	limit600_250_exp = (limit600_200_exp+limit600_300_exp)/2.;
+	limit600_250_exp_up = (limit600_200_exp_up+limit600_300_exp_up)/2.;
+	limit600_250_exp_down = (limit600_200_exp_down+limit600_300_exp_down)/2.;
+
+	limit550_1 = (limit500_1+limit600_1)/2.;
+	limit550_1_exp = (limit500_1_exp+limit600_1_exp)/2.;
+	limit550_1_exp_up = (limit500_1_exp_up+limit600_1_exp_up)/2.;
+	limit550_1_exp_down = (limit500_1_exp_down+limit600_1_exp_down)/2.;
+
+	limit550_100 = (limit500_100+limit600_100)/2.;
+	limit550_100_exp = (limit500_100_exp+limit600_100_exp)/2.;
+	limit550_100_exp_up = (limit500_100_exp_up+limit600_100_exp_up)/2.;
+	limit550_100_exp_down = (limit500_100_exp_down+limit600_100_exp_down)/2.;
+
+	limit550_200 = (limit500_200+limit600_200)/2.;
+	limit550_200_exp = (limit500_200_exp+limit600_200_exp)/2.;
+	limit550_200_exp_up = (limit500_200_exp_up+limit600_200_exp_up)/2.;
+	limit550_200_exp_down = (limit500_200_exp_down+limit600_200_exp_down)/2.;
+
+	limit550_300 = (limit500_300+limit600_300)/2.;
+	limit550_300_exp = (limit500_300_exp+limit600_300_exp)/2.;
+	limit550_300_exp_up = (limit500_300_exp_up+limit600_300_exp_up)/2.;
+	limit550_300_exp_down = (limit500_300_exp_down+limit600_300_exp_down)/2.;
+//cross
+	limit550_50 = (limit500_50+limit600_50+limit550_1+limit550_100)/4.;
+	limit550_50_exp = (limit500_50_exp+limit600_50_exp+limit550_1_exp+limit550_100_exp)/4.;
+	limit550_50_exp_up = (limit500_50_exp_up+limit600_50_exp_up+limit550_1_exp_up+limit550_100_exp_up)/4.;
+	limit550_50_exp_down = (limit500_50_exp_down+limit600_50_exp_down+limit550_1_exp_down+limit550_100_exp_down)/4.;
+
+	h2_limit->Fill(550, 50, limit550_50 );
+	h2_limit_exp->Fill(550, 50, limit550_50_exp );
+	h2_limit_exp_up->Fill(550, 50, limit550_50_exp_up );
+	h2_limit_exp_down->Fill(550, 50, limit550_50_exp_down );
+
+	limit550_150 = (limit500_150+limit600_150+limit550_200+limit550_100)/4.;
+	limit550_150_exp = (limit500_150_exp+limit600_150_exp+limit550_200_exp+limit550_100_exp)/4.;
+	limit550_150_exp_up = (limit500_150_exp_up+limit600_150_exp_up+limit550_200_exp_up+limit550_100_exp_up)/4.;
+	limit550_150_exp_down = (limit500_150_exp_down+limit600_150_exp_down+limit550_200_exp_down+limit550_100_exp_down)/4.;
+
+	h2_limit->Fill(550, 150, limit550_150 );
+	h2_limit_exp->Fill(550, 150, limit550_150_exp );
+	h2_limit_exp_up->Fill(550, 150, limit550_150_exp_up );
+	h2_limit_exp_down->Fill(550, 150, limit550_150_exp_down );
+
+	limit550_250 = (limit500_250+limit600_250+limit550_200+limit550_300)/4.;
+	limit550_250_exp = (limit500_250_exp+limit600_250_exp+limit550_200_exp+limit550_300_exp)/4.;
+	limit550_250_exp_up = (limit500_250_exp_up+limit600_250_exp_up+limit550_200_exp_up+limit550_300_exp_up)/4.;
+	limit550_250_exp_down = (limit500_250_exp_down+limit600_250_exp_down+limit550_200_exp_down+limit550_300_exp_down)/4.;
+
+	h2_limit->Fill(550, 250, limit550_250 );
+	h2_limit_exp->Fill(550, 250, limit550_250_exp );
+	h2_limit_exp_up->Fill(550, 250, limit550_250_exp_up );
+	h2_limit_exp_down->Fill(550, 250, limit550_250_exp_down );
+
+	limit500_150_obs = (limit500_100_obs+limit500_200_obs)/2.;
+	limit500_150_limit_exp = (limit500_100_limit_exp+limit500_200_limit_exp)/2.;
+	limit500_150_xsecUn = (limit500_100_xsecUn+limit500_200_xsecUn)/2.;
+
+	limit600_50_obs = (limit600_1_obs+limit600_100_obs)/2.;
+	limit600_50_limit_exp = (limit600_1_limit_exp+limit600_100_limit_exp)/2.;
+	limit600_50_xsecUn = (limit600_1_xsecUn+limit600_100_xsecUn)/2.;
+
+	limit600_150_obs = (limit600_100_obs+limit600_200_obs)/2.;
+	limit600_150_limit_exp = (limit600_100_limit_exp+limit600_200_limit_exp)/2.;
+	limit600_150_xsecUn = (limit600_100_xsecUn+limit600_200_xsecUn)/2.;
+
+	limit600_250_obs = (limit600_200_obs+limit600_300_obs)/2.;
+	limit600_250_limit_exp = (limit600_200_limit_exp+limit600_300_limit_exp)/2.;
+	limit600_250_xsecUn = (limit600_200_xsecUn+limit600_300_xsecUn)/2.;
+
+	limit550_1_obs = (limit500_1_obs+limit600_1_obs)/2.;
+	limit550_1_limit_exp = (limit500_1_limit_exp+limit600_1_limit_exp)/2.;
+	limit550_1_xsecUn = (limit500_1_xsecUn+limit600_1_xsecUn)/2.;
+
+	limit550_50_obs = (limit500_50_obs+limit600_50_obs+limit550_1_obs+limit550_100_obs)/4.;
+	limit550_50_limit_exp = (limit500_50_limit_exp+limit600_50_limit_exp+limit550_1_limit_exp+limit550_100_limit_exp)/4.;
+	limit550_50_xsecUn = (limit500_50_xsecUn+limit600_50_xsecUn+limit550_1_xsecUn+limit550_100_xsecUn)/4.;
+
+	limit550_100_obs = (limit500_100_obs+limit600_100_obs)/2.;
+	limit550_100_limit_exp = (limit500_100_limit_exp+limit600_100_limit_exp)/2.;
+	limit550_100_xsecUn = (limit500_100_xsecUn+limit600_100_xsecUn)/2.;
+
+	limit550_150_obs = (limit500_150_obs+limit600_150_obs+limit550_200_obs+limit550_100_obs)/4.;
+	limit550_150_limit_exp = (limit500_150_limit_exp+limit600_150_limit_exp+limit550_200_limit_exp+limit550_100_limit_exp)/4.;
+	limit550_150_xsecUn = (limit500_150_xsecUn+limit600_150_xsecUn+limit550_200_xsecUn+limit550_100_xsecUn)/4.;
+
+	limit550_200_obs = (limit500_200_obs+limit600_200_obs)/2.;
+	limit550_200_limit_exp = (limit500_200_limit_exp+limit600_200_limit_exp)/2.;
+	limit550_200_xsecUn = (limit500_200_xsecUn+limit600_200_xsecUn)/2.;
+
+	limit550_250_obs = (limit500_250_obs+limit600_250_obs+limit550_200_obs+limit550_300_obs)/4.;
+	limit550_250_limit_exp = (limit500_250_limit_exp+limit600_250_limit_exp+limit550_200_limit_exp+limit550_300_limit_exp)/4.;
+	limit550_250_xsecUn = (limit500_250_xsecUn+limit600_250_xsecUn+limit550_200_xsecUn+limit550_300_xsecUn)/4.;
+
+	limit550_300_obs = (limit500_300_obs+limit600_300_obs)/2.;
+	limit550_300_limit_exp = (limit500_300_limit_exp+limit600_300_limit_exp)/2.;
+	limit550_300_xsecUn = (limit500_300_xsecUn+limit600_300_xsecUn)/2.;
+
+  std::cout << "[INFO]: limit500_150_obs-> " << limit500_150_obs << std::endl;
+  std::cout << "[INFO]: limit500_150_limit_exp-> " << limit500_150_limit_exp << std::endl;
+  std::cout << "[INFO]: limit500_150_xsecUn-> " << limit500_150_xsecUn << std::endl;
+
+  std::cout << "[INFO]: limit550_1_obs-> " << limit550_1_obs << std::endl;
+  std::cout << "[INFO]: limit550_1_limit_exp-> " << limit550_1_limit_exp << std::endl;
+  std::cout << "[INFO]: limit550_1_xsecUn-> " << limit550_1_xsecUn << std::endl;
+
+  std::cout << "[INFO]: limit550_50_obs-> " << limit550_50_obs << std::endl;
+  std::cout << "[INFO]: limit550_50_limit_exp-> " << limit550_50_limit_exp << std::endl;
+  std::cout << "[INFO]: limit550_50_xsecUn-> " << limit550_50_xsecUn << std::endl;
+
+  std::cout << "[INFO]: limit550_100_obs-> " << limit550_100_obs << std::endl;
+  std::cout << "[INFO]: limit550_100_limit_exp-> " << limit550_100_limit_exp << std::endl;
+  std::cout << "[INFO]: limit550_100_xsecUn-> " << limit550_100_xsecUn << std::endl;
+
+  std::cout << "[INFO]: limit550_150_obs-> " << limit550_150_obs << std::endl;
+  std::cout << "[INFO]: limit550_150_limit_exp-> " << limit550_150_limit_exp << std::endl;
+  std::cout << "[INFO]: limit550_150_xsecUn-> " << limit550_150_xsecUn << std::endl;
+
+  std::cout << "[INFO]: limit550_200_obs-> " << limit550_200_obs << std::endl;
+  std::cout << "[INFO]: limit550_200_limit_exp-> " << limit550_200_limit_exp << std::endl;
+  std::cout << "[INFO]: limit550_200_xsecUn-> " << limit550_200_xsecUn << std::endl;
+
+  std::cout << "[INFO]: limit550_250_obs-> " << limit550_250_obs << std::endl;
+  std::cout << "[INFO]: limit550_250_limit_exp-> " << limit550_250_limit_exp << std::endl;
+  std::cout << "[INFO]: limit550_250_xsecUn-> " << limit550_250_xsecUn << std::endl;
+
+  std::cout << "[INFO]: limit550_300_obs-> " << limit550_300_obs << std::endl;
+  std::cout << "[INFO]: limit550_300_limit_exp-> " << limit550_300_limit_exp << std::endl;
+  std::cout << "[INFO]: limit550_300_xsecUn-> " << limit550_300_xsecUn << std::endl;
+
+  std::cout << "[INFO]: limit600_50_obs-> " << limit600_50_obs << std::endl;
+  std::cout << "[INFO]: limit600_50_limit_exp-> " << limit600_50_limit_exp << std::endl;
+  std::cout << "[INFO]: limit600_50_xsecUn-> " << limit600_50_xsecUn << std::endl;
+
+  std::cout << "[INFO]: limit600_150_obs-> " << limit600_150_obs << std::endl;
+  std::cout << "[INFO]: limit600_150_limit_exp-> " << limit600_150_limit_exp << std::endl;
+  std::cout << "[INFO]: limit600_150_xsecUn-> " << limit600_150_xsecUn << std::endl;
+
+  std::cout << "[INFO]: limit600_250_obs-> " << limit600_250_obs << std::endl;
+  std::cout << "[INFO]: limit600_250_limit_exp-> " << limit600_250_limit_exp << std::endl;
+  std::cout << "[INFO]: limit600_250_xsecUn-> " << limit600_250_xsecUn << std::endl;
+
+	//Fill 500_150 by avg of 500_100 and 500_200
+	h2_limit->Fill(500, 150, (limit500_100+limit500_200)/2. );
+	h2_limit_exp->Fill(500, 150, (limit500_100_exp+limit500_200_exp)/2. );
+	h2_limit_exp_up->Fill(500, 150, (limit500_100_exp_up+limit500_200_exp_up)/2. );
+	h2_limit_exp_down->Fill(500, 150, (limit500_100_exp_down+limit500_200_exp_down)/2. );
+
+	//Fill 600_50 by avg of 600_1 and 600_100
+	h2_limit->Fill(600, 50, (limit600_1+limit600_100)/2. );
+	h2_limit_exp->Fill(600, 50, (limit600_1_exp+limit600_100_exp)/2. );
+	h2_limit_exp_up->Fill(600, 50, (limit600_1_exp_up+limit600_100_exp_up)/2. );
+	h2_limit_exp_down->Fill(600, 50, (limit600_1_exp_down+limit600_100_exp_down)/2. );
+
+	//Fill 600_150 by avg of 600_100 and 600_200
+	h2_limit->Fill(600, 150, (limit600_100+limit600_200)/2. );
+	h2_limit_exp->Fill(600, 150, (limit600_100_exp+limit600_200_exp)/2. );
+	h2_limit_exp_up->Fill(600, 150, (limit600_100_exp_up+limit600_200_exp_up)/2. );
+	h2_limit_exp_down->Fill(600, 150, (limit600_100_exp_down+limit600_200_exp_down)/2. );
+
     }
   else
     {

@@ -149,6 +149,12 @@ bool HggRazorSystematics::InitMrRsqTH2Poly( int mode )
       //misstag
       h2p_misstagUp   = new TH2Poly(this->processName+"_misstagUp", "", 0, 10000, 0, 1);
       h2p_misstagDown = new TH2Poly(this->processName+"_misstagDown", "", 0, 10000, 0, 1);
+      //leptonEffSF
+      h2p_leptonEffSFUp   = new TH2Poly(this->processName+"_leptonEffSFUp", "", 0, 10000, 0, 1);
+      h2p_leptonEffSFDown = new TH2Poly(this->processName+"_leptonEffSFDown", "", 0, 10000, 0, 1);
+      //photonEffSF
+      h2p_photonEffSFUp   = new TH2Poly(this->processName+"_photonEffSFUp", "", 0, 10000, 0, 1);
+      h2p_photonEffSFDown = new TH2Poly(this->processName+"_photonEffSFDown", "", 0, 10000, 0, 1);
       //genmet
       h2p_genMet   = new TH2Poly(this->processName+"_genMet", "", 0, 10000, 0, 1);
       //pileup
@@ -182,6 +188,10 @@ bool HggRazorSystematics::InitMrRsqTH2Poly( int mode )
 	      h2p_btagDown->AddBin( tmp.first.first, tmp.second.at(i), tmp.first.second, tmp.second.at(i+1) );
 	      h2p_misstagUp->AddBin( tmp.first.first, tmp.second.at(i), tmp.first.second, tmp.second.at(i+1) );
 	      h2p_misstagDown->AddBin( tmp.first.first, tmp.second.at(i), tmp.first.second, tmp.second.at(i+1) );
+	      h2p_leptonEffSFUp->AddBin( tmp.first.first, tmp.second.at(i), tmp.first.second, tmp.second.at(i+1) );
+	      h2p_leptonEffSFDown->AddBin( tmp.first.first, tmp.second.at(i), tmp.first.second, tmp.second.at(i+1) );
+	      h2p_photonEffSFUp->AddBin( tmp.first.first, tmp.second.at(i), tmp.first.second, tmp.second.at(i+1) );
+	      h2p_photonEffSFDown->AddBin( tmp.first.first, tmp.second.at(i), tmp.first.second, tmp.second.at(i+1) );
 	      h2p_genMet->AddBin( tmp.first.first, tmp.second.at(i), tmp.first.second, tmp.second.at(i+1) );
 	      h2p_pileupLowNPV->AddBin( tmp.first.first, tmp.second.at(i), tmp.first.second, tmp.second.at(i+1) );
 	      h2p_pileupHighNPV->AddBin( tmp.first.first, tmp.second.at(i), tmp.first.second, tmp.second.at(i+1) );
@@ -233,6 +243,12 @@ bool HggRazorSystematics::InitMrRsqTH2Poly( int mode )
       h2p_misstagUp        = new TH2Poly(this->processName+"_misstagUp", "", 0, 10000, 0, 1);
       h2p_misstagDown      = new TH2Poly(this->processName+"_misstagDown", "", 0, 10000, 0, 1);
       
+      h2p_leptonEffSFUp        = new TH2Poly(this->processName+"_leptonEffSFUp", "", 0, 10000, 0, 1);
+      h2p_leptonEffSFDown      = new TH2Poly(this->processName+"_leptonEffSFDown", "", 0, 10000, 0, 1);
+      
+      h2p_photonEffSFUp        = new TH2Poly(this->processName+"_photonEffSFUp", "", 0, 10000, 0, 1);
+      h2p_photonEffSFDown      = new TH2Poly(this->processName+"_photonEffSFDown", "", 0, 10000, 0, 1);
+      
       h2p_genMet           = new TH2Poly(this->processName+"_genMet", "", 0, 10000, 0, 1);
       h2p_pileupLowNPV     = new TH2Poly(this->processName+"_pileupLowNPV", "", 0, 10000, 0, 1);
       h2p_pileupHighNPV    = new TH2Poly(this->processName+"_pileupHighNPV", "", 0, 10000, 0, 1);
@@ -268,6 +284,12 @@ bool HggRazorSystematics::InitMrRsqTH2Poly( int mode )
 	  
 	  h2p_misstagUp->AddBin(tmp[0], tmp[1], tmp[2], tmp[3]);
 	  h2p_misstagDown->AddBin(tmp[0], tmp[1], tmp[2], tmp[3]);
+
+	  h2p_leptonEffSFUp->AddBin(tmp[0], tmp[1], tmp[2], tmp[3]);
+	  h2p_leptonEffSFDown->AddBin(tmp[0], tmp[1], tmp[2], tmp[3]);
+
+	  h2p_photonEffSFUp->AddBin(tmp[0], tmp[1], tmp[2], tmp[3]);
+	  h2p_photonEffSFDown->AddBin(tmp[0], tmp[1], tmp[2], tmp[3]);
 
 	  h2p_genMet->AddBin(tmp[0], tmp[1], tmp[2], tmp[3]);
 	  h2p_pileupLowNPV->AddBin(tmp[0], tmp[1], tmp[2], tmp[3]);
@@ -491,6 +513,14 @@ void HggRazorSystematics::Loop()
 	      
       h2p_misstagUp->Fill( MR, fmin(myRsq,0.999), commonW*sf_bmistagUp );
       h2p_misstagDown->Fill( MR, fmin(myRsq,0.999), commonW*sf_bmistagDown );
+	            
+      h2p_leptonEffSFUp->Fill( MR, fmin(myRsq,0.999), commonW*leptonEffSFUp );
+      h2p_leptonEffSFDown->Fill( MR, fmin(myRsq,0.999), commonW*leptonEffSFDown );
+	            
+      //commonW = this->Lumi*weight*pileupWeight*btagCorrFactor*triggerEffSFWeight*photonEffSF*ISRCorrValue;//FullSim
+      //we should divide the  photonEffSF in commonW 
+      h2p_photonEffSFUp->Fill( MR, fmin(myRsq,0.999), commonW*photonEffSFUp/photonEffSF );
+      h2p_photonEffSFDown->Fill( MR, fmin(myRsq,0.999), commonW*photonEffSFDown/photonEffSF );
 	            
       //JES Up/Down
       h2p_JesUp->Fill( MR_JESUp, fmin(t1Rsq_JESUp,0.999), commonW );
@@ -718,10 +748,14 @@ bool HggRazorSystematics::WriteOutput( TString outName )
       TString PdfTH2PName = Form("histo_PdfEigenVector%d", ipdf );
       if ( h2p_Pdf[ipdf] != NULL ) h2p_Pdf[ipdf]->Write( this->boxName + "_"  + PdfTH2PName );
     }
-  if ( h2p_JesUp != NULL ) h2p_btagUp->Write( this->boxName + "_histo_btagUp" );
-  if ( h2p_JesDown != NULL ) h2p_btagDown->Write( this->boxName + "_histo_btagDown" );
-  if ( h2p_JesUp != NULL ) h2p_misstagUp->Write( this->boxName + "_histo_misstagUp" );
-  if ( h2p_JesDown != NULL ) h2p_misstagDown->Write( this->boxName + "_histo_misstagDown" );
+  if ( h2p_btagUp != NULL ) h2p_btagUp->Write( this->boxName + "_histo_btagUp" );
+  if ( h2p_btagDown != NULL ) h2p_btagDown->Write( this->boxName + "_histo_btagDown" );
+  if ( h2p_misstagUp != NULL ) h2p_misstagUp->Write( this->boxName + "_histo_misstagUp" );
+  if ( h2p_misstagDown != NULL ) h2p_misstagDown->Write( this->boxName + "_histo_misstagDown" );
+  if ( h2p_leptonEffSFUp != NULL ) h2p_leptonEffSFUp->Write( this->boxName + "_histo_leptonEffSFUp" );
+  if ( h2p_leptonEffSFDown != NULL ) h2p_leptonEffSFDown->Write( this->boxName + "_histo_leptonEffSFDown" );
+  if ( h2p_photonEffSFUp != NULL ) h2p_photonEffSFUp->Write( this->boxName + "_histo_photonEffSFUp" );
+  if ( h2p_photonEffSFDown != NULL ) h2p_photonEffSFDown->Write( this->boxName + "_histo_photonEffSFDown" );
   if ( h2p_genMet != NULL ) h2p_genMet->Write( this->boxName + "_histo_genMet" );
   if ( h2p_pileupLowNPV != NULL ) h2p_pileupLowNPV->Write( this->boxName + "_histo_pileupLowNPV" );
   if ( h2p_pileupHighNPV != NULL ) h2p_pileupHighNPV->Write( this->boxName + "_histo_pileupHighNPV" );
@@ -1019,6 +1053,24 @@ std::pair<float, float> HggRazorSystematics::GetMisstagSystematic( float mr, flo
   float smhY      = h2p->GetBinContent( bin );
   float smhY_Up   = h2p_misstagUp->GetBinContent( bin ) - smhY;
   float smhY_Down = h2p_misstagDown->GetBinContent( bin ) - smhY;
+  return std::make_pair( smhY_Up, smhY_Down );
+};
+
+std::pair<float, float> HggRazorSystematics::GetLeptonEffSFSystematic( float mr, float rsq )
+{
+  int bin = h2p->FindBin( mr+10, rsq+0.0001 );
+  float smhY      = h2p->GetBinContent( bin );
+  float smhY_Up   = h2p_leptonEffSFUp->GetBinContent( bin ) - smhY;
+  float smhY_Down = h2p_leptonEffSFDown->GetBinContent( bin ) - smhY;
+  return std::make_pair( smhY_Up, smhY_Down );
+};
+
+std::pair<float, float> HggRazorSystematics::GetPhotonEffSFSystematic( float mr, float rsq )
+{
+  int bin = h2p->FindBin( mr+10, rsq+0.0001 );
+  float smhY      = h2p->GetBinContent( bin );
+  float smhY_Up   = h2p_photonEffSFUp->GetBinContent( bin ) - smhY;
+  float smhY_Down = h2p_photonEffSFDown->GetBinContent( bin ) - smhY;
   return std::make_pair( smhY_Up, smhY_Down );
 };
 
