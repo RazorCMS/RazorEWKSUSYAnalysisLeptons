@@ -32,7 +32,9 @@ const bool _debug = true;
 float GetSignal( std::string fname, int bin, std::string cat = "inclusiveElectron" );
 float GetSignalErr( std::string fname, int bin, std::string cat = "inclusiveElectron" );
 float GetSMH( std::string fname, int bin, std::string cat = "inclusiveElectron" );
+float GetSMH_PF( std::string fname, int bin, std::string cat = "inclusiveElectron" ); //postfit
 float GetSMHErr( std::string fname, int bin, std::string cat = "inclusiveElectron" );
+float GetSMHErr_PF( std::string fname, int bin, std::string cat = "inclusiveElectron" ); //postfit
 float GetNbkg( std::string fname, std::string f1, int bin, bool _err = false, std::string cat = "inclusiveElectron" );
 float GetErrorFromToys(RooWorkspace *ws, RooFitResult *fr, TString pdfName, 
         unsigned int ntoys = 1000, int binNum = 0, bool plotBkgFuncs = false);
@@ -79,7 +81,7 @@ int main( int argc, char* argv[] )
   
   std::vector<Bin> binVector;
   //std::ifstream input( "data/HggRazor2016n2017_Binning.txt", std::fstream::in );
-  std::ifstream input( "data/HggRazor2016n2017_Binning_debug.txt", std::fstream::in );
+  std::ifstream input( "data/HggRazor2016n2017_Binning_bin33.txt", std::fstream::in );
   
   if ( input.is_open() )
     {
@@ -121,14 +123,16 @@ int main( int argc, char* argv[] )
   //------------------------
   //categoryMode
   //------------------------
-  std::string categoryMode = ParseCommandLine( argc, argv, "-category=" );
+  std::string categoryMode = "highpt";
+/*
+ * std::string categoryMode = ParseCommandLine( argc, argv, "-category=" );
   if (  categoryMode == "" )
     {
 	categoryMode="highpt";
       std::cerr << "[ERROR]: please provide the category. Use --category=<highpt,hbb,zbb,highres,lowres,muhighpt,mulowpt,elehighpt,elelowpt,twoleptons>" << std::endl;
       return 0;
     }  
-
+*/
   //------------------------
   //fit result directory
   //------------------------
@@ -139,10 +143,11 @@ int main( int argc, char* argv[] )
       return -1;
     }
   std::cout << "[INFO] : Using fitResultDir = " << fitResultDir << "\n";
+/*
 	std::cout << "\\begin{table*}[htb]\n\\begin{center}\n\\caption{.\\label{tab:SMHBkgPrediction}}\n\\def\\arraystretch{1.5}";
 	std::cout << "\n\\begin{tabular}{|c|c|c|c|c|c|c|}\n\\hline\n& & & \\multicolumn{2}{c|}{Bkg} & & \\\\";
 	std::cout << "\n\\hline\n\\small";
-	std::cout << "\nBin & Category & Signal & SMH & Nbkg & S/B (%) & S/Sqrt(B) (%) \\\\\n\\hline\n";
+	std::cout << "\nBin & Category & Signal & SMH & Nbkg & S/B (\\%) & S/Sqrt(B) (\\%) \\\\\n\\hline\n";
   for ( auto tmp: binVector )
     {
       //----------------------------
@@ -170,6 +175,321 @@ int main( int argc, char* argv[] )
 	std::cout << line << std::endl;
     }
   std::cout << "\\hline\n\\end{tabular}\n\\end{center}\n\\end{table*}" << std::endl;
+
+
+  std::cout << "\\begin{table*}[h]\n\\begin{center}\n\\topcaption{.}\n\\small\n\\begin{tabular}{|cc|cccc|c|}\n\\hline";
+  
+  std::cout <<"\n           &          &                   & Yields        &                 &                        & Obs. Local \\\\";
+  std::cout << "\nBin        & Category &  Non-Resonant Bkg & Exp. SM Higgs & Fitted SM Higgs &  Best Fit Signal       & Significance   \\\\\n\\hline\n";
+  for ( auto tmp: binVector )
+    {
+      //----------------------------
+      //Key string to find bin
+      //----------------------------
+      //std::cout<< tmp.bin << "\n"<<std::endl;
+      std::stringstream ss_fn;
+      ss_fn << fitResultDir << "/HggRazorWorkspace_bin" << tmp.bin << ".root";
+      //std::cout<< tmp.bin << "\n"<<std::endl;
+      //std::cout<< tmp.box << "\n"<<std::endl;
+      //std::cout<< ss_fn.str() << "\n"<<std::endl;
+      std::stringstream ss_fnfit;
+      ss_fnfit << fitResultDir << "/mlfit_bin" << tmp.bin << ".root";
+
+      float Ns = GetSignal( ss_fn.str(), tmp.bin, categoryMode );
+      float NsErr = GetSignalErr( ss_fn.str(), tmp.bin, categoryMode );
+      float Nsmh = GetSMH( ss_fn.str(), tmp.bin, categoryMode );
+      float NsmhErr = GetSMHErr( ss_fn.str(), tmp.bin, categoryMode );
+      float Nbkg = GetNbkg( ss_fnfit.str(),tmp.f1 ,tmp.bin, false,categoryMode );
+      float Nsmh_pf = GetSMH_PF( ss_fnfit.str(),  tmp.bin, categoryMode );
+      float NsmhErr_pf = GetSMHErr_PF( ss_fnfit.str(), tmp.bin, categoryMode );
+
+      std::stringstream ss_sigma;
+      ss_sigma << fitResultDir << "/PL_nsigma_npvalue_bin" << tmp.bin << ".root";
+      //std::cout<< ss_sigma.str() << "\n"<<std::endl;
+
+      TFile* fsigma = new TFile( ss_sigma.str().c_str(), "READ");
+      TTree* limit = (TTree*)fsigma->Get("limit");
+      double _limit;
+      limit->SetBranchAddress( "limit", &_limit );
+      limit->GetEntry(0);
+      delete fsigma;
+
+	TString line = Form("%d & %s & %.1f & %.1f$\\pm$%.1f & %.1f$\\pm$%.1f & %.1f$\\pm$%.1f & %.1f\\\\",
+			  tmp.bin, tmp.box.c_str(), Nbkg, Nsmh, NsmhErr, Nsmh_pf, NsmhErr_pf, Ns, NsErr, _limit);
+
+	std::cout << line << std::endl;
+    }
+  std::cout << "\\hline\n\\end{tabular}\n\\end{center}\n\\end{table*}" << std::endl;
+
+  std::cout << "\\begin{table*}[h]\n\\begin{center}\n\\topcaption{.}\n\\small\n\\begin{tabular}{|cc|ccc|cc|c|}\n\\hline";
+  
+  std::cout <<"\n           &          &                   & Yields   &        & limit &   & Obs. Local \\\\";
+  std::cout << "\nBin        & Category &  Non-Resonant Bkg & SM Higgs & Signal & exp & obs & Significance   \\\\\n\\hline\n";
+  for ( auto tmp: binVector )
+    {
+      //----------------------------
+      //Key string to find bin
+      //----------------------------
+      //std::cout<< tmp.bin << "\n"<<std::endl;
+      std::stringstream ss_fn;
+      ss_fn << fitResultDir << "/HggRazorWorkspace_bin" << tmp.bin << ".root";
+      //std::cout<< tmp.bin << "\n"<<std::endl;
+      //std::cout<< tmp.box << "\n"<<std::endl;
+      //std::cout<< ss_fn.str() << "\n"<<std::endl;
+      std::stringstream ss_fnfit;
+      ss_fnfit << fitResultDir << "/mlfit_bin" << tmp.bin << ".root";
+
+      float Ns = GetSignal( ss_fn.str(), tmp.bin, categoryMode );
+      float NsErr = GetSignalErr( ss_fn.str(), tmp.bin, categoryMode );
+      float Nsmh = GetSMH( ss_fn.str(), tmp.bin, categoryMode );
+      float NsmhErr = GetSMHErr( ss_fn.str(), tmp.bin, categoryMode );
+      float Nbkg = GetNbkg( ss_fnfit.str(),tmp.f1 ,tmp.bin, false,categoryMode );
+      float Nsmh_pf = GetSMH_PF( ss_fnfit.str(),  tmp.bin, categoryMode );
+      float NsmhErr_pf = GetSMHErr_PF( ss_fnfit.str(), tmp.bin, categoryMode );
+
+      std::stringstream ss_fnlimit;
+      ss_fnlimit << fitResultDir << "/higgsCombine_combinebin" << tmp.bin << ".Asymptotic.mH120.root";
+
+      TFile* flimit = new TFile( ss_fnlimit.str().c_str(), "READ");
+      TTree* fnlimit = (TTree*)flimit->Get("limit");
+      //double _combinelimit;
+      //fnlimit->SetBranchAddress( "limit", &_combinelimit );
+      double _exp;
+      fnlimit->SetBranchAddress( "limit", &_exp );
+      fnlimit->GetEntry(2);
+      //double _exp = fnlimit->GetEntry(2);
+      double _obs;
+      fnlimit->SetBranchAddress( "limit", &_obs );
+      fnlimit->GetEntry(5);
+      //double _obs = fnlimit->GetEntry(5);
+      delete flimit;
+
+      std::stringstream ss_sigma;
+      ss_sigma << fitResultDir << "/PL_nsigma_npvalue_bin" << tmp.bin << ".root";
+      //std::cout<< ss_sigma.str() << "\n"<<std::endl;
+
+      TFile* fsigma = new TFile( ss_sigma.str().c_str(), "READ");
+      TTree* limit = (TTree*)fsigma->Get("limit");
+      double _limit;
+      limit->SetBranchAddress( "limit", &_limit );
+      limit->GetEntry(0);
+      delete fsigma;
+
+	TString line = Form("%d & %s & %.1f & %.1f & %.1f & %.1f & %.1f & %.1f\\\\",
+			  tmp.bin, tmp.box.c_str(), Nbkg, Nsmh, Ns, _exp, _obs, _limit);
+			  //tmp.bin, tmp.box.c_str(), Nbkg, Nsmh, Ns, _combinelimit, _obs, _limit);
+
+	std::cout << line << std::endl;
+    }
+  std::cout << "\\hline\n\\end{tabular}\n\\end{center}\n\\end{table*}" << std::endl;
+
+  std::cout << "\\begin{table*}[h]\n\\begin{center}\n\\topcaption{.}\n\\small\n\\begin{tabular}{|cc|ccc|cc|}\n\\hline";
+  
+  std::cout <<"\n           &          &                   & Yields   &        & limit &    \\\\";
+  std::cout << "\nBin        & Category &  Non-Resonant Bkg & SM Higgs & Signal & exp & obs \\\\\n\\hline\n";
+  for ( auto tmp: binVector )
+    {
+      //----------------------------
+      //Key string to find bin
+      //----------------------------
+      //std::cout<< tmp.bin << "\n"<<std::endl;
+      std::stringstream ss_fn;
+      ss_fn << fitResultDir << "/HggRazorWorkspace_bin" << tmp.bin << ".root";
+      //std::cout<< tmp.bin << "\n"<<std::endl;
+      //std::cout<< tmp.box << "\n"<<std::endl;
+      //std::cout<< ss_fn.str() << "\n"<<std::endl;
+      std::stringstream ss_fnfit;
+      ss_fnfit << fitResultDir << "/mlfit_bin" << tmp.bin << ".root";
+
+      float Ns = GetSignal( ss_fn.str(), tmp.bin, categoryMode );
+      float NsErr = GetSignalErr( ss_fn.str(), tmp.bin, categoryMode );
+      float Nsmh = GetSMH( ss_fn.str(), tmp.bin, categoryMode );
+      float NsmhErr = GetSMHErr( ss_fn.str(), tmp.bin, categoryMode );
+      float Nbkg = GetNbkg( ss_fnfit.str(),tmp.f1 ,tmp.bin, false,categoryMode );
+      float Nsmh_pf = GetSMH_PF( ss_fnfit.str(),  tmp.bin, categoryMode );
+      float NsmhErr_pf = GetSMHErr_PF( ss_fnfit.str(), tmp.bin, categoryMode );
+
+      std::stringstream ss_fnlimit;
+      ss_fnlimit << fitResultDir << "/higgsCombine_combinebin" << tmp.bin << ".Asymptotic.mH120.root";
+
+      TFile* flimit = new TFile( ss_fnlimit.str().c_str(), "READ");
+      TTree* fnlimit = (TTree*)flimit->Get("limit");
+      double _exp;
+      fnlimit->SetBranchAddress( "limit", &_exp );
+      fnlimit->GetEntry(2);
+      delete flimit;
+
+      TFile* flimit2 = new TFile( ss_fnlimit.str().c_str(), "READ");
+      TTree* fnlimit2 = (TTree*)flimit2->Get("limit");
+      double _obs;
+      fnlimit2->SetBranchAddress( "limit", &_obs );
+      fnlimit2->GetEntry(5);
+      delete flimit2;
+
+	TString line = Form("%d & %s & %.2f & %.2f & %.2f & %.2f & %.2f \\\\",
+			  tmp.bin, tmp.box.c_str(), Nbkg, Nsmh, Ns, _exp, _obs);
+			  
+
+	std::cout << line << std::endl;
+    }
+  std::cout << "\\hline\n\\end{tabular}\n\\end{center}\n\\end{table*}" << std::endl;
+  std::cout << "\\begin{table*}[h]\n\\begin{center}\n\\topcaption{.}\n\\small\n\\begin{tabular}{|cc|ccc|cc|}\n\\hline";
+  
+  std::cout <<"\n           &          &                   & Yields   &        & limit & Obs. Local \\\\";
+  std::cout << "\nBin        & Category &  Non-Resonant Bkg & SM Higgs & Signal & exp & Significance   \\\\\n\\hline\n";
+  for ( auto tmp: binVector )
+    {
+      //----------------------------
+      //Key string to find bin
+      //----------------------------
+      //std::cout<< tmp.bin << "\n"<<std::endl;
+      std::stringstream ss_fn;
+      ss_fn << fitResultDir << "/HggRazorWorkspace_bin" << tmp.bin << ".root";
+      //std::cout<< tmp.bin << "\n"<<std::endl;
+      //std::cout<< tmp.box << "\n"<<std::endl;
+      //std::cout<< ss_fn.str() << "\n"<<std::endl;
+      std::stringstream ss_fnfit;
+      ss_fnfit << fitResultDir << "/mlfit_bin" << tmp.bin << ".root";
+
+      float Ns = GetSignal( ss_fn.str(), tmp.bin, categoryMode );
+      float NsErr = GetSignalErr( ss_fn.str(), tmp.bin, categoryMode );
+      float Nsmh = GetSMH( ss_fn.str(), tmp.bin, categoryMode );
+      float NsmhErr = GetSMHErr( ss_fn.str(), tmp.bin, categoryMode );
+      float Nbkg = GetNbkg( ss_fnfit.str(),tmp.f1 ,tmp.bin, false,categoryMode );
+      float Nsmh_pf = GetSMH_PF( ss_fnfit.str(),  tmp.bin, categoryMode );
+      float NsmhErr_pf = GetSMHErr_PF( ss_fnfit.str(), tmp.bin, categoryMode );
+
+      std::stringstream ss_fnlimit;
+      ss_fnlimit << fitResultDir << "/higgsCombine_combinebin" << tmp.bin << ".Asymptotic.mH120.root";
+
+      TFile* flimit = new TFile( ss_fnlimit.str().c_str(), "READ");
+      TTree* fnlimit = (TTree*)flimit->Get("limit");
+      double _exp;
+      fnlimit->SetBranchAddress( "limit", &_exp );
+      fnlimit->GetEntry(2);
+      delete flimit;
+
+      std::stringstream ss_sigma;
+      ss_sigma << fitResultDir << "/PL_nsigma_npvalue_bin" << tmp.bin << ".root";
+      //std::cout<< ss_sigma.str() << "\n"<<std::endl;
+
+      TFile* fsigma = new TFile( ss_sigma.str().c_str(), "READ");
+      TTree* limit = (TTree*)fsigma->Get("limit");
+      double _limit;
+      limit->SetBranchAddress( "limit", &_limit );
+      limit->GetEntry(0);
+      delete fsigma;
+
+	TString line = Form("%d & %s & %.2f & %.2f & %.2f & %.2f & %.1f \\\\",
+			  tmp.bin, tmp.box.c_str(), Nbkg, Nsmh, Ns, _exp, _limit);
+			  
+
+	std::cout << line << std::endl;
+    }
+  std::cout << "\\hline\n\\end{tabular}\n\\end{center}\n\\end{table*}" << std::endl;
+*/
+  std::string fdata = "/eos/cms/store/group/phys_susy/razor/Run2Analysis/SusyEwkHgg/FinalNtuples_2016+2017/DoubleEG_2016n2017_GoodLumi_skimmed.root";
+  TFile* f_data = new TFile(fdata.c_str(),"READ");
+  TTree* tree = (TTree*)f_data->Get("HggRazorLeptons");
+  TString cut_baseline = "mGammaGamma > 122. && mGammaGamma < 129. && pho1passIso == 1 && pho2passIso == 1 && pho1passEleVeto == 1 && pho2passEleVeto == 1 && abs(pho1SC_Eta) <1.4442 && abs(pho2SC_Eta)<1.4442 && (pho1Pt/mGammaGamma>1./3. || pho2Pt/mGammaGamma>1./3.) && pho1Pt/mGammaGamma>1./4. && pho2Pt/mGammaGamma>1./4. && pho1R9>0.5 && pho2R9>0.5 "; 
+/*
+  std::cout << "\\begin{table*}[h]\n\\begin{center}\n\\topcaption{.}\n\\small\n\\begin{tabular}{|cc|c|ccc|cc|}\n\\hline";
+  
+  std::cout <<"\n           &          &       &                   & Yields   &        & limit & Obs. Local \\\\";
+  std::cout << "\nBin        & Category & Data & Non-Resonant Bkg & SM Higgs & Signal & exp & Significance   \\\\\n\\hline\n";
+*/
+  std::cout << "\\begin{table*}[h]\n\\begin{center}\n\\topcaption{.}\n\\small\n\\begin{tabular}{|cc|c|cccc|cc|}\n\\hline";
+  
+  std::cout <<"\n            &          &      &                  & Yields        &                 &        & limit & Obs. Local \\\\";
+  std::cout << "\nBin        & Category & Data & Non-Resonant Bkg & Exp. SM Higgs & Fitted SM Higgs & Signal & exp   & Significance   \\\\\n\\hline\n";
+  for ( auto tmp: binVector )
+    {
+      //----------------------------
+      //Key string to find bin
+      //----------------------------
+      //std::cout<< tmp.bin << "\n"<<std::endl;
+      std::stringstream ss_fn;
+      ss_fn << fitResultDir << "/HggRazorWorkspace_bin" << tmp.bin << ".root";
+      //std::cout<< tmp.bin << "\n"<<std::endl;
+      //std::cout<< tmp.box << "\n"<<std::endl;
+      TString categoryCutString;
+      if (tmp.box == "highpt") categoryCutString          = " && box==5 ";
+      else if (tmp.box == "hbbhighpt") categoryCutString  = " && pTGammaGamma >= 110 && box==6";
+      else if (tmp.box == "hbblowpt") categoryCutString   = " && pTGammaGamma < 110 && box==6";
+      else if (tmp.box == "zbbhighpt") categoryCutString  = " && pTGammaGamma >= 110 && box==7";
+      else if (tmp.box == "zbblowpt") categoryCutString   = " && pTGammaGamma < 110 && box==7";
+      else if (tmp.box == "highres") categoryCutString    = " && box==8 ";
+      else if (tmp.box == "lowres") categoryCutString     = " && box==9 ";
+      else if (tmp.box == "muhighpt") categoryCutString   = " && pTGammaGamma >= 110 && box == 3 && lep1Pt > 20. ";
+      else if (tmp.box == "mulowpt") categoryCutString    = " && pTGammaGamma < 110 && box == 3 && lep1Pt > 20. ";
+      else if (tmp.box == "elehighpt") categoryCutString  = " && pTGammaGamma >= 110 && box == 4 && lep1Pt > 20. ";
+      else if (tmp.box == "elelowpt") categoryCutString   = " && pTGammaGamma < 110 && box == 4 && lep1Pt > 20. ";
+      else if (tmp.box == "twoleptons") categoryCutString = " && (box == 0 || box == 1 || box == 2)";
+      //std::cout<< categoryCutString << "\n"<<std::endl;
+      //std::cout<< "MR " <<tmp.x1 << "," << tmp.x2 << "; R2 " << tmp.y1 << " , " << tmp.y2 << "\n"<<std::endl;
+      std::stringstream ss_binCut;
+      if(tmp.x2==10000 && tmp.y2==1)
+      	ss_binCut << " && MR > " << tmp.x1 << " && t1Rsq > " << tmp.y1;
+      else if(tmp.x2==10000 && tmp.y2!=1)
+      	ss_binCut << " && MR > " << tmp.x1 << " && t1Rsq > " << tmp.y1 << " && t1Rsq < " << tmp.y2;
+      else if(tmp.x2!=10000 && tmp.y2==1)
+      	ss_binCut << " && MR > " << tmp.x1 << " && MR < " << tmp.x2 << "&& t1Rsq > " << tmp.y1;
+      else if(tmp.x2!=10000 && tmp.y2!=1)
+      	ss_binCut << " && MR > " << tmp.x1 << " && MR < " << tmp.x2 << "&& t1Rsq > " << tmp.y1 << " && t1Rsq < " << tmp.y2;
+      //std::cout<< ss_binCut.str() << "\n"<<std::endl;
+
+      TString Cut;
+      Cut = cut_baseline + categoryCutString + ss_binCut.str();
+      //std::cout<< Cut << "\n"<<std::endl;
+  
+      int Ndata = tree->GetEntries(Cut);
+      //std::cout<< Ndata << "\n"<<std::endl;
+
+      
+      //std::cout<< ss_fn.str() << "\n"<<std::endl;
+      std::stringstream ss_fnfit;
+      ss_fnfit << fitResultDir << "/mlfit_bin" << tmp.bin << ".root";
+
+
+      float Ns = GetSignal( ss_fnfit.str(), tmp.bin, categoryMode );
+      float NsErr = GetSignalErr( ss_fnfit.str(), tmp.bin, categoryMode );
+      float Nsmh = GetSMH( ss_fnfit.str(), tmp.bin, categoryMode );
+      float NsmhErr = GetSMHErr( ss_fnfit.str(), tmp.bin, categoryMode );
+      float Nbkg = GetNbkg( ss_fnfit.str(),tmp.f1 ,tmp.bin, false,categoryMode );
+      float NbkgErr = GetNbkg( ss_fnfit.str(),tmp.f1 ,tmp.bin, true,categoryMode );
+      float Nsmh_pf = GetSMH_PF( ss_fnfit.str(),  tmp.bin, categoryMode );
+      float NsmhErr_pf = GetSMHErr_PF( ss_fnfit.str(), tmp.bin, categoryMode );
+
+      std::stringstream ss_fnlimit;
+      ss_fnlimit << fitResultDir << "/higgsCombine_combinebin" << tmp.bin << ".Asymptotic.mH120.root";
+
+      TFile* flimit = new TFile( ss_fnlimit.str().c_str(), "READ");
+      TTree* fnlimit = (TTree*)flimit->Get("limit");
+      double _exp;
+      fnlimit->SetBranchAddress( "limit", &_exp );
+      fnlimit->GetEntry(2);
+      delete flimit;
+
+      std::stringstream ss_sigma;
+      ss_sigma << fitResultDir << "/PL_nsigma_npvalue_bin" << tmp.bin << ".root";
+      //std::cout<< ss_sigma.str() << "\n"<<std::endl;
+
+      TFile* fsigma = new TFile( ss_sigma.str().c_str(), "READ");
+      TTree* limit = (TTree*)fsigma->Get("limit");
+      double _limit;
+      limit->SetBranchAddress( "limit", &_limit );
+      limit->GetEntry(0);
+      delete fsigma;
+
+	//TString line = Form("%d & %s & %d & %.2f $\\pm$ %.2f & %.2f $\\pm$ %.2f & %.2f $\\pm$ %.2f &  %.2f $\\pm$ %.2f & %.2f & %.1f \\\\",
+	//		  tmp.bin, tmp.box.c_str(), Ndata, Nbkg, NbkgErr, Nsmh, NsmhErr, Nsmh_pf, NsmhErr_pf, Ns, NsErr, _exp, _limit);
+	TString line = Form("&  %.1f $\\pm$ %.1f  ",
+			  Ns, NsErr);
+			  
+
+	std::cout << line << std::endl;
+    }
+  std::cout << "\\hline\n\\end{tabular}\n\\end{center}\n\\end{table*}" << std::endl;
   return 0;
 };
 
@@ -178,11 +498,21 @@ float GetSignal( std::string fname, int bin, std::string cat )
   TFile* fin = TFile::Open( fname.c_str(), "READ");
   //signal_bin10_DCB_norm
 
+/*
   RooWorkspace* myws = (RooWorkspace*)fin->Get("combineWS");
   std::stringstream ss;
   ss << "signal_bin" << bin << "_DCB_norm";
   //std::cout<< ss.str() << "\n"<<std::endl;
   RooRealVar* ss2 = (RooRealVar*)(myws->var( ss.str().c_str() ));
+  return ss2->getVal();
+*/
+  //RooArgSet* norm_fit_s = (RooArgSet*) fin->Get("norm_fit_s");
+  RooArgSet* norm_fit_s = (RooArgSet*) fin->Get("norm_prefit");
+
+  std::stringstream ss;
+  ss << "bin" << bin << "/signal";
+  //std::cout<< ss.str() << "\n"<<std::endl;
+  RooRealVar* ss2 = (RooRealVar*)norm_fit_s->find( ss.str().c_str() );
   return ss2->getVal();
 };
 
@@ -191,11 +521,21 @@ float GetSignalErr( std::string fname, int bin, std::string cat )
   TFile* fin = TFile::Open( fname.c_str(), "READ");
   //signal_bin10_DCB_norm
 
+/*
   RooWorkspace* myws = (RooWorkspace*)fin->Get("combineWS");
   std::stringstream ss;
   ss << "signal_bin" << bin << "_DCB_norm";
   //std::cout<< ss.str() << "\n"<<std::endl;
   RooRealVar* ss2 = (RooRealVar*)(myws->var( ss.str().c_str() ));
+  return ss2->getError();
+*/
+  //RooArgSet* norm_fit_s = (RooArgSet*) fin->Get("norm_fit_s");
+  RooArgSet* norm_fit_s = (RooArgSet*) fin->Get("norm_prefit");
+
+  std::stringstream ss;
+  ss << "bin" << bin << "/signal";
+  //std::cout<< ss.str() << "\n"<<std::endl;
+  RooRealVar* ss2 = (RooRealVar*)norm_fit_s->find( ss.str().c_str() );
   return ss2->getError();
 };
 
@@ -203,12 +543,19 @@ float GetSMH( std::string fname, int bin, std::string cat )
 {
   TFile* fin = TFile::Open( fname.c_str(), "READ");
   //SMH_bin10_DCB_norm
-
+/*
   RooWorkspace* myws = (RooWorkspace*)fin->Get("combineWS");
   std::stringstream ss;
   ss << "SMH_bin" << bin << "_DCB_norm";
   //std::cout<< ss.str() << "\n"<<std::endl;
   RooRealVar* ss2 = (RooRealVar*)(myws->var( ss.str().c_str() ));
+  return ss2->getVal();
+*/
+  RooArgSet* norm_fit_s = (RooArgSet*) fin->Get("norm_prefit");
+  std::stringstream ss;
+  ss << "bin" << bin << "/SMH";
+  //std::cout<< ss.str() << "\n"<<std::endl;
+  RooRealVar* ss2 = (RooRealVar*)norm_fit_s->find( ss.str().c_str() );
   return ss2->getVal();
 };
 
@@ -216,12 +563,43 @@ float GetSMHErr( std::string fname, int bin, std::string cat )
 {
   TFile* fin = TFile::Open( fname.c_str(), "READ");
   //SMH_bin10_DCB_norm
-
+/*
   RooWorkspace* myws = (RooWorkspace*)fin->Get("combineWS");
   std::stringstream ss;
   ss << "SMH_bin" << bin << "_DCB_norm";
   //std::cout<< ss.str() << "\n"<<std::endl;
   RooRealVar* ss2 = (RooRealVar*)(myws->var( ss.str().c_str() ));
+  return ss2->getError();
+*/
+  RooArgSet* norm_fit_s = (RooArgSet*) fin->Get("norm_prefit");
+  std::stringstream ss;
+  ss << "bin" << bin << "/SMH";
+  //std::cout<< ss.str() << "\n"<<std::endl;
+  RooRealVar* ss2 = (RooRealVar*)norm_fit_s->find( ss.str().c_str() );
+  return ss2->getError();
+};
+
+float GetSMH_PF( std::string fname, int bin, std::string cat )
+{
+  TFile* fin = TFile::Open( fname.c_str(), "READ");
+  RooArgSet* norm_fit_s = (RooArgSet*) fin->Get("norm_fit_s");
+  //RooArgSet* norm_fit_s = (RooArgSet*) fin->Get("norm_prefit");
+
+  std::stringstream ss;
+  ss << "bin" << bin << "/SMH";
+  //std::cout<< ss.str() << "\n"<<std::endl;
+  RooRealVar* ss2 = (RooRealVar*)norm_fit_s->find( ss.str().c_str() );
+  return ss2->getVal();
+};
+
+float GetSMHErr_PF( std::string fname, int bin, std::string cat )
+{
+  TFile* fin = TFile::Open( fname.c_str(), "READ");
+  RooArgSet* norm_fit_s = (RooArgSet*) fin->Get("norm_fit_s");
+  //RooArgSet* norm_fit_s = (RooArgSet*) fin->Get("norm_prefit");
+  std::stringstream ss;
+  ss << "bin" << bin << "/SMH";
+  RooRealVar* ss2 = (RooRealVar*)norm_fit_s->find( ss.str().c_str() );
   return ss2->getError();
 };
 
@@ -284,6 +662,7 @@ float GetNbkg( std::string fname, std::string f1, int bin, bool _err, std::strin
  
   RooWorkspace* ws = new RooWorkspace( "ws", "" );
   TString mggName = "mGammaGamma";
+/*
   RooRealVar mgg( mggName, "m_{#gamma#gamma}", 103, 160, "GeV" );
   //mgg.SetNameTitle( mggName, "m_{#gamma#gamma}" );
   mgg.setMin( 103. );
@@ -295,6 +674,18 @@ float GetNbkg( std::string fname, std::string f1, int bin, bool _err, std::strin
   mgg.setRange( "low", 103., 120. );
   mgg.setRange( "full", 103., 160. );
   mgg.setRange( "Full", 103., 160. );
+*/
+  RooRealVar mgg( mggName, "m_{#gamma#gamma}", 100, 180, "GeV" );
+  //mgg.SetNameTitle( mggName, "m_{#gamma#gamma}" );
+  mgg.setMin( 100. );
+  mgg.setMax( 180. );
+  mgg.setUnit( "GeV" );
+  mgg.setBins(57);
+  mgg.setRange( "signal", 122, 129. );
+  mgg.setRange( "high", 135., 180. );
+  mgg.setRange( "low", 100., 120. );
+  mgg.setRange( "full", 100., 180. );
+  mgg.setRange( "Full", 100., 180. );
   if ( f1 == "singleExp" )
     {
       int realBin = bin;
@@ -406,6 +797,7 @@ float GetNbkg( std::string fname, std::string f1, int bin, bool _err, std::strin
       if ( cat == "lowres" ) realBin = realBin+5;
       std::stringstream ss0;
       ss0 << "poly3_Bkg_bin" << realBin << "_pol3_p0";
+      //std::cout << ss0.str() << std::endl;
       RooRealVar *p0 = (RooRealVar*)fit_r->floatParsFinal().find( ss0.str().c_str() );
       std::stringstream ss1;
       ss1 << "poly3_Bkg_bin" << realBin << "_pol3_p1";
@@ -537,9 +929,10 @@ float GetErrorFromToys(RooWorkspace *ws, RooFitResult *fr, TString pdfName, unsi
 	    pdfVar->setError( curVar->getError() );
 	  }
 	  std::stringstream ntotalName;
-	  if ( binNum <= 8 ) ntotalName << "shapeBkg_Bkg_bin" << binNum << "__norm";
-	  else if ( binNum <= 13 ) ntotalName << "shapeBkg_Bkg_highResBin" << binNum << "__norm";
-	  else if ( binNum <= 18 ) ntotalName << "shapeBkg_Bkg_lowResBin" << binNum-5 << "__norm";
+	  ntotalName << "shapeBkg_Bkg_bin" << binNum << "__norm";
+	  //if ( binNum <= 8 ) ntotalName << "shapeBkg_Bkg_bin" << binNum << "__norm";
+	  //else if ( binNum <= 13 ) ntotalName << "shapeBkg_Bkg_highResBin" << binNum << "__norm";
+	  //else if ( binNum <= 18 ) ntotalName << "shapeBkg_Bkg_lowResBin" << binNum-5 << "__norm";
 	  if ( curVar->GetName() == ntotalName.str() ) toyNorm = curVar->getVal();
 	}
 
