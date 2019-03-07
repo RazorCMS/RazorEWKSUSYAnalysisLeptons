@@ -54,11 +54,23 @@ int main( int argc, char* argv[] )
       return -1;
     }
   
+  std::string smhFile2 = ParseCommandLine( argc, argv, "-smhFile2=" );
+  if (  smhFile2 == "" )
+    {
+      std::cerr << "[WARNING]: please provide an input SMH2 file using --smhFile2=<path_to_file>" << std::endl;
+    }
+  
   std::string signalFile = ParseCommandLine( argc, argv, "-signalFile=" );
   if (  signalFile == "" )
     {
       std::cerr << "[ERROR]: please provide an input SIGNAL file using --signalFile=<path_to_file>" << std::endl;
       return -1;
+    }
+
+  std::string signalFile2 = ParseCommandLine( argc, argv, "-signalFile2=" );
+  if (  signalFile2 == "" )
+    {
+      std::cerr << "[WARNING]: please provide an input SIGNAL2 file using --signalFile2=<path_to_file>" << std::endl;
     }
 
   std::string sModel = ParseCommandLine( argc, argv, "-sModel=" );
@@ -163,8 +175,8 @@ int main( int argc, char* argv[] )
   int binNumber;
   Bkg_f1 = "singleExp";
   std::cerr << "[INFO]: opening configDataCard: "<< inputCF << std::endl;
-  outf << "#! /bin/bash\ncd " << currentDir << "\neval `scramv1 run -sh`;\n";
-  //outf << "cd /afs/cern.ch/work/c/cpena/public/combineDiphotonHM/CMSSW_7_4_7/src/\neosmount eos\ncd -;\n";
+  outf << "#! /bin/sh\ncd " << currentDir << "\nsource /cvmfs/cms.cern.ch/cmsset_default.sh\nexport SCRAM_ARCH=slc7_amd64_gcc630\nexport LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/data/jmao/CMSSW_9_2_1/src/RazorEWKSUSYAnalysisLeptons/HggRazorLeptons/FitMgg/include/\nulimit -c 0\neval `scram run -sh`;\necho `which root`\ncd -\n";
+  outf << "cp " << currentDir << "MakeFitRun2 ./\n";
   while( ifs.good() )
     {
       std::vector<float> smh_sys;
@@ -321,6 +333,29 @@ int main( int argc, char* argv[] )
       Bkg_f1 = mapBinNumberToBin[binNumber].f1;
       
       Signal = 1.0*Signal; //scaling signal by 5
+
+      if(signalFile2!="" && smhFile2!="")
+      {
+	//std::cout << "data+signal2" << std::endl;
+      outf << "./MakeFitRun2 " 
+	   << "--inputFile=" << dataFile
+	   << " --inputFileSignal=" << signalFile
+	   << " --inputFileSignal2=" << signalFile2
+	   << " --inputFileSMH=" << smhFile
+	   << " --inputFileSMH2=" << smhFile2
+	//<< " --treeName=HggRazorLeptons --runPeriod=run2 --dataMode=data+signal --fitMode=datacardexpected --category=" << category<< " --LowMRcut=" << MR_l
+	<< " --treeName=HggRazorLeptons --runPeriod=run2 --dataMode=data+signal2 --fitMode=datacard2 --category=" << category<< " --LowMRcut=" << MR_l
+	//<< " --treeName=HggRazorLeptons --runPeriod=run2 --dataMode=data+signal --fitMode=datacard --category=" << category<< " --LowMRcut=" << MR_l
+	//<< " --treeName=HggRazor --runPeriod=run2 --dataMode=data+signal --fitMode=datacard --category=" << category<< " --LowMRcut=" << MR_l 
+	   << " --HighMRcut=" << MR_h << " --LowRSQcut=" << Rsq_l << " --HighRSQcut=" << Rsq_h << " --f1=" << Bkg_f1
+	   << " --SMH_Yield=" << SMH << " --SMH_CL=" << SMH_sys.str()
+	   << " --Signal_Yield=" << Signal << " --Signal_CL=" << Signal_sys.str()
+	   << " --sModel=" << sModel
+	   << " --binNumber=" << binNumber << " --detector=ebeb";
+       }
+       else
+      {
+	//std::cout << "data+signal" << std::endl;
       outf << "./MakeFitRun2 " 
 	   << "--inputFile=" << dataFile
 	   << " --inputFileSignal=" << signalFile
@@ -333,6 +368,7 @@ int main( int argc, char* argv[] )
 	   << " --Signal_Yield=" << Signal << " --Signal_CL=" << Signal_sys.str()
 	   << " --sModel=" << sModel
 	   << " --binNumber=" << binNumber << " --detector=ebeb";
+       }
 
       //------------------
       //finalizing command
@@ -348,6 +384,11 @@ int main( int argc, char* argv[] )
     }
  
   outf << "rm test_out_" << sModel << ".root;\n";
+  outf << "cd HggRazorDataCards/" << sModel << "\ncd /data/jmao/CMSSW_7_4_7/src/\neval `scram runtime -sh`\neval `scram runtime -sh`\ncd -\n";
+  outf << "combineCards.py HggRazorCard_bin0.txt HggRazorCard_bin1.txt HggRazorCard_bin2.txt HggRazorCard_bin3.txt HggRazorCard_bin4.txt HggRazorCard_bin5.txt HggRazorCard_bin6.txt HggRazorCard_bin7.txt HggRazorCard_bin8.txt HggRazorCard_bin9.txt HggRazorCard_bin10.txt HggRazorCard_bin11.txt HggRazorCard_bin12.txt HggRazorCard_bin13.txt HggRazorCard_bin14.txt HggRazorCard_bin15.txt HggRazorCard_bin16.txt HggRazorCard_bin17.txt HggRazorCard_bin18.txt HggRazorCard_bin19.txt HggRazorCard_bin20.txt HggRazorCard_bin21.txt HggRazorCard_bin22.txt HggRazorCard_bin23.txt HggRazorCard_bin24.txt HggRazorCard_bin25.txt HggRazorCard_bin26.txt HggRazorCard_bin27.txt HggRazorCard_bin28.txt HggRazorCard_bin29.txt HggRazorCard_bin30.txt HggRazorCard_bin31.txt HggRazorCard_bin32.txt HggRazorCard_bin33.txt HggRazorCard_bin34.txt > combineAll.txt\n";
+  //outf << "combineCards.py HggRazorCard_bin*.txt  > combineAll.txt\n";
+  outf << "combine -M Asymptotic combineAll.txt --minimizerStrategy=1 -n _combineAll --rMax=1.0 > limit.txt \n";
+  outf << "cd ../../ \ncp -r HggRazorDataCards/" << sModel << " /mnt/hadoop/store/group/phys_susy/razor/Run2Analysis/SusyEwkHgg/SUS-18-007/HggRazorDataCards/ \n";
 /*
   //Do Combine DataCard step
   outf << "\n\n";

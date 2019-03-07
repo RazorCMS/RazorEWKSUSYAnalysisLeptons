@@ -219,6 +219,18 @@ int main( int argc, char* argv[])
       exit (EXIT_FAILURE);
     }
 
+  std::string inputFileSignal2 = ParseCommandLine( argc, argv, "-inputFileSignal2=" );
+  if (  inputFileSignal2 == "" && (fitMode == "datacard"  || fitMode == "sb" || fitMode == "datacardexpected") && !_highMassMode )
+    {
+      std::cerr << "[ERROR]: please provide an input file using --inputFileSignal2=<path_to_file>" << std::endl;
+    }
+  
+  std::string inputFileSMH2 = ParseCommandLine( argc, argv, "-inputFileSMH2=" );
+  if (  inputFileSMH2 == "" && (fitMode == "datacard" || fitMode == "sb" || fitMode == "datacardexpected" ) && !_highMassMode )
+    {
+      std::cerr << "[ERROR]: please provide an input file using --inputFileSMH2=<path_to_file>" << std::endl;
+    }
+
   
 
   //SMH nominal yield
@@ -321,10 +333,14 @@ int main( int argc, char* argv[])
   //-------------------------------
   TFile* f;
   TFile* fs;
+  TFile* fs2;
   TFile* fsmh;
+  TFile* fsmh2;
   TTree* tree;
   TTree* treeSignal;
+  TTree* treeSignal2;
   TTree* treeSMH;
+  TTree* treeSMH2;
   bool _getSignal = false;
   if ( dataMode == "data" )
     {
@@ -350,6 +366,30 @@ int main( int argc, char* argv[])
       assert ( fsmh );
       treeSMH = (TTree*)fsmh->Get( treeName.c_str() );
       assert ( treeSMH );
+      _getSignal = true;
+    }
+  else if ( dataMode == "data+signal2" )
+    {
+      f = new TFile( inputFile.c_str() , "READ");
+      assert ( f );
+      tree = (TTree*)f->Get( treeName.c_str() );
+      assert ( tree );
+      fs = new TFile( inputFileSignal.c_str() , "READ");
+      assert ( fs );
+      treeSignal = (TTree*)fs->Get( treeName.c_str() );
+      assert ( treeSignal );
+      fs2 = new TFile( inputFileSignal2.c_str() , "READ");
+      assert ( fs2 );
+      fsmh = new TFile( inputFileSMH.c_str() , "READ");
+      assert ( fsmh );
+      treeSMH = (TTree*)fsmh->Get( treeName.c_str() );
+      assert ( treeSMH );
+      treeSignal2 = (TTree*)fs2->Get( treeName.c_str() );
+      assert ( treeSignal2 );
+      fsmh2 = new TFile( inputFileSMH2.c_str() , "READ");
+      assert ( fsmh2 );
+      treeSMH2 = (TTree*)fsmh2->Get( treeName.c_str() );
+      assert ( treeSMH2 );
       _getSignal = true;
     }
  
@@ -519,7 +559,7 @@ int main( int argc, char* argv[])
       else if (categoryMode == "mulowpt") categoryCutString    = " && pTGammaGamma < 110 && box == 3 && lep1Pt > 20. ";
       else if (categoryMode == "elehighpt") categoryCutString  = " && pTGammaGamma >= 110 && box == 4 && lep1Pt > 20. ";
       else if (categoryMode == "elelowpt") categoryCutString   = " && pTGammaGamma < 110 && box == 4 && lep1Pt > 20. ";
-      else if (categoryMode == "twoleptons") categoryCutString = " && (box == 0 || box == 1 || box == 2)";
+      else if (categoryMode == "twoleptons") categoryCutString = " && (box == 0 || box == 1 || box == 2) && fabs (dileptonMass -91.19) <= 20 ";
       else if (categoryMode == "inclusive") categoryCutString  = "";
       else if (categoryMode == "ele") categoryCutString  = " && box==4 && lep1Pt>20. && MR>150.";
     }
@@ -635,6 +675,25 @@ int main( int argc, char* argv[])
 	  std::cout << "[INFO]: cut for DATA--> " << cut+cutMETfiltersData+cutTriggerData << std::endl;
 	  std::cout << "================================================================================" << std::endl;
 	  w_sb = MakeDataCard( tree->CopyTree( cut+cutMETfiltersData+cutTriggerData ), treeSignal->CopyTree( cut ), treeSMH->CopyTree( cut ), mggName, _SMH_Yield, SMH_CL,
+			       _Signal_Yield, Signal_CL, binNumber, categoryMode, _highMassMode, _sModel, f1, _signalOnly );
+	}
+      std::cout << "finish MakeDataCard" << std::endl;
+      //w_sb->Write("w_sb");
+    }
+  else if ( fitMode == "datacard2" )
+    {
+      RooWorkspace* w_sb;
+      std::cout << "calling MakeDataCard2" << std::endl;
+      if ( _highMassMode )
+	{
+	  //MakeDataCardHMD( tree->CopyTree( cut ), mggName, _Signal_Yield, Signal_CL, Mass, binNumber, categoryMode );
+	}
+      else
+	{
+	  std::cout << "================================================================================" << std::endl;
+	  std::cout << "[INFO]: cut for DATA--> " << cut+cutMETfiltersData+cutTriggerData << std::endl;
+	  std::cout << "================================================================================" << std::endl;
+	  w_sb = MakeDataCard2( tree->CopyTree( cut+cutMETfiltersData+cutTriggerData ), treeSignal->CopyTree( cut ), treeSignal2->CopyTree( cut ), treeSMH->CopyTree( cut ), treeSMH2->CopyTree( cut ), mggName, _SMH_Yield, SMH_CL,
 			       _Signal_Yield, Signal_CL, binNumber, categoryMode, _highMassMode, _sModel, f1, _signalOnly );
 	}
       std::cout << "finish MakeDataCard" << std::endl;

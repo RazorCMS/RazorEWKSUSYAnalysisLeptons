@@ -254,7 +254,6 @@ int main( int argc, char** argv )
   gTheory_down->SetLineStyle(2);
   gTheory_down->SetLineColor(kRed);
   
-
   //gTwoS->SetLineWidth(3);
   //gTwoS->SetLineStyle(2);
   //gTwoS->SetLineColor(kBlack);
@@ -268,20 +267,24 @@ int main( int argc, char** argv )
   //gTwoS->GetYaxis()->SetTitle("95% C.L. limit #sigma(pp#rightarrow #tilde{#chi}^{0}_{2} #tilde{#chi}^{0}_{2}) (pb)");
   gTwoS->GetYaxis()->SetTitle("#sigma^{95%}_{excl} [pb]");
 
+  //gTwoS->GetYaxis()->SetRangeUser(0,15);
   gTwoS->GetYaxis()->SetRangeUser(0,15);
   gTwoS->SetMaximum(1000);
+  //gTwoS->SetMinimum(0.1); //HZ
+  gTwoS->SetMinimum(0.1-0.01); //HH
   //gTwoS->GetYaxis()->SetRangeUser(0,15);
   //gTwoS->GetXaxis()->SetRangeUser(150,400);
-  gTwoS->GetXaxis()->SetRangeUser(120,450);
+  //gTwoS->GetXaxis()->SetRangeUser(120,450);
+  gTwoS->GetXaxis()->SetLimits(125,450);
   
   gTwoS->Draw("AFC");
   gOneS->Draw("FC");
-  gExp->Draw("PC");
+  gExp->Draw("C");
   gObs->Draw("C");
   gTheory->Draw("PC");
   gTheory_up->Draw("PC");
   gTheory_down->Draw("PC");
-
+/*
   TLegend* leg = new TLegend( 0.51, 0.68-0.05, 0.89, 0.75-0.05, NULL, "brNDC" );
   leg->SetBorderSize(0);
   leg->SetLineColor(1);
@@ -302,12 +305,28 @@ int main( int argc, char** argv )
   leg2->SetFillColor(0);
   leg2->SetFillStyle(1001);
   leg2->SetTextSize(0.04);
-  leg2->AddEntry( gObs, " Observed", "l" );
+  //leg2->AddEntry( gObs, " Observed", "l" );
   leg2->AddEntry( gExp, " Expected", "l" );
   leg2->AddEntry( gOneS, " 68% expected", "f" );
   leg2->AddEntry( gTwoS, " 95% expected", "f" );
   
   leg2->Draw();
+*/
+  TLegend* leg = new TLegend( 0.51, 0.75-5*0.065, 0.85, 0.75-0.05, NULL, "brNDC" );
+  leg->SetBorderSize(0);
+  leg->SetLineColor(1);
+  leg->SetLineStyle(1);
+  leg->SetLineWidth(1);
+  leg->SetFillColor(0);
+  leg->SetFillStyle(1001);
+  leg->SetTextSize(0.04);
+
+  leg->AddEntry( gTheory, " NLO+NNL theory", "l");
+  leg->AddEntry( gObs, " Observed limit (95% CL)", "l" );
+  leg->AddEntry( gExp, " Median expected limit", "l" );
+  leg->AddEntry( gOneS, " 68% expected", "f" );
+  leg->AddEntry( gTwoS, " 95% expected", "f" );
+  leg->Draw("SAME");
 
   //95% CL label
   float cmsx = 0.81;
@@ -321,7 +340,7 @@ int main( int argc, char** argv )
   latex.SetTextAlign(31); 
   latex.SetTextSize(cmsSize);    
   latex.SetTextFont(cmsTextFont);
-  latex.DrawLatex(cmsx, cmsy, "95% CL upper limits");
+  //latex.DrawLatex(cmsx, cmsy, "95% CL upper limits");
 
   TLatex latex2;
   cmsx = 0.29;
@@ -330,12 +349,12 @@ int main( int argc, char** argv )
   latex2.SetTextSize(0.038);   
   latex2.SetTextFont(42);
   //HH
-  //latex2.DrawLatex(cmsx, cmsy, "pp #rightarrow #tilde{#chi}^{0,#pm}_{i} #tilde{#chi}^{0,#pm}_{j} #rightarrow  #tilde{#chi}^{0}_{1} #tilde{#chi}^{0}_{1} + X_{soft}; #tilde{#chi}^{0}_{1} #rightarrow H #tilde{G} (100%)");
-  //latex2.DrawLatex(cmsx+0.263, cmsy-0.07, "m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}};  m_{#tilde{G}} = 1 GeV");
+  latex2.DrawLatex(cmsx, cmsy, "pp #rightarrow #tilde{#chi}^{0,#pm}_{i} #tilde{#chi}^{0,#pm}_{j} #rightarrow  #tilde{#chi}^{0}_{1} #tilde{#chi}^{0}_{1} + X_{soft}; #tilde{#chi}^{0}_{1} #rightarrow H #tilde{G} (100%)");
+  latex2.DrawLatex(cmsx+0.263, cmsy-0.07, "m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}};  m_{#tilde{G}} = 1 GeV");
   //HZ
-  latex2.DrawLatex(cmsx, cmsy, "pp #rightarrow #tilde{#chi}^{0,#pm}_{i} #tilde{#chi}^{0,#pm}_{j} #rightarrow  #tilde{#chi}^{0}_{1} #tilde{#chi}^{0}_{1} + X_{soft}; #tilde{#chi}^{0}_{1} #rightarrow H #tilde{G} (50%)");
-  latex2.DrawLatex(cmsx+0.415, cmsy-0.07, "#tilde{#chi}^{0}_{1} #rightarrow Z #tilde{G} (50%)");
-  latex2.DrawLatex(cmsx+0.25, cmsy-0.13, "m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}};  m_{#tilde{G}} = 1 GeV");
+  //latex2.DrawLatex(cmsx, cmsy, "pp #rightarrow #tilde{#chi}^{0,#pm}_{i} #tilde{#chi}^{0,#pm}_{j} #rightarrow  #tilde{#chi}^{0}_{1} #tilde{#chi}^{0}_{1} + X_{soft}; #tilde{#chi}^{0}_{1} #rightarrow H #tilde{G} (50%)");
+  //latex2.DrawLatex(cmsx+0.415, cmsy-0.07, "#tilde{#chi}^{0}_{1} #rightarrow Z #tilde{G} (50%)");
+  //latex2.DrawLatex(cmsx+0.25, cmsy-0.13, "m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}};  m_{#tilde{G}} = 1 GeV");
   //1D WH
   //latex2.DrawLatex(cmsx+0.15, cmsy, "pp #rightarrow #tilde{#chi}^{#pm}_{1} #tilde{#chi}^{0}_{2} ; #tilde{#chi}^{#pm}_{1} #rightarrow W^{#pm} #tilde{#chi}^{0}_{1}, #tilde{#chi}^{0}_{2} #rightarrow H #tilde{#chi}^{0}_{1}");
   //std::cout << "hola " << latex2.GetTextFont() << std::endl;

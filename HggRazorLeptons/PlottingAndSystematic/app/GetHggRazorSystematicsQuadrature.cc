@@ -207,7 +207,7 @@ int main( int argc, char* argv[] )
   else if (categoryMode == "mulowpt") categoryCutString    = " && pTGammaGamma < 110 && box == 3 && lep1Pt > 20. ";
   else if (categoryMode == "elehighpt") categoryCutString  = " && pTGammaGamma >= 110 && box == 4 && lep1Pt > 20. ";
   else if (categoryMode == "elelowpt") categoryCutString   = " && pTGammaGamma < 110 && box == 4 && lep1Pt > 20. ";
-  else if (categoryMode == "twoleptons") categoryCutString = " && (box == 0 || box == 1 || box == 2)";
+  else if (categoryMode == "twoleptons") categoryCutString = " && (box == 0 || box == 1 || box == 2) && fabs (dileptonMass -91.19) <= 20  ";
   else if (categoryMode == "inclusive") categoryCutString  = "";
   else if (categoryMode == "ele") categoryCutString        = "&& box == 4 && lep1Pt > 20. ";
   

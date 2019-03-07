@@ -22,12 +22,19 @@ void MakePlot( TTree* tree,  RooWorkspace& w, TString pdfName, TString mggName )
 RooWorkspace* MakeSideBandFit( TTree* tree, float forceSigma, bool constrainMu, float forceMu, TString mggName );
 RooWorkspace* MakeSignalBkgFit( TTree* tree, float forceSigma, bool constrainMu, float forceMu, TString mggName );
 RooWorkspace* MakeSignalBkgFit( TTree* treeData, TTree* treeSignal, TTree* treeSMH, TString mggName, bool isHighMass = false, TString name = "dummy" );
+RooWorkspace* MakeSignalBkgFit( TTree* treeData, TTree* treeSignal, TTree* treeSignal2, TTree* treeSMH, TTree* treeSMH2, TString mggName, bool isHighMass = false, TString name = "dummy" );
 
 RooWorkspace* MakeSignalBkgFit( RooDataSet* data, RooRealVar& mgg, float mu, TString mggName, bool _Nconstraint = false );
 
 RooWorkspace* MakeDataCard( TTree* treeData, TTree* treeSignal, TTree* treeSMH, TString mggName, float SMH_Yield, std::string SMH_CF,
 			    float Signal_Yield, std::string Signal_CF, TString binNumber = "-1", TString category = "category",
 			    bool isHighMass = false, TString sModel = "dummy", TString f1 = "singleExp", bool _signalOnly = false );
+
+RooWorkspace* MakeDataCard2( TTree* treeData, TTree* treeSignal, TTree* treeSignal2, TTree* treeSMH, TTree* treeSMH2, TString mggName, float SMH_Yield, std::string SMH_CF,
+			    float Signal_Yield, std::string Signal_CF, TString binNumber = "-1", TString category = "category",
+			    bool isHighMass = false, TString sModel = "dummy", TString f1 = "singleExp", bool _signalOnly = false );
+
+TTree* GetMixTree(TTree* tree1, TTree* tree2, float frac1, float frac2);
 
 RooWorkspace* MakeDataCardExpected( TTree* treeData, TTree* treeSignal, TTree* treeSMH, TString mggName, float SMH_Yield, std::string SMH_CF,
 			            float Signal_Yield, std::string Signal_CF, TString binNumber = "-1", TString category = "category",

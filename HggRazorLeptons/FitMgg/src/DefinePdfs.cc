@@ -547,7 +547,7 @@ TString MakeDoubleExpN1N2( TString tag, RooRealVar& mgg, RooWorkspace& w )
 
 TString MakeSingleExp( TString tag, RooRealVar& mgg, RooWorkspace& w )
 {
-  RooRealVar* a = new RooRealVar( tag + "_a", "", -0.06, "a.u"); 
+  RooRealVar* a = new RooRealVar( tag + "_a", "", -1, "a.u"); 
   a->setConstant(kFALSE);
   //RooFormulaVar* asq = new RooFormulaVar( tag + "_aSq","","-1*@0*@0", *a);
   RooRealVar* Nbkg = new RooRealVar( tag + "_Nbkg","",10., "events");
