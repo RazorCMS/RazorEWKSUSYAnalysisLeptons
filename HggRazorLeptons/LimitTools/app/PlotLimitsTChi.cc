@@ -49,6 +49,7 @@ const float bottomMargin = 0.12;
 
 //CMS STANDARD
 TString CMSText = "CMS";
+//TString extraText   = "";
 TString extraText   = "Preliminary";
 //TString lumiText = "2.32 fb^{-1} (13 TeV)";
 //TString lumiText = "35.9 fb^{-1} (13 TeV)";
@@ -270,8 +271,8 @@ int main( int argc, char** argv )
   //gTwoS->GetYaxis()->SetRangeUser(0,15);
   gTwoS->GetYaxis()->SetRangeUser(0,15);
   gTwoS->SetMaximum(1000);
-  //gTwoS->SetMinimum(0.1); //HZ
-  gTwoS->SetMinimum(0.1-0.01); //HH
+  gTwoS->SetMinimum(0.1); //HZ
+  //gTwoS->SetMinimum(0.1-0.01); //HH
   //gTwoS->GetYaxis()->SetRangeUser(0,15);
   //gTwoS->GetXaxis()->SetRangeUser(150,400);
   //gTwoS->GetXaxis()->SetRangeUser(120,450);
@@ -349,15 +350,20 @@ int main( int argc, char** argv )
   latex2.SetTextSize(0.038);   
   latex2.SetTextFont(42);
   //HH
-  latex2.DrawLatex(cmsx, cmsy, "pp #rightarrow #tilde{#chi}^{0,#pm}_{i} #tilde{#chi}^{0,#pm}_{j} #rightarrow  #tilde{#chi}^{0}_{1} #tilde{#chi}^{0}_{1} + X_{soft}; #tilde{#chi}^{0}_{1} #rightarrow H #tilde{G} (100%)");
-  latex2.DrawLatex(cmsx+0.263, cmsy-0.07, "m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}};  m_{#tilde{G}} = 1 GeV");
+  //latex2.DrawLatex(cmsx, cmsy, "pp #rightarrow #tilde{#chi}^{0,#pm}_{i} #tilde{#chi}^{0,#pm}_{j} #rightarrow  #tilde{#chi}^{0}_{1} #tilde{#chi}^{0}_{1} + X_{soft}; #tilde{#chi}^{0}_{1} #rightarrow H #tilde{G} (100%)");
+  //latex2.DrawLatex(cmsx+0.263, cmsy-0.07, "m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}};  m_{#tilde{G}} = 1 GeV");
   //HZ
-  //latex2.DrawLatex(cmsx, cmsy, "pp #rightarrow #tilde{#chi}^{0,#pm}_{i} #tilde{#chi}^{0,#pm}_{j} #rightarrow  #tilde{#chi}^{0}_{1} #tilde{#chi}^{0}_{1} + X_{soft}; #tilde{#chi}^{0}_{1} #rightarrow H #tilde{G} (50%)");
-  //latex2.DrawLatex(cmsx+0.415, cmsy-0.07, "#tilde{#chi}^{0}_{1} #rightarrow Z #tilde{G} (50%)");
-  //latex2.DrawLatex(cmsx+0.25, cmsy-0.13, "m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}};  m_{#tilde{G}} = 1 GeV");
+  latex2.DrawLatex(cmsx, cmsy, "pp #rightarrow #tilde{#chi}^{0,#pm}_{i} #tilde{#chi}^{0,#pm}_{j} #rightarrow  #tilde{#chi}^{0}_{1} #tilde{#chi}^{0}_{1} + X_{soft}; #tilde{#chi}^{0}_{1} #rightarrow H #tilde{G} (50%)");
+  latex2.DrawLatex(cmsx+0.415, cmsy-0.07, "#tilde{#chi}^{0}_{1} #rightarrow Z #tilde{G} (50%)");
+  latex2.DrawLatex(cmsx+0.25, cmsy-0.13, "m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}};  m_{#tilde{G}} = 1 GeV");
   //1D WH
   //latex2.DrawLatex(cmsx+0.15, cmsy, "pp #rightarrow #tilde{#chi}^{#pm}_{1} #tilde{#chi}^{0}_{2} ; #tilde{#chi}^{#pm}_{1} #rightarrow W^{#pm} #tilde{#chi}^{0}_{1}, #tilde{#chi}^{0}_{2} #rightarrow H #tilde{#chi}^{0}_{1}");
   //std::cout << "hola " << latex2.GetTextFont() << std::endl;
+  TLatex latex3;
+  latex3.SetNDC();
+  latex3.SetTextSize(0.038);   
+  latex3.SetTextFont(42);
+  latex2.DrawLatex(0.2, 0.66, "#bf{EWP Analysis}");
   AddCMS(c);
 
   //c->SetLogx();

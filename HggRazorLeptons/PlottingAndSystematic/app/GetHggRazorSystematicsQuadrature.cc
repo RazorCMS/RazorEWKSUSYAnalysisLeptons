@@ -207,7 +207,7 @@ int main( int argc, char* argv[] )
   else if (categoryMode == "mulowpt") categoryCutString    = " && pTGammaGamma < 110 && box == 3 && lep1Pt > 20. ";
   else if (categoryMode == "elehighpt") categoryCutString  = " && pTGammaGamma >= 110 && box == 4 && lep1Pt > 20. ";
   else if (categoryMode == "elelowpt") categoryCutString   = " && pTGammaGamma < 110 && box == 4 && lep1Pt > 20. ";
-  else if (categoryMode == "twoleptons") categoryCutString = " && (box == 0 || box == 1 || box == 2) && fabs (dileptonMass -91.19) <= 20  ";
+  else if (categoryMode == "twoleptons") categoryCutString = " && (box == 0 || box == 1 || box == 2) && abs(dileptonMass -91.19) <= 20  ";
   else if (categoryMode == "inclusive") categoryCutString  = "";
   else if (categoryMode == "ele") categoryCutString        = "&& box == 4 && lep1Pt > 20. ";
   
@@ -739,6 +739,8 @@ int main( int argc, char* argv[] )
        //genMet systematics
        if ( isEWKSUSYSignal ) {
 	 outf << genMetS->GetBinContent( bin ) << "\t";
+         std::cout << "Bin : " << bin << " real bin "<< tmp[-1] << " : " << tmp[0] << " " << tmp[1] << " " << tmp[2] << " " << tmp[3] << " : "
+		 << "genMetS : " << genMetS->GetBinContent( bin ) << " +/ - " << genMetS->GetBinError( bin )  << "\n";
 	 outf << pileupS->GetBinContent( bin ) << "\t";
        } else {
 	 outf << "0.0" << "\t";

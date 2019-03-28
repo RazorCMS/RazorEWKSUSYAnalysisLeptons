@@ -3232,7 +3232,8 @@ RooWorkspace* MakeDataCard2( TTree* treeData, TTree* treeSignal, TTree* treeSign
       ofs << "process\t\t\t\t\t\t0\t\t1\t\t2\n";
       ofs << "rate\t\t\t\t\t\t1\t\t1\t\t1\n";
       ofs << "----------------------------------------------------------------------------------------\n";
-      ofs << "CMS_Lumi\t\t\tlnN\t\t1.026\t\t1.026\t\t-\n";
+      ofs << "CMS_Lumi\t\t\tlnN\t\t1.024\t\t1.024\t\t-\n";
+      //ofs << "CMS_Lumi\t\t\tlnN\t\t1.026\t\t1.026\t\t-\n";
       //ofs << "Photon_Trigger\t\t\tlnN\t\t1.05\t\t1.05\t\t-\n";
       //ofs << "ScaleNorm\t\t\tlnN\t\t-\t\t0.931/1.065\t\t-\n"; //instead allow scale variations to change xsection
       ofs << "PdfNorm\t\t\t\tlnN\t\t-\t\t0.948/1.062\t\t-\n";
@@ -3342,8 +3343,8 @@ RooWorkspace* MakeDataCard2( TTree* treeData, TTree* treeSignal, TTree* treeSign
 	    }
 	  else if ( isys == 70 ) 
 	    {
-	      if (signal_sys.at(isys) != 1.0) {
-		//ofs << "Signal_FastsimMet" << "\t\t\tlnN\t\t" << signal_sys.at(isys) << "\t\t-\t\t-\n";
+	      if (signal_sys.at(isys) != 1.0 && signal_sys.at(isys) > 0.0) {
+		ofs << "Signal_FastsimMet" << "\t\t\tlnN\t\t" << signal_sys.at(isys) << "\t\t-\t\t-\n";
 	      }
 	    }
 	  else if ( isys == 71 ) 
