@@ -45,7 +45,7 @@ const float axisTitleOffsetRatioY = 0.32;
 const float leftMargin   = 0.12;
 const float rightMargin  = 0.05;
 const float topMargin    = 0.07;
-const float bottomMargin = 1.05;
+const float bottomMargin = 0.14;
 
 //CMS STANDARD
 TString CMSText = "CMS";
@@ -263,7 +263,7 @@ int main( int argc, char** argv )
   gTwoS->GetXaxis()->SetTitleSize(0.05);
   gTwoS->GetXaxis()->SetLabelOffset( 0.003);
   gTwoS->GetYaxis()->SetLabelOffset( 0.003);
-  gTwoS->GetXaxis()->SetTitleOffset( 1.01);
+  gTwoS->GetXaxis()->SetTitleOffset( 1.21);
   gTwoS->GetYaxis()->SetTitleOffset( 0.99);
   gTwoS->GetXaxis()->SetTitle("Higgsino mass m_{#tilde{#chi}^{0}_{1}} [GeV]");
   gTwoS->GetYaxis()->SetTitleSize(0.05);
@@ -316,7 +316,7 @@ int main( int argc, char** argv )
   
   leg2->Draw();
 */
-  TLegend* leg = new TLegend( 0.51, 0.75-5*0.065, 0.85, 0.75-0.05, NULL, "brNDC" );
+  TLegend* leg = new TLegend( 0.51, 0.75-5*0.065-0.02, 0.85, 0.75-0.05-0.02, NULL, "brNDC" );
   leg->SetBorderSize(0);
   leg->SetLineColor(1);
   leg->SetLineStyle(1);
@@ -347,18 +347,18 @@ int main( int argc, char** argv )
   //latex.DrawLatex(cmsx, cmsy, "95% CL upper limits");
 
   TLatex latex2;
-  cmsx = 0.29;
-  cmsy = 0.88;
+  cmsx = 0.15;
+  cmsy = 0.87;
   latex2.SetNDC();
-  latex2.SetTextSize(0.038);   
+  latex2.SetTextSize(0.048);   
   latex2.SetTextFont(42);
   //HH
   //latex2.DrawLatex(cmsx, cmsy, "pp #rightarrow #tilde{#chi}^{0,#pm}_{i} #tilde{#chi}^{0,#pm}_{j} #rightarrow  #tilde{#chi}^{0}_{1} #tilde{#chi}^{0}_{1} + X_{soft}; #tilde{#chi}^{0}_{1} #rightarrow H #tilde{G} (100%)");
   //latex2.DrawLatex(cmsx+0.263, cmsy-0.07, "m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}};  m_{#tilde{G}} = 1 GeV");
   //HZ
   latex2.DrawLatex(cmsx, cmsy, "pp #rightarrow #tilde{#chi}^{0,#pm}_{i} #tilde{#chi}^{0,#pm}_{j} #rightarrow  #tilde{#chi}^{0}_{1} #tilde{#chi}^{0}_{1} + X_{soft}; #tilde{#chi}^{0}_{1} #rightarrow H #tilde{G} (50%)");
-  latex2.DrawLatex(cmsx+0.415, cmsy-0.07, "#tilde{#chi}^{0}_{1} #rightarrow Z #tilde{G} (50%)");
-  latex2.DrawLatex(cmsx+0.25, cmsy-0.13, "m_{#tilde{G}} = 1GeV;  m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}}");
+  latex2.DrawLatex(cmsx+0.51, cmsy-0.08, "#tilde{#chi}^{0}_{1} #rightarrow Z #tilde{G} (50%)");
+  latex2.DrawLatex(cmsx+0.30, cmsy-0.14, "m_{#tilde{G}} = 1GeV;  m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}}");
   //latex2.DrawLatex(cmsx+0.25, cmsy-0.13, "m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}};  m_{#tilde{G}} = 1 GeV");
   //1D WH
   //latex2.DrawLatex(cmsx+0.15, cmsy, "pp #rightarrow #tilde{#chi}^{#pm}_{1} #tilde{#chi}^{0}_{2} ; #tilde{#chi}^{#pm}_{1} #rightarrow W^{#pm} #tilde{#chi}^{0}_{1}, #tilde{#chi}^{0}_{2} #rightarrow H #tilde{#chi}^{0}_{1}");
