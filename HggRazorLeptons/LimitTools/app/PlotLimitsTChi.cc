@@ -274,8 +274,8 @@ int main( int argc, char** argv )
   //gTwoS->GetYaxis()->SetRangeUser(0,15);
   gTwoS->GetYaxis()->SetRangeUser(0,15);
   gTwoS->SetMaximum(1000);
-  gTwoS->SetMinimum(0.1); //HZ
-  //gTwoS->SetMinimum(0.1-0.01); //HH
+  //gTwoS->SetMinimum(0.1); //HZ
+  gTwoS->SetMinimum(0.1-0.01); //HH
   //gTwoS->GetYaxis()->SetRangeUser(0,15);
   //gTwoS->GetXaxis()->SetRangeUser(150,400);
   //gTwoS->GetXaxis()->SetRangeUser(120,450);
@@ -353,13 +353,12 @@ int main( int argc, char** argv )
   latex2.SetTextSize(0.048);   
   latex2.SetTextFont(42);
   //HH
-  //latex2.DrawLatex(cmsx, cmsy, "pp #rightarrow #tilde{#chi}^{0,#pm}_{i} #tilde{#chi}^{0,#pm}_{j} #rightarrow  #tilde{#chi}^{0}_{1} #tilde{#chi}^{0}_{1} + X_{soft}; #tilde{#chi}^{0}_{1} #rightarrow H #tilde{G} (100%)");
-  //latex2.DrawLatex(cmsx+0.263, cmsy-0.07, "m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}};  m_{#tilde{G}} = 1 GeV");
+  latex2.DrawLatex(cmsx, cmsy, "pp #rightarrow #tilde{#chi}^{0,#pm}_{i} #tilde{#chi}^{0,#pm}_{j} #rightarrow  #tilde{#chi}^{0}_{1} #tilde{#chi}^{0}_{1} + X_{soft}; #tilde{#chi}^{0}_{1} #rightarrow H #tilde{G} (100%)");
+  latex2.DrawLatex(cmsx+0.3, cmsy-0.08, "m_{#tilde{G}} = 1 GeV;  m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}}");
   //HZ
-  latex2.DrawLatex(cmsx, cmsy, "pp #rightarrow #tilde{#chi}^{0,#pm}_{i} #tilde{#chi}^{0,#pm}_{j} #rightarrow  #tilde{#chi}^{0}_{1} #tilde{#chi}^{0}_{1} + X_{soft}; #tilde{#chi}^{0}_{1} #rightarrow H #tilde{G} (50%)");
-  latex2.DrawLatex(cmsx+0.51, cmsy-0.08, "#tilde{#chi}^{0}_{1} #rightarrow Z #tilde{G} (50%)");
-  latex2.DrawLatex(cmsx+0.30, cmsy-0.14, "m_{#tilde{G}} = 1GeV;  m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}}");
-  //latex2.DrawLatex(cmsx+0.25, cmsy-0.13, "m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}};  m_{#tilde{G}} = 1 GeV");
+  //latex2.DrawLatex(cmsx, cmsy, "pp #rightarrow #tilde{#chi}^{0,#pm}_{i} #tilde{#chi}^{0,#pm}_{j} #rightarrow  #tilde{#chi}^{0}_{1} #tilde{#chi}^{0}_{1} + X_{soft}; #tilde{#chi}^{0}_{1} #rightarrow H #tilde{G} (50%)");
+  //latex2.DrawLatex(cmsx+0.51, cmsy-0.08, "#tilde{#chi}^{0}_{1} #rightarrow Z #tilde{G} (50%)");
+  //latex2.DrawLatex(cmsx+0.30, cmsy-0.14, "m_{#tilde{G}} = 1GeV;  m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}}");
   //1D WH
   //latex2.DrawLatex(cmsx+0.15, cmsy, "pp #rightarrow #tilde{#chi}^{#pm}_{1} #tilde{#chi}^{0}_{2} ; #tilde{#chi}^{#pm}_{1} #rightarrow W^{#pm} #tilde{#chi}^{0}_{1}, #tilde{#chi}^{0}_{2} #rightarrow H #tilde{#chi}^{0}_{1}");
   //std::cout << "hola " << latex2.GetTextFont() << std::endl;
