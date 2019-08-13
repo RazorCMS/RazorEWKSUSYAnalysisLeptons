@@ -45,12 +45,12 @@ const float axisTitleOffsetRatioY = 0.32;
 const float leftMargin   = 0.12;
 const float rightMargin  = 0.05;
 const float topMargin    = 0.07;
-const float bottomMargin = 0.12;
+const float bottomMargin = 1.05;
 
 //CMS STANDARD
 TString CMSText = "CMS";
-//TString extraText   = "";
-TString extraText   = "Preliminary";
+TString extraText   = "";
+//TString extraText   = "Preliminary";
 //TString lumiText = "2.32 fb^{-1} (13 TeV)";
 //TString lumiText = "35.9 fb^{-1} (13 TeV)";
 TString lumiText = "77.5 fb^{-1} (13 TeV)";
@@ -222,6 +222,7 @@ int main( int argc, char** argv )
   c->SetLogy();
 
   gStyle->SetPaintTextFormat("4.3f");
+  gStyle->SetLabelSize(.05, "XY");
 
   /*
   gTwoS->SetFillColor(kSpring-3);
@@ -261,10 +262,12 @@ int main( int argc, char** argv )
   gTwoS->SetTitle("");
   gTwoS->GetXaxis()->SetTitleSize(0.05);
   gTwoS->GetXaxis()->SetLabelOffset( 0.003);
-  gTwoS->GetXaxis()->SetTitleOffset( 0.95);
+  gTwoS->GetYaxis()->SetLabelOffset( 0.003);
+  gTwoS->GetXaxis()->SetTitleOffset( 1.01);
+  gTwoS->GetYaxis()->SetTitleOffset( 0.99);
   gTwoS->GetXaxis()->SetTitle("Higgsino mass m_{#tilde{#chi}^{0}_{1}} [GeV]");
   gTwoS->GetYaxis()->SetTitleSize(0.05);
-  gTwoS->GetYaxis()->CenterTitle(kTRUE);
+  //gTwoS->GetYaxis()->CenterTitle(kTRUE);
   //gTwoS->GetYaxis()->SetTitle("95% C.L. limit #sigma(pp#rightarrow #tilde{#chi}^{0}_{2} #tilde{#chi}^{0}_{2}) (pb)");
   gTwoS->GetYaxis()->SetTitle("#sigma^{95%}_{excl} [pb]");
 
@@ -322,7 +325,7 @@ int main( int argc, char** argv )
   leg->SetFillStyle(1001);
   leg->SetTextSize(0.04);
 
-  leg->AddEntry( gTheory, " NLO+NNL theory", "l");
+  leg->AddEntry( gTheory, " NLO+NLL theory", "l");
   leg->AddEntry( gObs, " Observed limit (95% CL)", "l" );
   leg->AddEntry( gExp, " Median expected limit", "l" );
   leg->AddEntry( gOneS, " 68% expected", "f" );
@@ -355,7 +358,8 @@ int main( int argc, char** argv )
   //HZ
   latex2.DrawLatex(cmsx, cmsy, "pp #rightarrow #tilde{#chi}^{0,#pm}_{i} #tilde{#chi}^{0,#pm}_{j} #rightarrow  #tilde{#chi}^{0}_{1} #tilde{#chi}^{0}_{1} + X_{soft}; #tilde{#chi}^{0}_{1} #rightarrow H #tilde{G} (50%)");
   latex2.DrawLatex(cmsx+0.415, cmsy-0.07, "#tilde{#chi}^{0}_{1} #rightarrow Z #tilde{G} (50%)");
-  latex2.DrawLatex(cmsx+0.25, cmsy-0.13, "m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}};  m_{#tilde{G}} = 1 GeV");
+  latex2.DrawLatex(cmsx+0.25, cmsy-0.13, "m_{#tilde{G}} = 1GeV;  m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}}");
+  //latex2.DrawLatex(cmsx+0.25, cmsy-0.13, "m_{#tilde{#chi}^{0}_{2}} #approx m_{#tilde{#chi}^{#pm}_{1}} #approx m_{#tilde{#chi}^{0}_{1}};  m_{#tilde{G}} = 1 GeV");
   //1D WH
   //latex2.DrawLatex(cmsx+0.15, cmsy, "pp #rightarrow #tilde{#chi}^{#pm}_{1} #tilde{#chi}^{0}_{2} ; #tilde{#chi}^{#pm}_{1} #rightarrow W^{#pm} #tilde{#chi}^{0}_{1}, #tilde{#chi}^{0}_{2} #rightarrow H #tilde{#chi}^{0}_{1}");
   //std::cout << "hola " << latex2.GetTextFont() << std::endl;
@@ -363,7 +367,7 @@ int main( int argc, char** argv )
   latex3.SetNDC();
   latex3.SetTextSize(0.038);   
   latex3.SetTextFont(42);
-  latex2.DrawLatex(0.2, 0.66, "#bf{EWP Analysis}");
+  latex2.DrawLatex(0.2, 0.66, "#bf{EWP analysis}");
   AddCMS(c);
 
   //c->SetLogx();

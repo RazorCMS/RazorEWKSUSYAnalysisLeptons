@@ -3343,7 +3343,9 @@ RooWorkspace* MakeDataCard2( TTree* treeData, TTree* treeSignal, TTree* treeSign
 	    }
 	  else if ( isys == 70 ) 
 	    {
-	      if (signal_sys.at(isys) != 1.0 && signal_sys.at(isys) > 0.0) {
+	      if (signal_sys.at(isys) != 1.0 ) {
+	      //if (signal_sys.at(isys) != 1.0 && signal_sys.at(isys) > 0.0) {
+		//ofs << "Signal_FastsimMet" << "\t\t\tlnN\t\t" << 2-signal_sys.at(isys) << "\t\t-\t\t-\n";
 		ofs << "Signal_FastsimMet" << "\t\t\tlnN\t\t" << signal_sys.at(isys) << "\t\t-\t\t-\n";
 	      }
 	    }

@@ -976,9 +976,11 @@ float HggRazorSystematics::GetGenMetSystematic( float mr, float rsq )
   int bin = h2p_genMet->FindBin( mr+10, rsq+0.0001 );
   float nominal     = h2p->GetBinContent( bin );
   float genmetYield = h2p_genMet->GetBinContent( bin );
-  float result = nominal - genmetYield;   
+  //float result = nominal - genmetYield;   
+  float result = genmetYield - nominal;   
 
   return result;
+  //return genmetYield;
 };
 
 float HggRazorSystematics::GetEff( float mr, float rsq )
